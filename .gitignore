@@ -1,0 +1,46 @@
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.suo
+*.user
+
+# Secrets
+.env
+.env.local
+*.pem
+credentials.json
+
+# Node (frontend)
+website-frontend/website-client/node_modules/
+website-frontend/website-client/dist/
+website-frontend/website-client/test-results/
+website-frontend/website-client/.vite/
+
+# Java (backend services)
+website-backend/**/target/
+*.class
+
+# Logs / temp
+*.log
+tmp/
+temp/
+
+# Database backups (local)
+infrastructure/website-database/backup/*.dump
+
+# Leftover folders after monorepo move (only target/ may remain)
+/website-client/
+/website-api-gateway/
+/website-auth-service/
+/website-content-service/
+/website-catalog-service/
+/website-media-service/
+/website-careers-service/
+/website-engagement-service/
+/website-notification-service/
+/website-service-registry/
+/website-database/
+/website-infrastructure/

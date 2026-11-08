@@ -1,0 +1,34 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: catalog-service
+  datasource:
+    url: jdbc:postgresql://${WEBSITE_DB_HOST:localhost}:${WEBSITE_DB_PORT:5432}/${WEBSITE_DB_NAME:website_db}?currentSchema=catalog
+    username: ${WEBSITE_DB_USER:postgres}
+    password: ${WEBSITE_DB_PASSWORD:pass}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+    schemas: catalog
+    default-schema: catalog
+    locations: classpath:db/migration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+springdoc:
+  api-docs:
+    path: /api-docs
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
+  instance:
+    prefer-ip-address: true

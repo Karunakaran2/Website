@@ -1,0 +1,80 @@
+server:
+  port: ${WEBSITE_GATEWAY_PORT:8080}
+
+spring:
+  application:
+    name: api-gateway
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+            allowedOriginPatterns:
+              - "http://localhost:*"
+              - "http://127.0.0.1:*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - PATCH
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
+      routes:
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/v1/auth/**
+        - id: content-service
+          uri: lb://content-service
+          predicates:
+            - Path=/api/v1/content/**,/api/v1/admin/news/**,/api/v1/admin/banners/**
+        - id: catalog-service
+          uri: lb://catalog-service
+          predicates:
+            - Path=/api/v1/catalog/**,/api/v1/services/**,/api/v1/solutions/**
+        - id: media-service
+          uri: lb://media-service
+          predicates:
+            - Path=/api/v1/media/**
+        - id: careers-service
+          uri: lb://careers-service
+          predicates:
+            - Path=/api/v1/careers/**,/api/v1/jobs/**
+        - id: engagement-service
+          uri: lb://engagement-service
+          predicates:
+            - Path=/api/v1/engagement/**,/api/v1/contact/**
+        - id: notification-service
+          uri: lb://notification-service
+          predicates:
+            - Path=/api/v1/notifications/**
+
+app:
+  jwt:
+    issuer: ${JWT_ISSUER:https://website.local/auth-service}
+    jwk-set-uri: ${JWT_JWK_SET_URI:http://localhost:8081/api/v1/auth/.well-known/jwks.json}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway

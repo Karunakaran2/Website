@@ -1,0 +1,35 @@
+---
+description: KRAN Design System portal modules, domain layout, and page registry
+globs: src/app/**/*,src/domain/**/*
+alwaysApply: true
+---
+
+# KRAN Design System Portal
+
+## Landing vs footer vs header
+
+- **`/home` landing cards:** Module 1 and Module 2 only — `PORTAL_LANDING_MODULES` in `portalModules.js` (ids `module-1`, `module-2`).
+- **Footer:** Component Workbench and Design Guidelines (`PORTAL_FOOTER_MODULES` / `AppFooter.jsx`).
+- **Header Setup icon:** Administration (setup + asset) — not a landing module card.
+
+## Active domain folders (`src/domain/`)
+
+`administration` (setup + asset), `auth`, `component-workbench`, `dashboard` (inbox tabs), `design-guidelines`, `module-1`, `module-2` (nested `hrms/`, `tasks/` under module-2).
+
+Canonical URL prefixes: `/module-1`, `/module-2`. Legacy `/sample-module/*` and `/workforce/*` redirect via `canonicalizeModulePathname`.
+
+Do not reintroduce duplicate top-level domains (`setup`, `asset`, `hrms`, `task-management`, `component-explorer`, `ui-component-library`).
+
+## Page registry
+
+- Merge domain route maps in `src/app/routes/loadDomainPages.js` (`DASHBOARD_PAGE_REGISTRY`).
+- Keys: `'primaryId:secondaryId'` → `lazyPage(() => import(...))`.
+- Register every navigable tab; use `getModuleRoute(primaryId, secondaryId)` — no `/dashboard` prefix, no `:accountId` in paths.
+
+## Setup return navigation
+
+Before entering Setup from another module, persist return route via `setupReturnNav.js`. Header Home from Setup restores that route; otherwise `/home`.
+
+## Docs
+
+Long-form architecture and onboarding: repository `docs/` (not duplicated in rules).

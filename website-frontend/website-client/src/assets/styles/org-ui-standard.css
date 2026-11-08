@@ -1,0 +1,823 @@
+/* Org UI Standard â€” Complex Input Form (.input-field) */
+@layer components {
+  .input-field {
+    min-height: 2.5rem;
+    width: 100%;
+    touch-action: manipulation;
+    border-radius: 0.25rem;
+    border-width: 1px;
+    border-color: rgb(203 213 225);
+    background-color: rgb(255 255 255);
+    padding: 0.625rem 0.75rem;
+    font-size: 13px;
+    line-height: 1.25rem;
+    color: rgb(30 41 59);
+    transition-property: color, background-color, border-color, box-shadow;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .input-field::placeholder {
+    color: rgb(148 163 184);
+  }
+
+  .input-field:focus {
+    border-color: rgb(1 69 142);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 1px rgb(1 69 142);
+  }
+
+  .dark .input-field {
+    background-color: rgb(15 23 42);
+    border-color: rgb(71 85 105);
+    color: rgb(241 245 249);
+  }
+
+  .dark .input-field:focus {
+    border-color: rgb(1 69 142);
+    box-shadow: 0 0 0 1px rgb(1 69 142);
+  }
+}
+
+@layer base {
+  :root {
+    /* Fluid base size: 13px at 1024px width, 14.4px at 1440px width, 16px at 1920px width, maxing at 20px */
+    --fluid-base: clamp(13px, 0.334vw + 9.58px, 20px);
+  }
+
+  /* Apply fluid font sizes to root element, multiplying by the user's chosen accessibility scale */
+  html.user-xs {
+    font-size: calc(var(--fluid-base) * 0.8333);
+  }
+  html.user-sm {
+    font-size: calc(var(--fluid-base) * 0.8888);
+  }
+  html.user-base {
+    font-size: var(--fluid-base);
+  }
+  html.user-lg {
+    font-size: calc(var(--fluid-base) * 1.1111);
+  }
+  html.user-xl {
+    font-size: calc(var(--fluid-base) * 1.25);
+  }
+
+  /* Ensure body inherits the font size */
+  body {
+    font-size: inherit;
+    line-height: 1.5;
+  }
+
+  /* Font-size only. `transition: all` on html makes Chrome add a second scrollbar. */
+  html {
+    transition: font-size 0.3s ease-in-out, background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  }
+}
+
+@layer utilities {
+  /* Disable transitions for users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      transition: none !important;
+    }
+  }
+}
+
+@keyframes marquee-vertical {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+.marquee-container {
+  height: 380px;
+  overflow: hidden;
+  position: relative;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 15%,
+    black 85%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 15%,
+    black 85%,
+    transparent
+  );
+}
+
+.marquee-content {
+  display: flex;
+  flex-direction: column;
+  animation: marquee-vertical 25s linear infinite;
+}
+
+.marquee-content:hover {
+  animation-play-state: paused;
+}
+
+.notification-item-card {
+  background: white;
+  border-radius: 14;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.notification-item-card:hover {
+  transform: scale(1.02);
+  border-color: #3b82f6;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* Fund Management Department - Levy & Penalty Noto Sans & Font Size standardisation */
+.fund-mgmt-dep-panel,
+.fund-mgmt-dep-panel * {
+  font-family: "Noto Sans", sans-serif !important;
+}
+
+/* Adjust all subtext / text sizes that are 12px or below to be 13px (above 12px) */
+.fund-mgmt-dep-panel .text-xs,
+.fund-mgmt-dep-panel .text-\[10px\],
+.fund-mgmt-dep-panel .text-\[11px\],
+.fund-mgmt-dep-panel .text-\[12px\],
+.fund-mgmt-dep-panel table.text-xs th,
+.fund-mgmt-dep-panel table.text-xs td,
+.fund-mgmt-dep-panel table.text-xs span,
+.fund-mgmt-dep-panel table.text-xs div {
+  font-size: 0.8125rem !important;
+}
+
+/* Logged-in module content — Noto + minimum legible size (Org UI) */
+.probity-module-content,
+.probity-module-content * {
+  font-family: "Noto Sans", sans-serif;
+}
+
+.probity-module-content .text-xs:not(button):not(.probity-form-section-title),
+.probity-module-content .text-\[10px\]:not(button):not(.probity-form-section-title),
+.probity-module-content .text-\[11px\]:not(button):not(.probity-form-section-title),
+.probity-module-content .text-\[12px\]:not(button):not(.probity-form-section-title),
+.probity-module-content table.text-xs th,
+.probity-module-content table.text-xs td,
+.probity-module-content table.text-xs span,
+.probity-module-content table.text-xs div {
+  font-size: 0.8125rem !important;
+}
+
+/*
+ * High / Yellow contrast â€” apply to the whole app (navbar, cards, arbitrary
+ * Tailwind colours). Yellow theme must NOT keep bg-[#f5c518] as yellow while
+ * forcing link text to yellow (that hides menu labels).
+ */
+html[data-color-scheme="high"],
+html[data-login-contrast="high"],
+html[data-color-scheme="yellow"],
+html[data-login-contrast="yellow"] {
+  color-scheme: dark;
+}
+
+html[data-color-scheme="high"] body,
+html[data-login-contrast="high"] body,
+html[data-color-scheme="high"] #root,
+html[data-login-contrast="high"] #root {
+  background-color: #000 !important;
+  color: #fff !important;
+}
+
+html[data-color-scheme="yellow"] body,
+html[data-login-contrast="yellow"] body,
+html[data-color-scheme="yellow"] #root,
+html[data-login-contrast="yellow"] #root {
+  background-color: #000 !important;
+  color: #ff0 !important;
+}
+
+html[data-color-scheme="high"] :where(header, nav, main, footer, aside, section, article, [class*="bg-"], .force-light),
+html[data-login-contrast="high"] :where(header, nav, main, footer, aside, section, article, [class*="bg-"], .force-light) {
+  background-color: #000 !important;
+  background-image: none !important;
+  color: #fff !important;
+}
+
+html[data-color-scheme="yellow"] :where(header, nav, main, footer, aside, section, article, [class*="bg-"], .force-light),
+html[data-login-contrast="yellow"] :where(header, nav, main, footer, aside, section, article, [class*="bg-"], .force-light) {
+  background-color: #000 !important;
+  background-image: none !important;
+  color: #ff0 !important;
+}
+
+html[data-color-scheme="high"] :where(*, *::before, *::after),
+html[data-login-contrast="high"] :where(*, *::before, *::after) {
+  color: #fff !important;
+  border-color: #fff !important;
+  outline-color: #fff !important;
+  box-shadow: none !important;
+}
+
+html[data-color-scheme="yellow"] :where(*, *::before, *::after),
+html[data-login-contrast="yellow"] :where(*, *::before, *::after) {
+  color: #ff0 !important;
+  border-color: #ff0 !important;
+  outline-color: #ff0 !important;
+  box-shadow: none !important;
+}
+
+html[data-color-scheme="high"] :where(input, select, textarea, .input-field),
+html[data-login-contrast="high"] :where(input, select, textarea, .input-field) {
+  background-color: #000 !important;
+  color: #fff !important;
+  border: 1px solid #fff !important;
+  caret-color: #fff !important;
+}
+
+html[data-color-scheme="yellow"] :where(input, select, textarea, .input-field),
+html[data-login-contrast="yellow"] :where(input, select, textarea, .input-field) {
+  background-color: #000 !important;
+  color: #ff0 !important;
+  border: 1px solid #ff0 !important;
+  caret-color: #ff0 !important;
+}
+
+html[data-color-scheme="high"] :where(input, select, textarea, .input-field)::placeholder,
+html[data-login-contrast="high"] :where(input, select, textarea, .input-field)::placeholder {
+  color: #ccc !important;
+}
+
+html[data-color-scheme="yellow"] :where(input, select, textarea, .input-field)::placeholder,
+html[data-login-contrast="yellow"] :where(input, select, textarea, .input-field)::placeholder {
+  color: #cc0 !important;
+}
+
+html[data-color-scheme="high"] :where(label, legend, .field-label, .form-option-label),
+html[data-color-scheme="high"] .relative.w-full > label,
+html[data-color-scheme="high"] .flex.flex-col.w-full > label,
+html[data-login-contrast="high"] :where(label, legend, .field-label, .form-option-label),
+html[data-login-contrast="high"] .relative.w-full > label,
+html[data-login-contrast="high"] .flex.flex-col.w-full > label,
+html.contrast-high :where(label, legend, .field-label, .form-option-label),
+html.contrast-high .relative.w-full > label,
+html.contrast-high .flex.flex-col.w-full > label {
+  color: #fff !important;
+}
+
+html[data-color-scheme="yellow"] :where(label, legend, .field-label, .form-option-label),
+html[data-color-scheme="yellow"] .relative.w-full > label,
+html[data-color-scheme="yellow"] .flex.flex-col.w-full > label,
+html[data-login-contrast="yellow"] :where(label, legend, .field-label, .form-option-label),
+html[data-login-contrast="yellow"] .relative.w-full > label,
+html[data-login-contrast="yellow"] .flex.flex-col.w-full > label,
+html.contrast-yellow :where(label, legend, .field-label, .form-option-label),
+html.contrast-yellow .relative.w-full > label,
+html.contrast-yellow .flex.flex-col.w-full > label {
+  color: #ff0 !important;
+}
+
+html[data-color-scheme="high"],
+html[data-login-contrast="high"],
+html.contrast-high {
+  scrollbar-color: #ffffff #000000;
+}
+
+html[data-color-scheme="high"] *::-webkit-scrollbar-track,
+html[data-login-contrast="high"] *::-webkit-scrollbar-track,
+html.contrast-high *::-webkit-scrollbar-track,
+html[data-color-scheme="high"] .custom-scrollbar::-webkit-scrollbar-track,
+html[data-login-contrast="high"] .custom-scrollbar::-webkit-scrollbar-track,
+html.contrast-high .custom-scrollbar::-webkit-scrollbar-track {
+  background: #000 !important;
+}
+
+html[data-color-scheme="high"] *::-webkit-scrollbar-thumb,
+html[data-login-contrast="high"] *::-webkit-scrollbar-thumb,
+html.contrast-high *::-webkit-scrollbar-thumb,
+html[data-color-scheme="high"] .custom-scrollbar::-webkit-scrollbar-thumb,
+html[data-login-contrast="high"] .custom-scrollbar::-webkit-scrollbar-thumb,
+html.contrast-high .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #fff !important;
+}
+
+html[data-color-scheme="yellow"],
+html[data-login-contrast="yellow"],
+html.contrast-yellow {
+  scrollbar-color: #ffff00 #000000;
+}
+
+html[data-color-scheme="yellow"] *::-webkit-scrollbar-track,
+html[data-login-contrast="yellow"] *::-webkit-scrollbar-track,
+html.contrast-yellow *::-webkit-scrollbar-track,
+html[data-color-scheme="yellow"] .custom-scrollbar::-webkit-scrollbar-track,
+html[data-login-contrast="yellow"] .custom-scrollbar::-webkit-scrollbar-track,
+html.contrast-yellow .custom-scrollbar::-webkit-scrollbar-track {
+  background: #000 !important;
+}
+
+html[data-color-scheme="yellow"] *::-webkit-scrollbar-thumb,
+html[data-login-contrast="yellow"] *::-webkit-scrollbar-thumb,
+html.contrast-yellow *::-webkit-scrollbar-thumb,
+html[data-color-scheme="yellow"] .custom-scrollbar::-webkit-scrollbar-thumb,
+html[data-login-contrast="yellow"] .custom-scrollbar::-webkit-scrollbar-thumb,
+html.contrast-yellow .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #ff0 !important;
+}
+
+html[data-color-scheme="high"] :where([aria-current="page"], [aria-current="true"], [aria-selected="true"], [aria-pressed="true"]),
+html[data-login-contrast="high"] :where([aria-current="page"], [aria-current="true"], [aria-selected="true"], [aria-pressed="true"]),
+html.contrast-high :where([aria-current="page"], [aria-current="true"], [aria-selected="true"], [aria-pressed="true"]) {
+  background-color: #fff !important;
+  background-image: none !important;
+  color: #000 !important;
+  border-color: #000 !important;
+  outline: 2px solid #fff !important;
+  outline-offset: 2px;
+}
+
+html[data-color-scheme="high"] :where([aria-current="page"], [aria-current="true"], [aria-selected="true"], [aria-pressed="true"]) :where(*, *::before, *::after),
+html[data-login-contrast="high"] :where([aria-current="page"], [aria-current="true"], [aria-selected="true"], [aria-pressed="true"]) :where(*, *::before, *::after),
+html.contrast-high :where([aria-current="page"], [aria-current="true"], [aria-selected="true"], [aria-pressed="true"]) :where(*, *::before, *::after) {
+  color: #000 !important;
+  border-color: #000 !important;
+}
+
+html[data-color-scheme="yellow"] :where([aria-current="page"], [aria-current="true"], [aria-selected="true"], [aria-pressed="true"]),
+html[data-login-contrast="yellow"] :where([aria-current="page"], [aria-current="true"], [aria-selected="true"], [aria-pressed="true"]),
+html.contrast-yellow :where([aria-current="page"], [aria-current="true"], [aria-selected="true"], [aria-pressed="true"]) {
+  background-color: #ff0 !important;
+  background-image: none !important;
+  color: #000 !important;
+  border-color: #000 !important;
+  outline: 2px solid #ff0 !important;
+  outline-offset: 2px;
+}
+
+html[data-color-scheme="yellow"] :where([aria-current="page"], [aria-current="true"], [aria-selected="true"], [aria-pressed="true"]) :where(*, *::before, *::after),
+html[data-login-contrast="yellow"] :where([aria-current="page"], [aria-current="true"], [aria-selected="true"], [aria-pressed="true"]) :where(*, *::before, *::after),
+html.contrast-yellow :where([aria-current="page"], [aria-current="true"], [aria-selected="true"], [aria-pressed="true"]) :where(*, *::before, *::after) {
+  color: #000 !important;
+  border-color: #000 !important;
+}
+
+html[data-color-scheme="high"] img,
+html[data-login-contrast="high"] img,
+html[data-color-scheme="yellow"] img,
+html[data-login-contrast="yellow"] img {
+  color: inherit !important;
+  border-color: currentColor !important;
+}
+
+/* Buttons keep a visible edge (modals included — secondary/outline labels must stay readable) */
+html[data-color-scheme="high"]
+  :where(button, [type="button"], [type="submit"], [type="reset"], .btn-primary, .btn-secondary),
+html[data-login-contrast="high"]
+  :where(button, [type="button"], [type="submit"], [type="reset"], .btn-primary, .btn-secondary) {
+  border: 2px solid #fff !important;
+  background-color: #000 !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+
+html[data-color-scheme="yellow"]
+  :where(button, [type="button"], [type="submit"], [type="reset"], .btn-primary, .btn-secondary),
+html[data-login-contrast="yellow"]
+  :where(button, [type="button"], [type="submit"], [type="reset"], .btn-primary, .btn-secondary) {
+  border: 2px solid #ff0 !important;
+  background-color: #000 !important;
+  color: #ff0 !important;
+  box-shadow: none !important;
+}
+
+html[data-color-scheme="high"]
+  :where(button, [type="button"], [type="submit"], [type="reset"], .btn-primary, .btn-secondary):hover,
+html[data-color-scheme="high"]
+  :where(button, [type="button"], [type="submit"], [type="reset"], .btn-primary, .btn-secondary):focus-visible,
+html[data-login-contrast="high"]
+  :where(button, [type="button"], [type="submit"], [type="reset"], .btn-primary, .btn-secondary):hover,
+html[data-login-contrast="high"]
+  :where(button, [type="button"], [type="submit"], [type="reset"], .btn-primary, .btn-secondary):focus-visible {
+  outline: 2px solid #fff !important;
+  outline-offset: 2px;
+}
+
+html[data-color-scheme="yellow"]
+  :where(button, [type="button"], [type="submit"], [type="reset"], .btn-primary, .btn-secondary):hover,
+html[data-color-scheme="yellow"]
+  :where(button, [type="button"], [type="submit"], [type="reset"], .btn-primary, .btn-secondary):focus-visible,
+html[data-login-contrast="yellow"]
+  :where(button, [type="button"], [type="submit"], [type="reset"], .btn-primary, .btn-secondary):hover,
+html[data-login-contrast="yellow"]
+  :where(button, [type="button"], [type="submit"], [type="reset"], .btn-primary, .btn-secondary):focus-visible {
+  outline: 2px solid #ff0 !important;
+  outline-offset: 2px;
+}
+
+html[data-color-scheme="high"]
+  :where(button, [type="button"], a, [role="button"], [role="option"], [role="tab"])[aria-current="page"],
+html[data-color-scheme="high"]
+  :where(button, [type="button"], a, [role="button"], [role="option"], [role="tab"])[aria-current="true"],
+html[data-color-scheme="high"]
+  :where(button, [type="button"], a, [role="button"], [role="option"], [role="tab"])[aria-selected="true"],
+html[data-color-scheme="high"]
+  :where(button, [type="button"], a, [role="button"], [role="option"], [role="tab"])[aria-pressed="true"],
+html[data-login-contrast="high"]
+  :where(button, [type="button"], a, [role="button"], [role="option"], [role="tab"])[aria-current="page"],
+html[data-login-contrast="high"]
+  :where(button, [type="button"], a, [role="button"], [role="option"], [role="tab"])[aria-current="true"],
+html[data-login-contrast="high"]
+  :where(button, [type="button"], a, [role="button"], [role="option"], [role="tab"])[aria-selected="true"],
+html[data-login-contrast="high"]
+  :where(button, [type="button"], a, [role="button"], [role="option"], [role="tab"])[aria-pressed="true"],
+html.contrast-high
+  :where(button, [type="button"], a, [role="button"], [role="option"], [role="tab"])[aria-current="page"],
+html.contrast-high
+  :where(button, [type="button"], a, [role="button"], [role="option"], [role="tab"])[aria-current="true"],
+html.contrast-high
+  :where(button, [type="button"], a, [role="button"], [role="option"], [role="tab"])[aria-selected="true"],
+html.contrast-high
+  :where(button, [type="button"], a, [role="button"], [role="option"], [role="tab"])[aria-pressed="true"] {
+  background-color: #fff !important;
+  color: #000 !important;
+  border-color: #000 !important;
+}
+
+html[data-color-scheme="yellow"]
+  :where(button, [type="button"], a, [role="button"], [role="option"], [role="tab"])[aria-current="page"],
+html[data-color-scheme="yellow"]
+  :where(button, [type="button"], a, [role="button"], [role="option"], [role="tab"])[aria-current="true"],
+html[data-color-scheme="yellow"]
+  :where(button, [type="button"], a, [role="button"], [role="option"], [role="tab"])[aria-selected="true"],
+html[data-color-scheme="yellow"]
+  :where(button, [type="button"], a, [role="button"], [role="option"], [role="tab"])[aria-pressed="true"],
+html[data-login-contrast="yellow"]
+  :where(button, [type="button"], a, [role="button"], [role="option"], [role="tab"])[aria-current="page"],
+html[data-login-contrast="yellow"]
+  :where(button, [type="button"], a, [role="button"], [role="option"], [role="tab"])[aria-current="true"],
+html[data-login-contrast="yellow"]
+  :where(button, [type="button"], a, [role="button"], [role="option"], [role="tab"])[aria-selected="true"],
+html[data-login-contrast="yellow"]
+  :where(button, [type="button"], a, [role="button"], [role="option"], [role="tab"])[aria-pressed="true"],
+html.contrast-yellow
+  :where(button, [type="button"], a, [role="button"], [role="option"], [role="tab"])[aria-current="page"],
+html.contrast-yellow
+  :where(button, [type="button"], a, [role="button"], [role="option"], [role="tab"])[aria-current="true"],
+html.contrast-yellow
+  :where(button, [type="button"], a, [role="button"], [role="option"], [role="tab"])[aria-selected="true"],
+html.contrast-yellow
+  :where(button, [type="button"], a, [role="button"], [role="option"], [role="tab"])[aria-pressed="true"] {
+  background-color: #ff0 !important;
+  color: #000 !important;
+  border-color: #000 !important;
+}
+
+/* Dim overlays stay translucent so the dialog does not blend into the page */
+html[data-color-scheme="high"] [class*="bg-opacity"],
+html[data-color-scheme="high"] [class*="bg-black/"],
+html[data-color-scheme="high"] [class*="bg-slate-900/"],
+html[data-login-contrast="high"] [class*="bg-opacity"],
+html[data-login-contrast="high"] [class*="bg-black/"],
+html[data-login-contrast="high"] [class*="bg-slate-900/"] {
+  background-color: rgba(0, 0, 0, 0.72) !important;
+  background-image: none !important;
+}
+
+html[data-color-scheme="yellow"] [class*="bg-opacity"],
+html[data-color-scheme="yellow"] [class*="bg-black/"],
+html[data-color-scheme="yellow"] [class*="bg-slate-900/"],
+html[data-login-contrast="yellow"] [class*="bg-opacity"],
+html[data-login-contrast="yellow"] [class*="bg-black/"],
+html[data-login-contrast="yellow"] [class*="bg-slate-900/"] {
+  background-color: rgba(0, 0, 0, 0.78) !important;
+  background-image: none !important;
+}
+
+/* Portal modal — footer uses flex gap, not legacy margins */
+.probity-portal-modal-footer > * {
+  margin: 0;
+}
+
+/* Modal / dialog panel â€” framed so it reads as a popup */
+html[data-color-scheme="high"] :where([role="dialog"], dialog),
+html[data-color-scheme="high"] [class*="bg-opacity"] > *,
+html[data-color-scheme="high"] [class*="bg-black/"] > *,
+html[data-color-scheme="high"] [class*="bg-slate-900/"] > *,
+html[data-login-contrast="high"] :where([role="dialog"], dialog),
+html[data-login-contrast="high"] [class*="bg-opacity"] > *,
+html[data-login-contrast="high"] [class*="bg-black/"] > *,
+html[data-login-contrast="high"] [class*="bg-slate-900/"] > * {
+  border: 2px solid #fff !important;
+  outline: 2px solid #fff !important;
+  outline-offset: 0;
+  box-shadow: 0 0 0 2px #000, 0 12px 40px rgba(255, 255, 255, 0.2) !important;
+  background-color: #000 !important;
+  color: #fff !important;
+}
+
+html[data-color-scheme="yellow"] :where([role="dialog"], dialog),
+html[data-color-scheme="yellow"] [class*="bg-opacity"] > *,
+html[data-color-scheme="yellow"] [class*="bg-black/"] > *,
+html[data-color-scheme="yellow"] [class*="bg-slate-900/"] > *,
+html[data-login-contrast="yellow"] :where([role="dialog"], dialog),
+html[data-login-contrast="yellow"] [class*="bg-opacity"] > *,
+html[data-login-contrast="yellow"] [class*="bg-black/"] > *,
+html[data-login-contrast="yellow"] [class*="bg-slate-900/"] > * {
+  border: 2px solid #ff0 !important;
+  outline: 2px solid #ff0 !important;
+  outline-offset: 0;
+  box-shadow: 0 0 0 2px #000, 0 12px 40px rgba(255, 255, 0, 0.25) !important;
+  background-color: #000 !important;
+  color: #ff0 !important;
+}
+
+/* Standard â€” no overrides (default theme) */
+
+/* Org UI Standard â€” other a11y options */
+html[data-text-spacing="on"] body {
+  line-height: 1.5 !important;
+  letter-spacing: 0.12em !important;
+  word-spacing: 0.16em !important;
+}
+html[data-text-spacing="on"] p,
+html[data-text-spacing="on"] li {
+  margin-bottom: 2em !important;
+}
+html[data-highlight-links="on"] a {
+  background-color: #ff0 !important;
+  color: #000 !important;
+  outline: 2px solid #000;
+}
+html[data-underline-links="on"] a {
+  text-decoration: underline !important;
+  text-underline-offset: 0.2em;
+}
+html[data-invert="on"] {
+  filter: invert(1) hue-rotate(180deg);
+}
+html[data-invert="on"] img,
+html[data-invert="on"] video {
+  filter: invert(1) hue-rotate(180deg);
+}
+html[data-grayscale="on"] {
+  filter: grayscale(1);
+}
+html[data-invert="on"][data-grayscale="on"] {
+  filter: invert(1) hue-rotate(180deg) grayscale(1);
+}
+html[data-big-cursor="on"],
+html[data-big-cursor="on"] * {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath fill='black' stroke='white' stroke-width='2' d='M4 2 L4 26 L10 20 L14 30 L18 28 L14 18 L22 18 Z'/%3E%3C/svg%3E")
+      2 2,
+    auto !important;
+}
+html[data-hide-images="on"] img {
+  visibility: hidden !important;
+}
+
+/* Keep class-based a11y toggles as aliases */
+html.a11y-text-spacing body {
+  line-height: 1.5 !important;
+  letter-spacing: 0.12em !important;
+  word-spacing: 0.16em !important;
+}
+html.a11y-highlight-links a {
+  background-color: #ff0 !important;
+  color: #000 !important;
+  outline: 2px solid #000;
+}
+html.a11y-underline-links a {
+  text-decoration: underline !important;
+  text-underline-offset: 0.2em;
+}
+html.a11y-invert {
+  filter: invert(1) hue-rotate(180deg);
+}
+html.a11y-grayscale {
+  filter: grayscale(1);
+}
+html.a11y-big-cursor,
+html.a11y-big-cursor * {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath fill='black' stroke='white' stroke-width='2' d='M4 2 L4 26 L10 20 L14 30 L18 28 L14 18 L22 18 Z'/%3E%3C/svg%3E")
+      2 2,
+    auto !important;
+}
+html.a11y-hide-images img {
+  visibility: hidden !important;
+}
+
+.probity-header-user-menu,
+.probity-header-user-menu * {
+  font-family: inherit;
+}
+
+html[data-color-scheme="high"] .probity-header-user-menu,
+html[data-login-contrast="high"] .probity-header-user-menu,
+html.contrast-high .probity-header-user-menu {
+  background-color: #000 !important;
+  border: 2px solid #fff !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+
+html[data-color-scheme="high"] .probity-header-user-menu :where(*, *::before, *::after),
+html[data-login-contrast="high"] .probity-header-user-menu :where(*, *::before, *::after),
+html.contrast-high .probity-header-user-menu :where(*, *::before, *::after) {
+  color: #fff !important;
+  border-color: #fff !important;
+  background-image: none !important;
+}
+
+html[data-color-scheme="high"] .probity-header-user-menu > :first-child,
+html[data-login-contrast="high"] .probity-header-user-menu > :first-child,
+html.contrast-high .probity-header-user-menu > :first-child {
+  background: #fff !important;
+  color: #000 !important;
+}
+
+html[data-color-scheme="high"] .probity-header-user-menu > :first-child :where(*),
+html[data-login-contrast="high"] .probity-header-user-menu > :first-child :where(*),
+html.contrast-high .probity-header-user-menu > :first-child :where(*) {
+  color: #000 !important;
+}
+
+html[data-color-scheme="high"] .probity-header-user-menu > :first-child > :first-child,
+html[data-login-contrast="high"] .probity-header-user-menu > :first-child > :first-child,
+html.contrast-high .probity-header-user-menu > :first-child > :first-child {
+  background: #000 !important;
+  color: #fff !important;
+  border: 1px solid #000 !important;
+}
+
+html[data-color-scheme="high"] .probity-header-user-menu [role="menuitem"],
+html[data-login-contrast="high"] .probity-header-user-menu [role="menuitem"],
+html.contrast-high .probity-header-user-menu [role="menuitem"] {
+  background-color: #000 !important;
+  color: #fff !important;
+  border: 0 !important;
+}
+
+html[data-color-scheme="high"] .probity-header-user-menu [role="menuitem"]:hover,
+html[data-color-scheme="high"] .probity-header-user-menu [role="menuitem"]:focus-visible,
+html[data-login-contrast="high"] .probity-header-user-menu [role="menuitem"]:hover,
+html[data-login-contrast="high"] .probity-header-user-menu [role="menuitem"]:focus-visible,
+html.contrast-high .probity-header-user-menu [role="menuitem"]:hover,
+html.contrast-high .probity-header-user-menu [role="menuitem"]:focus-visible {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
+html[data-color-scheme="yellow"] .probity-header-user-menu,
+html[data-login-contrast="yellow"] .probity-header-user-menu,
+html.contrast-yellow .probity-header-user-menu {
+  background-color: #000 !important;
+  border: 2px solid #ff0 !important;
+  color: #ff0 !important;
+  box-shadow: none !important;
+}
+
+html[data-color-scheme="yellow"] .probity-header-user-menu :where(*, *::before, *::after),
+html[data-login-contrast="yellow"] .probity-header-user-menu :where(*, *::before, *::after),
+html.contrast-yellow .probity-header-user-menu :where(*, *::before, *::after) {
+  color: #ff0 !important;
+  border-color: #ff0 !important;
+  background-image: none !important;
+}
+
+html[data-color-scheme="yellow"] .probity-header-user-menu > :first-child,
+html[data-login-contrast="yellow"] .probity-header-user-menu > :first-child,
+html.contrast-yellow .probity-header-user-menu > :first-child {
+  background: #ff0 !important;
+  color: #000 !important;
+}
+
+html[data-color-scheme="yellow"] .probity-header-user-menu > :first-child :where(*),
+html[data-login-contrast="yellow"] .probity-header-user-menu > :first-child :where(*),
+html.contrast-yellow .probity-header-user-menu > :first-child :where(*) {
+  color: #000 !important;
+}
+
+html[data-color-scheme="yellow"] .probity-header-user-menu > :first-child > :first-child,
+html[data-login-contrast="yellow"] .probity-header-user-menu > :first-child > :first-child,
+html.contrast-yellow .probity-header-user-menu > :first-child > :first-child {
+  background: #000 !important;
+  color: #ff0 !important;
+  border: 1px solid #000 !important;
+}
+
+html[data-color-scheme="yellow"] .probity-header-user-menu [role="menuitem"],
+html[data-login-contrast="yellow"] .probity-header-user-menu [role="menuitem"],
+html.contrast-yellow .probity-header-user-menu [role="menuitem"] {
+  background-color: #000 !important;
+  color: #ff0 !important;
+  border: 0 !important;
+}
+
+html[data-color-scheme="yellow"] .probity-header-user-menu [role="menuitem"]:hover,
+html[data-color-scheme="yellow"] .probity-header-user-menu [role="menuitem"]:focus-visible,
+html[data-login-contrast="yellow"] .probity-header-user-menu [role="menuitem"]:hover,
+html[data-login-contrast="yellow"] .probity-header-user-menu [role="menuitem"]:focus-visible,
+html.contrast-yellow .probity-header-user-menu [role="menuitem"]:hover,
+html.contrast-yellow .probity-header-user-menu [role="menuitem"]:focus-visible {
+  background-color: #ff0 !important;
+  color: #000 !important;
+}
+
+.page-shell {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: max(0.75rem, 5%);
+  padding-right: max(0.75rem, 5%);
+}
+
+.shadow-header {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem;
+  border: 0;
+  background-color: #01458e;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+}
+.btn-primary:hover {
+  background-color: #01336a;
+}
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 5.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid #cbd5e1;
+  background-color: #fff;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+}
+.btn-secondary:hover {
+  background-color: #f8fafc;
+}
+
+/* Dashboard ActionButton — Tailwind in shared/components/buttons/actionButtonStyles.js */
+
+.probity-module-content :where(input.input-field, textarea.input-field, select.input-field, [role='combobox'].input-field) {
+  font-size: 13px !important;
+  line-height: 1.25rem !important;
+}
+
+/* Native date — spfo_frontend uses InputField type="date" + input-field */
+.probity-module-content input[type='date'].input-field {
+  min-height: 2.5rem;
+  appearance: auto;
+}
+
+/* FeaturedBasicSelect dropdown uses z-10 — raise above sibling fields/sections */
+.probity-module-content .form-field-cell div.absolute.max-h-60,
+.probity-module-content .probity-complex-form div.relative.w-full > div.relative div.absolute.max-h-60 {
+  z-index: 200 !important;
+}
+
+.probity-module-content .form-field-cell:focus-within {
+  z-index: 50;
+  position: relative;
+}
+
+.probity-module-content .probity-complex-form .relative.w-full > .relative.group {
+  margin-bottom: 0 !important;
+}
+
+.probity-module-content .probity-complex-form .relative.w-full > div.mt-1:empty {
+  display: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+}
+
+.probity-module-content .probity-complex-form .relative.w-full > label + .relative.group [role='combobox'] {
+  margin-top: 0 !important;
+}

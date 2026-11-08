@@ -1,0 +1,168 @@
+@layer components {
+  .page-shell {
+    --app-gutter-x: 0.75rem;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--app-gutter-x);
+    padding-right: var(--app-gutter-x);
+  }
+
+  @media (min-width: 640px) {
+    .page-shell {
+      --app-gutter-x: 1.25rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .page-shell {
+      --app-gutter-x: 1.25rem;
+    }
+  }
+
+  .a11y-chip {
+    @apply rounded px-1 py-px text-[10px] font-medium text-slate-700 transition hover:bg-slate-300/70 hover:text-[#01458E] focus:outline-none focus-visible:ring-1 focus-visible:ring-[#01458E];
+  }
+
+  .a11y-chip-active {
+    @apply bg-slate-300 text-[#01458E];
+  }
+
+  .a11y-util-link {
+    @apply cursor-pointer border-0 bg-transparent p-0 text-[12px] font-medium text-slate-800 no-underline transition;
+    @apply hover:text-[#01458E] hover:underline focus:outline-none focus-visible:rounded-sm focus-visible:ring-1 focus-visible:ring-[#01458E];
+  }
+
+  .a11y-util-sep {
+    @apply mx-2 select-none text-slate-400;
+  }
+
+  .btn-secondary {
+    @apply inline-flex min-h-10 items-center justify-center rounded border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition duration-150;
+    @apply hover:bg-slate-50 focus:outline-none;
+  }
+}
+
+@layer base {
+  :root {
+    --fluid-base: clamp(13px, 0.334vw + 9.58px, 20px);
+  }
+
+  html.user-xs {
+    font-size: calc(var(--fluid-base) * 0.8333);
+  }
+  html.user-sm {
+    font-size: calc(var(--fluid-base) * 0.8888);
+  }
+  html.user-base {
+    font-size: var(--fluid-base);
+  }
+  html.user-lg {
+    font-size: calc(var(--fluid-base) * 1.1111);
+  }
+  html.user-xl {
+    font-size: calc(var(--fluid-base) * 1.25);
+  }
+
+  html {
+    transition: font-size 0.3s ease-in-out, background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  }
+
+  html[data-text-spacing='on'] body {
+    line-height: 1.5 !important;
+    letter-spacing: 0.12em !important;
+    word-spacing: 0.16em !important;
+  }
+  html[data-text-spacing='on'] p,
+  html[data-text-spacing='on'] li {
+    margin-bottom: 2em !important;
+  }
+  html[data-text-spacing='on'] nav li {
+    margin-bottom: 0 !important;
+  }
+  html[data-highlight-links='on'] a {
+    background-color: #ff0 !important;
+    color: #000 !important;
+    outline: 2px solid #000;
+  }
+  html[data-underline-links='on'] a {
+    text-decoration: underline !important;
+    text-underline-offset: 0.2em;
+  }
+  html[data-invert='on'] {
+    filter: invert(1) hue-rotate(180deg);
+  }
+  html[data-invert='on'] img,
+  html[data-invert='on'] video {
+    filter: invert(1) hue-rotate(180deg);
+  }
+  html[data-grayscale='on'] {
+    filter: grayscale(1);
+  }
+  html[data-invert='on'][data-grayscale='on'] {
+    filter: invert(1) hue-rotate(180deg) grayscale(1);
+  }
+  html[data-big-cursor='on'],
+  html[data-big-cursor='on'] * {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath fill='black' stroke='white' stroke-width='2' d='M4 2 L4 26 L10 20 L14 30 L18 28 L14 18 L22 18 Z'/%3E%3C/svg%3E")
+      2 2, auto !important;
+  }
+  html[data-hide-images='on'] img {
+    visibility: hidden !important;
+  }
+}
+
+html.a11y-text-spacing body {
+  line-height: 1.5 !important;
+  letter-spacing: 0.12em !important;
+  word-spacing: 0.16em !important;
+}
+html.a11y-highlight-links a {
+  background-color: #ff0 !important;
+  color: #000 !important;
+  outline: 2px solid #000;
+}
+html.a11y-underline-links a {
+  text-decoration: underline !important;
+  text-underline-offset: 0.2em;
+}
+html.a11y-invert {
+  filter: invert(1) hue-rotate(180deg);
+}
+html.a11y-grayscale {
+  filter: grayscale(1);
+}
+html.a11y-big-cursor,
+html.a11y-big-cursor * {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath fill='black' stroke='white' stroke-width='2' d='M4 2 L4 26 L10 20 L14 30 L18 28 L14 18 L22 18 Z'/%3E%3C/svg%3E")
+    2 2, auto !important;
+}
+html.a11y-hide-images img {
+  visibility: hidden !important;
+}
+
+.app-chrome-a11y-bar {
+  position: relative;
+  z-index: 310;
+}
+
+html.lang-hi,
+html[lang='hi'],
+html.lang-hi body,
+html[lang='hi'] body,
+html.lang-hi #root,
+html[lang='hi'] #root,
+html.lang-hi #main-content,
+html[lang='hi'] #main-content,
+html.lang-hi [class*='font-'],
+html[lang='hi'] [class*='font-'] {
+  font-family: 'Noto Sans', sans-serif !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    transition: none !important;
+  }
+}

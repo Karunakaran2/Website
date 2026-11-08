@@ -1,0 +1,52 @@
+---
+description: Application-wide responsive layout — shell gutters, tables, modals, large screens
+globs: src/**/*
+alwaysApply: true
+---
+
+# KRAN responsive layout
+
+Responsiveness is **application-wide** (all modules and routes), not only Module 1/2 or the workbench. Fix **shared** components when a defect affects many pages; fix a **single page** only when the bug is local.
+
+## Tokens (use these)
+
+| Token | Location / class |
+|-------|------------------|
+| Chrome gutters | `ORG_CHROME_GUTTER_CLASS` in `src/shared/constants/responsiveLayoutStyles.js` — `px-3 sm:px-5 xl:px-[20px]` |
+| Main scroll area | `MODULE_MAIN_CLASS`, `HOME_LANDING_MAIN_CLASS` in `moduleContentStyles.js` / `homeDashboard.js` |
+| Page card body | `MODULE_PAGE_BODY_CLASS` — `p-4 sm:p-5` |
+| Min-width discipline | `APP_MIN_WIDTH_ZERO_CLASS` — `min-w-0 max-w-full w-full` on flex/grid children |
+| Tables | `PROBITY_TABLE_BODY_SCROLL_CLASS` for horizontal scroll **inside** table shell — not page-level |
+| Modals | `PORTAL_MODAL_SIZE_CLASS` in `modalChrome.js` — widths use `min(..., calc(100vw-1rem))`; body scroll via `FormModal` `bodyMaxHeightClass` |
+
+**`.page-shell`** (a11y bar, auth chrome): responsive gutters in `src/assets/styles/accessibility.css`.
+
+## Shell rules
+
+- Content lives in **`ModuleContentShell`** / **`ModulePageContent`** — **full width** (`w-full`), no `max-w-7xl mx-auto` on domain CRUD pages.
+- **PrimaryNav** / **SecondaryNav** / **ModuleInlineSubnav**: horizontal scroll on overflow; do not hide module tabs without the existing **More** overflow pattern.
+- **PageSectionHeader**: title stacks above actions on narrow viewports; header actions may scroll horizontally within their row — do not clip primary actions off-screen without scroll.
+- **Footer**: wrap links and version; keep Download Source ZIP reachable (`AppFooter`).
+
+## Components
+
+- **DataTable**: rely on built-in responsive column packing + toolbar wrap (`DataTableToolbar`); localized `overflow-x-auto` for wide grids.
+- **Forms**: **`FieldGrid` / `fieldGridClass`** — default stacks to one column below `sm`.
+- **Modals**: must fit viewport height/width; long bodies scroll inside modal body, not the page behind.
+- **Dropdowns / row ⋮ menus**: must stay within viewport (see `TableRowActionsGroup` placement).
+- **Skeletons**: loading layout must match final content breakpoints (e.g. `DashboardMetricsSkeleton`, `TableSkeleton`, `ReportResultsSkeleton`).
+
+## Large displays (1920px+)
+
+- Use **`3xl` / `4xl`** breakpoints in `tailwind.config.js` for dashboard grids where more columns help (`dashboardStyles.js`).
+- Do **not** stretch a phone layout or blow up typography on 4K — use grid density and sensible modal/table widths, not unconstrained `w-full` inputs on ultra-wide forms.
+
+## Anti-patterns
+
+- **Do not** fix overflow by global `overflow-x: hidden` on `body`/`html` instead of fixing the overflowing element.
+- **Do not** remove business actions or table columns on mobile without an documented alternative (row expand, modal detail, or horizontal table region).
+- **Do not** introduce conflicting breakpoint systems — extend Tailwind `theme.extend.screens` when needed.
+
+## Verification
+
+After layout changes: `npm run test:run`, `npm run build`, and spot-check representative widths (375, 768, 1440, 1920). Document honest coverage in `docs/RESPONSIVE_APPLICATION_REPORT.md` when doing large layout work.

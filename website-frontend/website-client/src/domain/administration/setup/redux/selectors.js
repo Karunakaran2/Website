@@ -1,0 +1,10 @@
+export const selectSetupState = (state) => state.setup
+export const selectSetupSearch = (state) => state.setup.search
+export const selectSetupPage = (state) => state.setup.page
+export const selectSetupPageSize = (state) => state.setup.pageSize
+export const selectSetupSortBy = (state) => state.setup.sortBy
+export const selectSetupSortDir = (state) => state.setup.sortDir
+export const selectSetupFormOpen = (state) => state.setup.formOpen
+export const selectSetupEditingId = (state) => state.setup.editingId
+export const selectSetupFormError = (state) => state.setup.formError
+export const selectSetupFieldErrors = (state) => state.setup.fieldErrors

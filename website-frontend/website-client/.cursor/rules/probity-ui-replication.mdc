@@ -1,0 +1,58 @@
+---
+description: Probity UI look-and-feel, GIGW tokens, and enterprise layout conventions
+globs: src/**/*
+alwaysApply: true
+---
+
+# Probity UI replication (KRAN Design System)
+
+Shared components and responsive rules live in **`kran-shared-components.mdc`**, **`kran-responsive-layout.mdc`**, and **`kran-skeleton-loading.mdc`**. This file covers visual parity and safety.
+
+## Single source of truth
+
+- Implement UI in **`src/shared/components`** in this repo.
+- **probity-client** is read-only reference — do not edit it from here.
+- Inspect existing implementations before adding components or Tailwind one-offs.
+
+## Visual tokens
+
+| Token | Value / use |
+|-------|-------------|
+| Brand navy | `#01458e` |
+| Gold accent | `#f5c518` (primary nav bar) |
+| Page / module bg | `#FDFEFF` (`MODULE_ROOT_CLASS`) |
+| Header band | `#F4FAFF` (`PAGE_SECTION_HEADER_SHELL_CLASS`) |
+| Borders | `border-slate-200` |
+| Font | **`"Noto Sans", sans-serif`** only |
+
+## Layout
+
+- Pages render inside **`ModuleContentShell`** → **`ModulePageContent`** with shell padding — **no** `max-w-7xl mx-auto` wrappers on domain screens.
+- Chrome horizontal inset: **20px** at `sm+` (`page-shell`, `ORG_CHROME_GUTTER_CLASS`, `xl:px-[20px]` on main).
+- **Do not** duplicate shell navigation (PrimaryNav / SecondaryNav) with in-page pill menus.
+
+## Controls (prefer shared)
+
+- **Lists:** `DataTable` only for interactive listings.
+- **Buttons (new / touched list screens):** `GigwButton` / `GigwIconButton` — not legacy `ActionButton variant="add"` for Add.
+- **Forms:** `InputField`, `OrgSelectField`, `OrgDateField` + RHF `rules` + `FieldError`.
+- **Checkbox / radio:** `formCheckboxControlClass`, `formChoiceControlClass` (native tick on checkbox).
+- **Modals:** `FormModal`, `PortalModalShell`, `ConfirmDialog`.
+- **Toasts:** `showAppToast` + root `AppSuccessToastContainer`.
+
+## Navigation integrity
+
+- Register every tab in **`DASHBOARD_PAGE_REGISTRY`** (`loadDomainPages.js`); paths via **`getModuleRoute(primaryId, secondaryId)`**.
+- Portal module layout: **`design-system-portal.mdc`**.
+
+## Safety
+
+- Do not change auth, seat selection, routing guards, or APIs without explicit approval.
+- Do not delete or rename unrelated files.
+- After shared UI changes: **`npm run test:run`** and **`npm run build`**.
+
+## Learning path for developers
+
+1. `docs/DEVELOPER_ONBOARDING.md` → `docs/SHARED_COMPONENTS.md`
+2. Component Workbench routes under `/component-workbench`
+3. Design Guidelines under `/design-guidelines`

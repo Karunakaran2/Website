@@ -1,0 +1,45 @@
+---
+description: Skeleton loading states — shared library, a11y, workbench reference
+globs: src/**/*
+alwaysApply: true
+---
+
+# KRAN skeleton & loading UI
+
+## Canonical library
+
+**Use:** `@/shared/components/skeleton` (also re-exported from `@/shared/components`).
+
+**Do not** create duplicate skeleton components under domains or new `animate-pulse` layout blocks when a shared variant exists.
+
+| Scenario | Component |
+|----------|-----------|
+| Single placeholder block | `SkeletonBlock` |
+| Accessible wrapper | `SkeletonRegion` (`aria-busy`, one sr-only message) |
+| Forms | `FormSkeleton` |
+| Tables | `TableSkeleton`, `ProbityTablePageSkeleton`, `ProbityTableSkeletonBody` |
+| Dashboard metrics | `DashboardMetricsSkeleton`, `MetricCardSkeleton` |
+| Reports (generate flow) | `ReportResultsSkeleton` |
+| Split filter + results | `SplitPanelSkeleton` |
+| Full listing page | `PageCardSkeleton` (`variant`: `table` \| `form` \| `profile` only) |
+
+Primitives: `SkeletonTextLines`, `SkeletonHeading`, `SkeletonCircle`, `SkeletonButton`, `SkeletonInput`, `SkeletonImage`, etc. — compose rather than one-off divs.
+
+**Legacy:** `src/shared/components/skeletons/*` (login, home, seat selection) — page-specific; do not copy that pattern for module CRUD.
+
+**Legacy shim:** `SkeletonBar` in `ui/Shimmer.jsx` delegates to `SkeletonBlock` — prefer `SkeletonBlock` in new code.
+
+## Behavior
+
+- Show skeletons **only while loading**; replace with content, empty state, or error when the request completes.
+- Respect **`prefers-reduced-motion`** via `SKELETON_PULSE_CLASS` / `animate={false}` on `SkeletonBlock`.
+- One **`SkeletonRegion`** per loading section — do not announce every line to screen readers.
+- Match responsive layout of real content (same grid breakpoints as dashboards/tables).
+
+## Workbench
+
+Document and demo skeletons on **`/component-workbench/feedback/loading-states`** (`LoadingStatesFeedbackPage.jsx`). Update this page when adding public skeleton variants.
+
+## When not to use skeletons
+
+Short button actions → inline spinner on the control. Indeterminate long jobs → keep existing progress UX if already present. Failed requests → error UI, not endless skeleton.

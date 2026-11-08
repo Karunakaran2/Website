@@ -1,0 +1,35 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    container_name: website-postgres
+    restart: unless-stopped
+    ports:
+      - "${WEBSITE_DB_PORT:-5433}:5432"
+    environment:
+      POSTGRES_USER: ${WEBSITE_DB_SUPERUSER:-postgres}
+      POSTGRES_PASSWORD: ${WEBSITE_DB_SUPERUSER_PASSWORD:-postgres}
+      POSTGRES_DB: postgres
+    volumes:
+      - website_pgdata:/var/lib/postgresql/data
+      - ../website-database/scripts/001_create_website_db.sql:/docker-entrypoint-initdb.d/01-website_db.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${WEBSITE_DB_SUPERUSER:-postgres}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: website-redis
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  website_pgdata:

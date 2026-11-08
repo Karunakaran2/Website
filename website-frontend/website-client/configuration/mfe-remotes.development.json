@@ -1,0 +1,8 @@
+{
+  "shell": { "entry": "http://localhost:5000/assets/remoteEntry.js", "scope": "shell" },
+  "publicSite": { "entry": "http://localhost:5001/assets/remoteEntry.js", "scope": "public_site" },
+  "catalogMfe": { "entry": "http://localhost:5002/assets/remoteEntry.js", "scope": "catalog_mfe" },
+  "contentMfe": { "entry": "http://localhost:5003/assets/remoteEntry.js", "scope": "content_mfe" },
+  "careersMfe": { "entry": "http://localhost:5004/assets/remoteEntry.js", "scope": "careers_mfe" },
+  "adminMfe": { "entry": "http://localhost:5005/assets/remoteEntry.js", "scope": "admin_mfe" }
+}

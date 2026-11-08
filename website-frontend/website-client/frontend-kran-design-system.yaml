@@ -1,0 +1,73 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: kran-design-system
+  labels:
+    name: frontend-kran-design-system
+  name: frontend-kran-design-system-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: frontend-kran-design-system
+  template:
+    metadata:
+      labels:
+        name: frontend-kran-design-system
+    spec:
+      containers:
+        - name: frontend-kran-design-system
+          image: registry.kran.co.in/design-system/frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 81
+      imagePullSecrets:
+        - name: gitlab-kran-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kran-design-system
+  labels:
+    name: frontend-kran-design-system-svc
+  name: frontend-kran-design-system
+spec:
+  selector:
+    name: frontend-kran-design-system
+  ports:
+    - protocol: "TCP"
+      port: 81
+      targetPort: 81
+  type: ClusterIP
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kran-design-system-ingress
+  namespace: kran-design-system
+  annotations:
+    oci-native-ingress.oraclecloud.com/backend-tls-enabled: "false"
+    oci-native-ingress.oraclecloud.com/https-listener-port: "443"
+    oci-native-ingress.oraclecloud.com/healthcheck-protocol: "HTTP"
+    oci-native-ingress.oraclecloud.com/healthcheck-path: "/design-system"
+    oci-native-ingress.oraclecloud.com/healthcheck-return-code: "200"
+spec:
+  ingressClassName: oci-native
+  tls:
+    - hosts:
+        - design-system.kran.co.in
+      secretName: kran-tls-secret
+  rules:
+    - host: design-system.kran.co.in
+      http:
+        paths:
+          - path: /design-system
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-kran-design-system
+                port:
+                  number: 81

@@ -1,0 +1,182 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap');
+@import './accessibility.css';
+
+@import './theme-variables.css';
+@import './org-ui-standard.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply min-w-[320px] bg-white;
+    font-family: 'Noto Sans', sans-serif;
+  }
+
+  html:not([data-theme]) {
+    /* Default light theme tokens (SPFO ThemeProvider default) */
+    color-scheme: light;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    @apply m-0 min-h-svh min-w-[320px] bg-body-bg text-body antialiased;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: inherit;
+    line-height: 1.5;
+  }
+
+  #root {
+    @apply min-h-svh font-sans;
+    font-family: 'Noto Sans', sans-serif;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font-family: inherit;
+  }
+
+  *::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: #f1f5f9;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: #94a3b8;
+    border-radius: 8px;
+  }
+
+  html[data-color-scheme='high'] *::-webkit-scrollbar-track,
+  html[data-login-contrast='high'] *::-webkit-scrollbar-track,
+  html.contrast-high *::-webkit-scrollbar-track {
+    background: #000 !important;
+  }
+
+  html[data-color-scheme='high'] *::-webkit-scrollbar-thumb,
+  html[data-login-contrast='high'] *::-webkit-scrollbar-thumb,
+  html.contrast-high *::-webkit-scrollbar-thumb {
+    background: #fff !important;
+  }
+
+  html[data-color-scheme='yellow'] *::-webkit-scrollbar-track,
+  html[data-login-contrast='yellow'] *::-webkit-scrollbar-track,
+  html.contrast-yellow *::-webkit-scrollbar-track {
+    background: #000 !important;
+  }
+
+  html[data-color-scheme='yellow'] *::-webkit-scrollbar-thumb,
+  html[data-login-contrast='yellow'] *::-webkit-scrollbar-thumb,
+  html.contrast-yellow *::-webkit-scrollbar-thumb {
+    background: #ff0 !important;
+  }
+
+}
+
+@layer utilities {
+  .focus-ring {
+    @apply outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-probity-action/30;
+  }
+
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f1f5f9;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f5f9;
+  }
+
+  html[data-color-scheme='high'] .custom-scrollbar,
+  html[data-login-contrast='high'] .custom-scrollbar,
+  html.contrast-high .custom-scrollbar,
+  html[data-color-scheme='high'] *,
+  html[data-login-contrast='high'] *,
+  html.contrast-high * {
+    scrollbar-color: #ffffff #000000 !important;
+  }
+
+  html[data-color-scheme='high'] .custom-scrollbar::-webkit-scrollbar-track,
+  html[data-login-contrast='high'] .custom-scrollbar::-webkit-scrollbar-track,
+  html.contrast-high .custom-scrollbar::-webkit-scrollbar-track {
+    background: #000 !important;
+  }
+
+  html[data-color-scheme='high'] .custom-scrollbar::-webkit-scrollbar-thumb,
+  html[data-login-contrast='high'] .custom-scrollbar::-webkit-scrollbar-thumb,
+  html.contrast-high .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #fff !important;
+  }
+
+  html[data-color-scheme='yellow'] .custom-scrollbar,
+  html[data-login-contrast='yellow'] .custom-scrollbar,
+  html.contrast-yellow .custom-scrollbar,
+  html[data-color-scheme='yellow'] *,
+  html[data-login-contrast='yellow'] *,
+  html.contrast-yellow * {
+    scrollbar-color: #ffff00 #000000 !important;
+  }
+
+  html[data-color-scheme='yellow'] .custom-scrollbar::-webkit-scrollbar-track,
+  html[data-login-contrast='yellow'] .custom-scrollbar::-webkit-scrollbar-track,
+  html.contrast-yellow .custom-scrollbar::-webkit-scrollbar-track {
+    background: #000 !important;
+  }
+
+  html[data-color-scheme='yellow'] .custom-scrollbar::-webkit-scrollbar-thumb,
+  html[data-login-contrast='yellow'] .custom-scrollbar::-webkit-scrollbar-thumb,
+  html.contrast-yellow .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #ff0 !important;
+  }
+}
+
+/* Logged-in shell: the window itself must not scroll. min-height:0 beats the
+   base min-h-svh so a confirm dialog cannot leave a gap under the footer. */
+html.probity-shell-lock,
+html.probity-shell-lock body,
+html.probity-shell-lock #root {
+  height: 100%;
+  min-height: 0 !important;
+  max-height: 100%;
+  overflow: hidden !important;
+}
+
+/* Tailwreck overlay is h-screen + min-w-screen (100vh / 100vw). In Chrome those
+   units include the scrollbar and add blank scroll past the footer on Save. */
+.probity-portal-modal > div {
+  position: fixed !important;
+  inset: 0 !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+}
+
+.Toastify__toast-container {
+  overflow: hidden;
+  max-width: 100%;
+  contain: paint;
+}

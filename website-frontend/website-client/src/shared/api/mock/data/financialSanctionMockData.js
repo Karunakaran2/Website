@@ -1,0 +1,80 @@
+/**
+ * Mock Data for Financial Sanctions (Sanctions, Purchase Orders, Budget Notes)
+ * KRAN Consulting Design System Context
+ */
+
+export const MOCK_FINANCIAL_SANCTIONS = [
+  {
+    id: 1,
+    idMask: 'fs-001',
+    sanctionOrderNo: 'FS-2026/0014',
+    sanctionDate: '04-03-2026',
+    sanctionType: 'Tooling & Software Sanction',
+    partyName: 'Figma Inc (Enterprise Design Tooling)',
+    headOfAccount: '1001-00-003 Software Tooling & Cloud Subscriptions',
+    admissibleAmount: 840000.0,
+    sanctionedAmount: 840000.0,
+    status: 'Approved',
+    statusLabel: 'Approved',
+    remarks: 'Annual enterprise design licensing for KRAN design systems team',
+    forwardedTo: 'Arun Kumar',
+    disbursementStatus: 'Disbursed',
+  },
+  {
+    id: 2,
+    idMask: 'fs-002',
+    sanctionOrderNo: 'FS-2026/0019',
+    sanctionDate: '08-03-2026',
+    sanctionType: 'Cloud Infrastructure Sanction',
+    partyName: 'Amazon Web Services (Cloud & Edge Infrastructure)',
+    headOfAccount: '1001-00-003 Software Tooling & Cloud Subscriptions',
+    admissibleAmount: 1924000.0,
+    sanctionedAmount: 1924000.0,
+    status: 'Verified',
+    statusLabel: 'Verified',
+    remarks: 'Edge distribution and automated build pipelines for component libraries',
+    forwardedTo: 'Meera Nair',
+    disbursementStatus: 'Pending',
+  },
+  {
+    id: 3,
+    idMask: 'fs-003',
+    sanctionOrderNo: 'FS-2026/0023',
+    sanctionDate: '12-03-2026',
+    sanctionType: 'Quality Assurance Sanction',
+    partyName: 'National Informatics Centre (NIC)',
+    headOfAccount: '1001-00-004 Accessibility & Compliance Audits',
+    admissibleAmount: 218300.0,
+    sanctionedAmount: 218300.0,
+    status: 'Approved',
+    statusLabel: 'Approved',
+    remarks: 'Third-party WCAG 2.1 AA accessibility compliance audit certification',
+    forwardedTo: 'Sanjay Menon',
+    disbursementStatus: 'Ready for Payment',
+  },
+]
+
+export const MOCK_PURCHASE_SANCTIONS = [
+  {
+    id: 1,
+    idMask: 'ps-001',
+    purchaseOrderNo: 'PO-2026/0045',
+    purchaseDate: '06-03-2026',
+    vendorName: 'GitHub Inc (CI/CD & DevOps Enterprise)',
+    itemDescription: 'Enterprise GitHub Actions runners for automated UI regression test suites',
+    orderAmount: 1450000.0,
+    status: 'Approved',
+    statusLabel: 'Approved',
+  },
+  {
+    id: 2,
+    idMask: 'ps-002',
+    purchaseOrderNo: 'PO-2026/0052',
+    purchaseDate: '10-03-2026',
+    vendorName: 'Figma Inc (Enterprise Design Tooling)',
+    itemDescription: 'Figma tokens studio enterprise plugins and design tokens sync connector',
+    orderAmount: 456750.0,
+    status: 'Submitted',
+    statusLabel: 'Submitted',
+  },
+]

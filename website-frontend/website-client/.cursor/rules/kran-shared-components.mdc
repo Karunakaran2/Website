@@ -1,0 +1,62 @@
+---
+description: Mandatory shared component usage — imports, skeletons, page chrome, no duplicates
+globs: src/**/*
+alwaysApply: true
+---
+
+# KRAN shared components (mandatory)
+
+**Source of truth:** `src/shared/components/` — inspect before building UI. **Do not** add parallel components under `src/domain/*` for buttons, tables, modals, forms, toasts, or loading placeholders.
+
+**Reference:** read-only **probity-client** for parity; implement changes **only in this repo**.
+
+## Import map
+
+| Use | Import from |
+|-----|-------------|
+| Barrel | `@/shared/components` |
+| **DataTable** (lists) | `@/shared/components` → `DataTable` |
+| Read-only grids | `@/shared/components/listing/OrgDataTable` |
+| **Forms** | `@/shared/components/forms` → `InputField`, `OrgSelectField`, `OrgDateField`, `TextAreaField`, `SelectField`, `FormLabel`, `FieldError` |
+| **GIGW buttons** | `@/shared/components/buttons/gigw` → `GigwButton`, `GigwIconButton` |
+| Row actions | `@/shared/components/buttons` → `TableViewAction`, `TableEditAction`, `TableDeleteAction`, `TableRowActionsGroup`, `TABLE_ACTION_COLUMN_CLASS` |
+| **Modals** | `@/shared/components` → `FormModal`, `PortalModalShell`; `@/shared/components/confirm` → `ConfirmDialog`, `ActionConfirmProvider`, `confirmBeforeAction` |
+| **Toasts** | `@/shared/components` → `showAppToast`; mount `AppSuccessToastContainer` once at app root |
+| **Status** | `@/shared/components/status/StatusChip` |
+| **Typography / page header** | `@/shared/components/typography`, `@/shared/components/page/PageSectionHeaderBar`, `PageSectionHeader` |
+| **Page toolbars** | `@/shared/components/page` → `PageContentToolbar`, `PageToolbarSelect`, `PageToolbarDate`, `PageToolbarSearchInput` |
+| **Header filter/search/export** | `@/shared/hooks/useListPageHeaderActions` + `@/shared/components/page/ListPageHeaderActions` |
+| **Skeletons (loading)** | `@/shared/components/skeleton` — see skeleton rule; **not** ad-hoc `animate-pulse` blocks |
+| **Reports** | `@/shared/components/report` → `ReportSplitLayout`, `ReportCatalogGrid`, etc. |
+| **Domain list + modal CRUD** | `@/shared/components/domain` → `DomainListWithFormModal`, `DomainFormFooter`, … |
+| **Layout shell** | `@/shared/layouts/ModuleContentShell`, `ModulePageContent`; constants in `@/shared/constants/moduleContentStyles` |
+
+Full export list: `src/shared/components/index.js`. Human doc: `docs/SHARED_COMPONENTS.md`.
+
+## Page wiring (list screens)
+
+1. Wrap menu page in **`ActionConfirmProvider`** when using confirms.
+2. Register shell actions with **`useListPageHeaderActions`** (filter, search, export only).
+3. Put other filters/buttons in **`PageContentToolbar`** below the page header — not inside `PageSectionHeaderBar`.
+4. Lists use **`DataTable`** with `emptyMessage="No data available in table"`, `TABLE_ACTION_COLUMN_CLASS` on Action.
+5. Add/edit: **`DomainListWithFormModal`** + **`FormModal` `showFooter={false}`** + **`DomainFormFooter`** inside the form (Probity/GIGW pattern).
+
+## Do
+
+- Reuse existing components and extend shared APIs compatibly.
+- Pass RHF `rules` + `error` on form fields; **`FieldError`** for validation — no validation toasts.
+- Use **`showAppToast`** for success/server errors after confirm + API success.
+- Use **`SkeletonRegion`** + composed skeletons while async content with known layout loads.
+- Update **Component Workbench** docs/examples when changing public component behavior.
+
+## Do not
+
+- Hand-roll `<table>` with custom pagination/sort for domain lists.
+- Use **`window.confirm`** / **`react-hot-toast`** for app flows.
+- Create a second skeleton library or page-local shimmer grids that duplicate `@/shared/components/skeleton`.
+- Wrap domain pages in **`max-w-7xl mx-auto`** or other artificial width caps.
+- Fork Probity components into `src/domain/*` instead of fixing `src/shared/components`.
+
+## Font
+
+Use **`"Noto Sans", sans-serif`** only (global tokens in `src/assets/styles/index.css`).

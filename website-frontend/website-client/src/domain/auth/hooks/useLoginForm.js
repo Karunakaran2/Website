@@ -2,10 +2,14 @@ import { useCallback, useEffect, useState } from 'react'
 import { useProbityForm } from '@/shared/utils/useProbityForm'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { WEBSITE_AUTH_ENABLED } from '@/shared/config/websiteAuth'
-import { useGetCaptchaQuery, useLoginMutation } from '../services/authApi'
+import { apiPayloadMessage } from '@/shared/api/apiError'
+import { useLoginMutation } from '../services/authApi'
+import { useGetCaptchaQuery } from '../services/captchaApi'
 import { loginSuccess } from '../redux/slice'
 import { ROUTES } from '@/shared/constants'
+import { WEBSITE_AUTH_ENABLED } from '@/shared/config/websiteAuth'
+import { getWebsiteCmsHomePath } from '@/domain/website-cms/utils/cmsHome'
+import { applyPrivilegeCodesFromPayload } from '@/shared/privileges/loadPrivilegeCodes'
 
 const CAPTCHA_TTL_MS = 5 * 60 * 1000
 
@@ -18,7 +22,7 @@ export function useLoginForm() {
     isFetching: captchaLoading,
     error: captchaQueryError,
     refetch: refetchCaptcha,
-  } = useGetCaptchaQuery(undefined, { skip: WEBSITE_AUTH_ENABLED })
+  } = useGetCaptchaQuery()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
 
@@ -53,7 +57,7 @@ export function useLoginForm() {
   }, [captcha?.captchaId, refreshCaptcha])
 
   const onSubmit = async (data) => {
-    if (!WEBSITE_AUTH_ENABLED && !captcha?.captchaId) {
+    if (!captcha?.captchaId) {
       setSubmitError('CAPTCHA is required')
       return
     }
@@ -70,44 +74,19 @@ export function useLoginForm() {
       }).unwrap()
 
       dispatch(loginSuccess(result.user))
+      applyPrivilegeCodesFromPayload(dispatch, { privilegeCodes: result.user?.privilegeCodes })
       setIsSubmitting(false)
-      navigate(WEBSITE_AUTH_ENABLED || result.user?.seatSelected ? ROUTES.HOME : ROUTES.SEATS, {
-        replace: true,
-      })
+      navigate(WEBSITE_AUTH_ENABLED ? getWebsiteCmsHomePath() : ROUTES.HOME, { replace: true })
     } catch (error) {
       const message =
         typeof error?.data === 'string'
           ? error.data
-          : typeof error?.data?.message === 'string'
-            ? error.data.message
-            : WEBSITE_AUTH_ENABLED
-              ? 'Login failed. Check username and password.'
-              : 'Login failed. Check username, password, and CAPTCHA.'
+          : apiPayloadMessage(error?.payload, 'Login failed. Check username, password, and CAPTCHA.')
       setSubmitError(message)
-      if (!WEBSITE_AUTH_ENABLED) {
-        await refreshCaptcha()
-      }
+      await refreshCaptcha()
       setIsSubmitting(false)
     }
   }
-
-  const applyMockCredential = useCallback(
-    (username = 'admin', password = WEBSITE_AUTH_ENABLED ? 'Admin@123' : 'password') => {
-      setValue('username', username, { shouldValidate: true })
-      setValue('password', password, { shouldValidate: true })
-      if (captcha?.code) {
-        setValue('captcha', captcha.code, { shouldValidate: true })
-      } else {
-        setValue('captcha', '8X4K2', { shouldValidate: true })
-      }
-    },
-    [captcha?.code, setValue],
-  )
-
-  const fillDemoCredentials = useCallback(
-    () => applyMockCredential('admin', 'password'),
-    [applyMockCredential],
-  )
 
   return {
     register,
@@ -116,7 +95,6 @@ export function useLoginForm() {
     isSubmitting,
     submitError,
     captchaImage: captcha?.imageBase64 ?? '',
-    captchaCode: captcha?.code ?? '',
     captchaLoading,
     captchaError:
       typeof captchaQueryError?.data === 'string'
@@ -125,7 +103,5 @@ export function useLoginForm() {
           ? 'Unable to load CAPTCHA'
           : '',
     refreshCaptcha,
-    applyMockCredential,
-    fillDemoCredentials,
   }
 }

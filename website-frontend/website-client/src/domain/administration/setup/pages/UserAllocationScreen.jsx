@@ -3,9 +3,8 @@ import { PortalModalShell } from '@/shared/components'
 import { Building2, Layers } from 'lucide-react'
 import { TABLE_ROW_ACTIONS_CLASS, TableActiveStatusAction } from '@/shared/components/buttons'
 import { isSetupRowActive } from '@/shared/components/status/statusLabels'
-import { FeaturedBasicSelect } from '@/shared/lib/tailwreck'
 import { resolveSelectValue } from '@/shared/utils'
-import { FormLabel } from '@/shared/components/forms'
+import { BasicSelect, FormLabel } from '@/shared/components/forms'
 import { tailwreckSelectTriggerClass } from '@/shared/components/forms/tailwreckFormShell'
 import { confirmedActionFailure } from '@/shared/components/confirm/interpretActionResult'
 import { useActionConfirm } from '@/shared/components/confirm'
@@ -289,7 +288,7 @@ export default function UserAllocationScreen({ master }) {
           ) : null}
           <div>
             <FormLabel label="User Name" required htmlFor="userAllocationSeatUserId" />
-            <FeaturedBasicSelect
+            <BasicSelect
               name="seatUserId"
               options={seatUserOptions}
               value={selectedSeatUserId}

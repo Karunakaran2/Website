@@ -5,6 +5,7 @@ import { baseApi } from '@/shared/api/baseApi'
 import { sessionDebug } from '../session/sessionDebug'
 import { stopSessionClock } from '../session/sessionRuntime'
 import { logout } from '../redux/slice'
+import { clearPrivilegeGrants } from '@/shared/privileges/loadPrivilegeCodes'
 import { publishSessionSignal } from '../session/sessionCrossTab'
 import { getSessionId, rememberLogoutDestination } from './session'
 
@@ -43,6 +44,7 @@ export function completeSessionLogout(store, { redirect = false, broadcastCrossT
   const destination = rememberLogoutDestination(loginUrl())
 
   store.dispatch(logout())
+  clearPrivilegeGrants(store.dispatch)
   store.dispatch(clearSelectedAccount())
   store.dispatch(resetDashboardNav())
   store.dispatch(baseApi.util.resetApiState())

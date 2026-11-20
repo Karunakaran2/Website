@@ -1,4 +1,3 @@
-import { Card, CardBody } from '@/shared/lib/tailwreck'
 import {
   MODULE_CARD_CLASS,
   MODULE_MAIN_INNER_CLASS,
@@ -15,12 +14,10 @@ export function ModuleContentShell({
 }) {
   return (
     <div className={MODULE_MAIN_INNER_CLASS}>
-      <Card theme="no-preset" shadow="none" className={MODULE_CARD_CLASS}>
+      <div className={MODULE_CARD_CLASS}>
         {header}
-        <CardBody theme="no-preset" className={bodyClassName}>
-          {children}
-        </CardBody>
-      </Card>
+        <div className={bodyClassName}>{children}</div>
+      </div>
     </div>
   )
 }

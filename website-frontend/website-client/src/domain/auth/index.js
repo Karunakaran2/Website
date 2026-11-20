@@ -17,11 +17,12 @@ export { login } from './redux/thunk'
 export { selectAuthState, selectIsAuthenticated, selectAuthUser } from './redux/selectors'
 export {
   authApi,
+  captchaApi,
+  useLoginMutation,
+  useRefreshSessionMutation,
+  useGetLoginUserQuery,
+  useGetJwksQuery,
+  useLogoutUserMutation,
   useGetCaptchaQuery,
   useLazyGetCaptchaQuery,
-  useLoginMutation,
-  useGetLoginUserQuery,
-  useGetHierarchySetupByUserIdQuery,
-  useUpdateSeatUserAllotedMutation,
-  useLogoutUserMutation,
-} from './services/authApi'
+} from './services'

@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { Controller } from 'react-hook-form'
 import { useProbityForm } from '@/shared/utils/useProbityForm'
 import { useTranslatedOptions } from '@/app/i18n/useTranslatedOptions'
-import { FeaturedBasicSelect } from '@/shared/lib/tailwreck'
 import { fieldUsesUppercaseClass, probityFieldRules, resolveSelectValue } from '@/shared/utils'
 import { sanitizeDigitsInput } from '@/shared/utils/probityFormat'
 import { FORM_FOOTER_CANCEL_CLASS } from '@/shared/components/buttons/actionButtonStyles'
@@ -20,6 +19,7 @@ import {
   OrgRadioGroup,
   OrgReadOnlyField,
   OrgSelectField,
+  BasicSelect,
   InputField,
   ReadOnlyField,
   TextAreaField,
@@ -152,7 +152,7 @@ function SelectFieldWithChange({
             return (
               <>
                 <div className={orgProbityControlSlotClass}>
-                  <FeaturedBasicSelect
+                  <BasicSelect
                     name={rf.name}
                     options={translatedOptions}
                     value={rf.value ?? ''}

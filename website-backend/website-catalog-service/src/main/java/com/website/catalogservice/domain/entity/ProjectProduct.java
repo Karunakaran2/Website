@@ -74,4 +74,40 @@ public class ProjectProduct {
     public java.time.Instant getDeletedAt() {
         return deletedAt;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    public void setActiveStatus(String activeStatus) {
+        this.activeStatus = activeStatus;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setOrderNo(Integer orderNo) {
+        this.orderNo = orderNo;
+    }
+
+    public void setDeletedAt(java.time.Instant deletedAt) {
+        this.deletedAt = deletedAt;
+    }
 }

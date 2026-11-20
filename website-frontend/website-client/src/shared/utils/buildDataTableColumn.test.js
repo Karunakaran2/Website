@@ -22,4 +22,10 @@ describe('buildDataTableColumn', () => {
     expect(col.hideable).toBe(false)
     expect(col.headerClassName).toBeTruthy()
   })
+
+  it('accepts cell renderer as a function shorthand', () => {
+    const cell = () => 'x'
+    const col = dataTableActionColumn(cell)
+    expect(col.cell).toBe(cell)
+  })
 })

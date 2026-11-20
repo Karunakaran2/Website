@@ -5,13 +5,14 @@ import {
   isWorkbenchPrimary,
   isWorkforcePrimary,
 } from '../constants/dashboard'
+import { isWebsiteCmsPrimary } from '@/domain/website-cms/constants/websiteCmsNav'
 
 /**
  * i18n key for the module name beside the host wordmark (Probity header pattern).
  * Returns null on Home / inbox where no module suffix is shown.
  */
 export function resolveHeaderModulePortalLabel(primaryNavId) {
-  if (!primaryNavId || primaryNavId === 'inbox') {
+  if (!primaryNavId || primaryNavId === 'inbox' || primaryNavId === 'website-dashboard') {
     return null
   }
   if (isSampleModulePrimary(primaryNavId)) {
@@ -28,6 +29,9 @@ export function resolveHeaderModulePortalLabel(primaryNavId) {
   }
   if (isAdministrationPrimary(primaryNavId)) {
     return 'common.moduleHeaderAdministration'
+  }
+  if (isWebsiteCmsPrimary(primaryNavId)) {
+    return 'common.moduleHeaderWebsiteAdmin'
   }
   return null
 }

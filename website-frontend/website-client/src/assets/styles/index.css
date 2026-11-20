@@ -162,18 +162,6 @@ html.probity-shell-lock #root {
   overflow: hidden !important;
 }
 
-/* Tailwreck overlay is h-screen + min-w-screen (100vh / 100vw). In Chrome those
-   units include the scrollbar and add blank scroll past the footer on Save. */
-.probity-portal-modal > div {
-  position: fixed !important;
-  inset: 0 !important;
-  width: auto !important;
-  min-width: 0 !important;
-  max-width: none !important;
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: none !important;
-}
 
 .Toastify__toast-container {
   overflow: hidden;

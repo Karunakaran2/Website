@@ -24,20 +24,33 @@ public class AuthServiceImpl implements AuthService {
     private final AdminUserRepository adminUserRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtAccessTokenService jwtAccessTokenService;
+    private final CaptchaService captchaService;
+    private final AdminSessionFactory adminSessionFactory;
 
     public AuthServiceImpl(
             AdminUserRepository adminUserRepository,
             PasswordEncoder passwordEncoder,
-            JwtAccessTokenService jwtAccessTokenService
+            JwtAccessTokenService jwtAccessTokenService,
+            CaptchaService captchaService,
+            AdminSessionFactory adminSessionFactory
     ) {
         this.adminUserRepository = adminUserRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtAccessTokenService = jwtAccessTokenService;
+        this.captchaService = captchaService;
+        this.adminSessionFactory = adminSessionFactory;
     }
 
     @Override
     @Transactional
-    public AuthResponse login(String username, String password, HttpServletRequest request) {
+    public AuthResponse login(
+            String username,
+            String password,
+            String captchaId,
+            String captcha,
+            HttpServletRequest request
+    ) {
+        captchaService.validateAndConsume(captchaId, captcha);
         AdminUser user = adminUserRepository.findByUsernameIgnoreCase(username.trim())
                 .orElseThrow(() -> new BadCredentialsException(AuthMessages.INVALID_USERNAME_OR_PASSWORD));
         if (!user.isActive()) {
@@ -48,17 +61,16 @@ public class AuthServiceImpl implements AuthService {
         }
         user.setLastLoginAt(Instant.now());
         adminUserRepository.save(user);
-        AdminSession session = new AdminSession(
-                user.getId(),
-                user.getUsername(),
-                StringUtils.hasText(user.getDisplayName()) ? user.getDisplayName() : user.getUsername()
-        );
-        return toAuthResponse(jwtAccessTokenService.issue(session));
+        AdminSession session = adminSessionFactory.fromUser(user);
+        return toAuthResponse(jwtAccessTokenService.issue(session), session);
     }
 
     @Override
     public AuthResponse refresh(String refreshToken) {
-        return toAuthResponse(jwtAccessTokenService.refresh(refreshToken));
+        IssuedTokens tokens = jwtAccessTokenService.refresh(refreshToken);
+        AdminSession session = jwtAccessTokenService.read(tokens.accessToken())
+                .orElseThrow(() -> new BadCredentialsException(AuthMessages.INVALID_SESSION));
+        return toAuthResponse(tokens, session);
     }
 
     @Override
@@ -74,20 +86,47 @@ public class AuthServiceImpl implements AuthService {
         return new CurrentUserResponse(
                 session.username(),
                 session.displayName(),
-                JwtClaimNames.ROLE_ADMIN
+                session.roleCode(),
+                session.roleName(),
+                session.privileges(),
+                session.systemAdmin()
         );
     }
 
-    private AuthResponse toAuthResponse(IssuedTokens tokens) {
-        AdminSession session = jwtAccessTokenService.read(tokens.accessToken())
+    @Override
+    @Transactional
+    public void changePassword(HttpServletRequest request, String currentPassword, String newPassword) {
+        AdminSession session = extractBearer(request)
+                .flatMap(jwtAccessTokenService::read)
                 .orElseThrow(() -> new BadCredentialsException(AuthMessages.INVALID_SESSION));
+        AdminUser user = adminUserRepository.findById(session.userId())
+                .orElseThrow(() -> new BadCredentialsException(AuthMessages.INVALID_SESSION));
+        if (!passwordEncoder.matches(currentPassword, user.getPasswordHash())) {
+            throw new IllegalArgumentException("Current password is incorrect");
+        }
+        String next = newPassword == null ? "" : newPassword.trim();
+        if (next.length() < 8) {
+            throw new IllegalArgumentException("Password must be at least 8 characters");
+        }
+        if (passwordEncoder.matches(next, user.getPasswordHash())) {
+            throw new IllegalArgumentException("New password must be different from the current password");
+        }
+        user.setPasswordHash(passwordEncoder.encode(next));
+        adminUserRepository.save(user);
+    }
+
+    private AuthResponse toAuthResponse(IssuedTokens tokens, AdminSession session) {
         return new AuthResponse(
                 tokens.accessToken(),
                 "Bearer",
                 session.username(),
                 session.displayName(),
                 tokens.expiresInSeconds(),
-                tokens.refreshToken()
+                tokens.refreshToken(),
+                session.roleCode(),
+                session.roleName(),
+                session.privileges(),
+                session.systemAdmin()
         );
     }
 

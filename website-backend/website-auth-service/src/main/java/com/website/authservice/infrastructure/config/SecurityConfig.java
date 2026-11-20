@@ -28,6 +28,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/v1/auth/login",
                                 "/api/v1/auth/refresh",
+                                "/api/v1/captcha/**",
                                 "/api/v1/auth/.well-known/jwks.json",
                                 "/api/v1/health",
                                 "/api/v1/health/**",

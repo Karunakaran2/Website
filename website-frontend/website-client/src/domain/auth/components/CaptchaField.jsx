@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next'
 import { RefreshCw } from 'lucide-react'
-import { Button, Input } from '@/shared/lib/tailwreck'
 import { ResetIcon } from '@/shared/components/icons/AppIcons'
 import Shimmer from '@/shared/components/ui/Shimmer'
 import {
@@ -152,43 +151,34 @@ export default function CaptchaField({
 
         <div className="flex min-w-0 flex-1 items-stretch gap-2">
           <div className={`${legacyCaptchaInputClass} min-w-0 flex-1`}>
-            <Input
+            <input
               type="text"
-              name="captcha"
               id="captcha-legacy"
-              label={t('login.captcha')}
               placeholder={t('login.captchaPlaceholder')}
-              register={register}
-              validation={{
+              autoComplete="off"
+              aria-invalid={error ? true : undefined}
+              className="w-full"
+              {...register('captcha', {
                 required: t('login.captchaRequired'),
                 validate: (value) =>
-                  value.trim().length > 0 || t('login.captchaRequired'),
-              }}
-              error={error}
-              size="lg"
-              theme="primary"
-              autoComplete="off"
-              required
+                  String(value || '').trim().length > 0 || t('login.captchaRequired'),
+              })}
             />
           </div>
 
-          <Button
+          <button
             type="button"
-            variant="ghost"
             aria-label={t('login.captchaRefresh')}
             disabled={disabled || captchaLoading}
             onClick={(event) => {
               event.preventDefault()
               onRefresh()
             }}
-            icon={ResetIcon}
-            iconProps={{
-              className: 'text-[22px] text-probity-captcha',
-            }}
-            className="focus-ring !hidden !h-11 !min-h-11 !w-[50px] !min-w-[50px] shrink-0 !items-center !justify-center !rounded-md !border !border-slate-300 !bg-white !p-0 !text-probity-captcha !shadow-none hover:!bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 sm:!inline-flex sm:!h-[52px] sm:!min-h-[52px]"
+            className="focus-ring hidden h-11 min-h-11 w-[50px] min-w-[50px] shrink-0 items-center justify-center rounded-md border border-slate-300 bg-white p-0 text-probity-captcha shadow-none hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 sm:inline-flex sm:h-[52px] sm:min-h-[52px]"
           >
+            <ResetIcon className="text-[22px] text-probity-captcha" />
             <span className="sr-only">{t('login.captchaRefresh')}</span>
-          </Button>
+          </button>
         </div>
       </div>
 

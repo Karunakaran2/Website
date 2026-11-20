@@ -16,7 +16,7 @@ cd C:\Users\Karunakaran\git\Website\infrastructure\website-infrastructure
 docker compose up -d postgres redis
 ```
 
-Redis defaults: `localhost:6379`. PostgreSQL port from `.env` (often `5433`).
+Redis defaults: `localhost:6379`, password `pass` (matches Spring `REDIS_PASSWORD` default). PostgreSQL port from `.env` (often `5433`).
 
 ## 1. Service registry (Eureka)
 
@@ -78,9 +78,30 @@ Dev server proxies `/api` to gateway (`vite.config.js`). Same pattern as `probit
 | `WEBSITE_REGISTRY_PORT` | `8761` | Eureka |
 | `WEBSITE_DB_HOST` / `PORT` / `NAME` | `localhost` / `5432` / `website_db` | PostgreSQL (like Probity `probity` DB) |
 | `WEBSITE_DB_USER` / `PASSWORD` | `postgres` / `pass` | Same as Probity local defaults |
-| `REDIS_HOST` / `REDIS_PORT` | `localhost` / `6379` | JWT revocation |
+| `REDIS_HOST` / `REDIS_PORT` / `REDIS_PASSWORD` | `localhost` / `6379` / `pass` | JWT revocation |
 | `JWT_JWK_SET_URI` | `http://localhost:8081/api/v1/auth/.well-known/jwks.json` | Gateway JWT validation |
-| `WEBSITE_DEV_ADMIN_PASSWORD` | `Admin@123` | First-run admin seed (auth-service) |
+| `WEBSITE_DEV_ADMIN_USERNAME` | *(required for seed)* | First CMS admin username (auth-service, dev only) |
+| `WEBSITE_DEV_ADMIN_PASSWORD` | *(required for seed)* | First CMS admin password (auth-service, dev only; never commit) |
+| `WEBSITE_DEV_ADMIN_DISPLAY_NAME` | `KRAN Admin` | Optional display name for seeded admin |
+
+## CMS login (real backend, no mock)
+
+1. **Frontend:** `VITE_MOCK_API=false` in `.env.development` (default). Restart `npm run dev` after env changes.
+2. **Database:** Flyway creates `auth.admin_user` but **does not insert any login rows**. Check users:
+
+   ```sql
+   -- pgAdmin on website_db (or scripts/003_check_cms_admin_users.sql)
+   SELECT username, display_name, is_active FROM auth.admin_user;
+   ```
+
+   - **Empty result** → set admin env vars, then start **auth-service** once (see table below). It hashes the password with BCrypt and inserts one row.
+   - **Rows present** → sign in with that **username** and the password you chose when the user was created (not stored in plain text in the DB).
+
+3. **Login page:** username, password, and CAPTCHA from `GET /api/v1/captcha/getCaptcha` via gateway **8080**.
+
+4. Stack must be up: Redis, Eureka, **auth-service**, **api-gateway**, then frontend proxy to **8080**.
+
+Frontend API map: `website-frontend/website-client/docs/WEBSITE_API.md` and `src/shared/api/websiteEndpoints.js`.
 
 ## Verification checklist
 
@@ -88,7 +109,7 @@ Dev server proxies `/api` to gateway (`vite.config.js`). Same pattern as `probit
 - [ ] `GET http://localhost:8081/api/v1/health` (direct) and via gateway when routed
 - [ ] Frontend loads; network tab shows `/api/...` → gateway
 - [ ] Redis running; logout revokes JWT (`401` on reuse)
-- [ ] Login `admin` / `Admin@123` → JWT; `GET /api/v1/admin/news` requires Bearer
+- [ ] Login with your seeded CMS admin → JWT; `GET /api/v1/admin/news` requires Bearer
 - [ ] Public `GET /api/v1/content/news` works without token
 
 ## Probity reference ports (do not mix)

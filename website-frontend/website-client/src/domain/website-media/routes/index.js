@@ -1,0 +1,1 @@
+export { buildMediaServicePages } from './buildMediaPages'

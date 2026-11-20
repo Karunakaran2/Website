@@ -8,7 +8,9 @@ import {
 export { getDashboardRoute, getModuleRoute, getSetupModuleRoute, MODULE_ROUTE_PREFIX }
 
 export const ROUTES = {
-  LOGIN: '/',
+  /** KRAN public website home (legacy `/welcome`) */
+  PUBLIC_HOME: '/',
+  LOGIN: '/auth/login',
   DEPARTMENT_LOGIN: '/auth/department-login',
   MODULE_LOGIN: '/auth/module-login',
   FORGOT_PASSWORD: '/auth/forgot-password',

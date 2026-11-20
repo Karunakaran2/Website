@@ -14,6 +14,7 @@ import {
   getDefaultSecondaryTabId,
   getSecondaryNavItems,
 } from '@/app/shell/constants/dashboard'
+import { WEBSITE_CMS_PRIMARY_IDS } from '@/domain/website-cms/constants/websiteCmsNav'
 
 function secondaryIdsForPrimary(primaryId) {
   const tabs = getSecondaryNavItems(primaryId)
@@ -37,7 +38,7 @@ function collectReferencePrimaryIds() {
 
 describe('DASHBOARD_PAGE_REGISTRY', () => {
   it('registers the expected portal page catalog size', () => {
-    expect(Object.keys(DASHBOARD_PAGE_REGISTRY).length).toBe(267)
+    expect(Object.keys(DASHBOARD_PAGE_REGISTRY).length).toBe(285)
   })
 
   it('registers a lazy page component for every registry key', () => {
@@ -62,6 +63,18 @@ describe('DASHBOARD_PAGE_REGISTRY', () => {
   it('resolves every reference-module primary and secondary tab', () => {
     const missing = []
     for (const primaryId of collectReferencePrimaryIds()) {
+      for (const secondaryId of secondaryIdsForPrimary(primaryId)) {
+        if (!resolveDashboardPage(primaryId, secondaryId)) {
+          missing.push(`${primaryId}:${secondaryId}`)
+        }
+      }
+    }
+    expect(missing, `Missing registry entries:\n${missing.join('\n')}`).toEqual([])
+  })
+
+  it('resolves every KRAN Admin menu tab', () => {
+    const missing = []
+    for (const primaryId of WEBSITE_CMS_PRIMARY_IDS) {
       for (const secondaryId of secondaryIdsForPrimary(primaryId)) {
         if (!resolveDashboardPage(primaryId, secondaryId)) {
           missing.push(`${primaryId}:${secondaryId}`)

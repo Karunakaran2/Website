@@ -6,8 +6,10 @@ import { resolveDashboardPageHeading } from '@/app/shell/hooks/useDashboardPageH
 import { parseModulePath, isModuleShellPathname } from '@/shared/constants'
 import { ROUTES } from '@/shared/constants'
 import { formatDocumentTitle } from '@/shared/utils/documentTitle'
+import { WEBSITE_AUTH_ENABLED } from '@/shared/config/websiteAuth'
 
 const STATIC_TITLE_KEYS = {
+  [ROUTES.PUBLIC_HOME]: 'documentTitle.publicHome',
   [ROUTES.LOGIN]: 'documentTitle.login',
   [ROUTES.FORGOT_PASSWORD]: 'documentTitle.forgotPassword',
   [ROUTES.ONE_TIME_REGISTRATION]: 'documentTitle.oneTimeRegistration',
@@ -29,6 +31,9 @@ function moduleScreenTitle(pathname, t) {
 
 export function resolveRouteDocumentTitle(pathname, t) {
   const path = pathname.replace(/\/+$/, '') || '/'
+  if (path === ROUTES.HOME && WEBSITE_AUTH_ENABLED) {
+    return formatDocumentTitle(t('accounts.websiteHomeTitle'))
+  }
   const staticKey = STATIC_TITLE_KEYS[path]
   if (staticKey) {
     return formatDocumentTitle(t(staticKey))

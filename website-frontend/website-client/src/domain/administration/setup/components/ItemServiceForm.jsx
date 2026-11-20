@@ -2,9 +2,9 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useProbityForm } from '@/shared/utils/useProbityForm'
 import { validateTriggerForm } from '@/shared/components/confirm'
 import { useSetupFormSaveRequest } from '../hooks/useSetupFormSaveRequest'
-import { FeaturedBasicSelect } from '@/shared/lib/tailwreck'
 import { resolveSelectValue } from '@/shared/utils'
 import {
+  BasicSelect,
   FieldGrid,
   FieldError,
   InputField,
@@ -126,7 +126,7 @@ function GridSelect({
       <div className={formFieldCellClass}>
         <FormLabel label={label} required={required} />
         <div className={orgProbityControlSlotClass}>
-          <FeaturedBasicSelect
+          <BasicSelect
             name={name}
             options={options}
             value={value ?? ''}

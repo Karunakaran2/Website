@@ -10,6 +10,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -28,13 +30,24 @@ class AuthControllerTest {
 
     @Test
     void loginReturnsTokens() throws Exception {
-        when(authService.login(any(), any(), any())).thenReturn(
-                new AuthResponse("access", "Bearer", "admin", "KRAN Admin", 900L, "refresh")
+        when(authService.login(any(), any(), any(), any(), any())).thenReturn(
+                new AuthResponse(
+                        "access",
+                        "Bearer",
+                        "admin",
+                        "KRAN Admin",
+                        900L,
+                        "refresh",
+                        "SYSTEM_ADMIN",
+                        "System administrator",
+                        List.of("CMS_CONTENT_NEWS_VIEW"),
+                        true
+                )
         );
 
         mockMvc.perform(post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"username\":\"admin\",\"password\":\"Admin@123\"}"))
+                        .content("{\"username\":\"cms-user\",\"password\":\"secret\",\"captchaId\":\"id\",\"captcha\":\"ABCDE\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accessToken").value("access"))
                 .andExpect(jsonPath("$.refreshToken").value("refresh"));

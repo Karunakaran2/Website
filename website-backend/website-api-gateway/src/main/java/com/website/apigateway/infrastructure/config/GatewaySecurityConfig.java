@@ -32,11 +32,13 @@ public class GatewaySecurityConfig {
                         .pathMatchers(
                                 "/api/v1/auth/login",
                                 "/api/v1/auth/refresh",
+                                "/api/v1/captcha/**",
                                 "/api/v1/auth/.well-known/jwks.json",
                                 "/actuator/health",
                                 "/actuator/health/**"
                         ).permitAll()
                         .pathMatchers(HttpMethod.GET,
+                                "/api/v1/engagement",
                                 "/api/v1/content/**",
                                 "/api/v1/catalog/**",
                                 "/api/v1/services/**",

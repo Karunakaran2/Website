@@ -32,6 +32,8 @@ export default function ListWithFormModal({
   list,
   bodyMaxHeightClass,
   bodyClassName = '',
+  /** When true, Back is expected in the module page header (see useCmsFormPageHeaderBack). */
+  formBackInPageHeader = false,
 }) {
   void modalSize
   void footer
@@ -58,7 +60,7 @@ export default function ListWithFormModal({
           <FormProfileSectionHeader
             title={modalTitle}
             trailing={
-              handleBack ? (
+              handleBack && !formBackInPageHeader ? (
                 <BackButton type="button" onClick={handleBack}>
                   Back to list
                 </BackButton>

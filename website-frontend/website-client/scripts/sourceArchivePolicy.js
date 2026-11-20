@@ -37,7 +37,7 @@ const ALLOW_ROOT_FILES = new Set([
   ...ALLOWED_ENV_MODE_FILES,
 ])
 
-const ALLOW_TOP_DIRS = new Set(['src', 'docs', 'public', 'scripts', 'tailwreck', '.cursor'])
+const ALLOW_TOP_DIRS = new Set(['src', 'docs', 'public', 'scripts', '.cursor'])
 
 const SECRET_FILE_PATTERN =
   /(?:^|\/)\.env(?!\.example)(?:\.|$)|(?:^|\/)id_rsa|\.pem$|\.pfx$|\.p12$|credentials\.json$/i

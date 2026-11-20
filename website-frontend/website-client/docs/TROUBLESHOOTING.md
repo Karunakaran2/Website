@@ -5,14 +5,14 @@
 | Symptom | Check |
 |---------|--------|
 | `npm install` fails on Node version | Use Node ≥ 26 per `package.json` engines |
-| `tailwreck` link errors | `tailwreck` is `file:./tailwreck`; ensure folder exists |
 
 ## Dev server
 
 | Symptom | Check |
 |---------|--------|
 | Port 5173 in use | Stop other Vite instances or set `server.port` in `vite.config.js` temporarily |
-| API 404 | `VITE_DEV_API_TARGET` in `.env.development`; Vite proxies `/api` |
+| API 404 | Start `website-api-gateway` on **8080**; set `VITE_DEV_API_TARGET=http://localhost:8080` and `VITE_MOCK_API=false` in `.env.development`; Vite proxies `/api` |
+| Login fails / CAPTCHA errors | Set `VITE_MOCK_API=false`, restart `npm run dev`, ensure gateway (8080), auth-service, and Redis are up. Seed CMS admin via `WEBSITE_DEV_ADMIN_USERNAME` / `WEBSITE_DEV_ADMIN_PASSWORD` on auth-service |
 | Blank page after pull | Hard refresh; run `npm run build` to catch compile errors |
 | CORS captcha on testing host | Use `npm run build:testing` (not `build` / production) for `172.150.0.60:3100` |
 
@@ -56,7 +56,7 @@ See [HOST_SHELL_INTEGRATION.md](./HOST_SHELL_INTEGRATION.md).
 | Symptom | Check |
 |---------|--------|
 | Double page title | Remove local `ModuleSectionHeader` / `SetupModuleHeader`; use shell header + `useRegisterDashboardPageHeaderActions` |
-| Validation not showing rose border | Use `InputField` / `OrgSelectField`, not raw tailwreck `Input` on new forms |
+| Validation not showing rose border | Use `InputField` / `OrgSelectField` on new forms |
 | Toasts wrong style | Use `showAppToast`; ensure `AppSuccessToastContainer` at app root |
 
 ## Tests

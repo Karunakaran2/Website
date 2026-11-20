@@ -24,9 +24,18 @@ services:
     restart: unless-stopped
     ports:
       - "${REDIS_PORT:-6379}:6379"
-    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-pass}
+    command:
+      - redis-server
+      - --requirepass
+      - ${REDIS_PASSWORD:-pass}
+      - --save
+      - ""
+      - --appendonly
+      - "no"
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-pass}", "ping"]
       interval: 5s
       timeout: 3s
       retries: 10

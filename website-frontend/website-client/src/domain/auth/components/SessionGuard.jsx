@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useStore } from 'react-redux'
 import { ROUTES } from '@/shared/constants'
+import { isPublicWebsitePath } from '@/domain/website-public/constants/publicRoutes'
 import {
   getPendingLogoutDestination,
   getSessionId,
@@ -16,6 +17,7 @@ import { hydrateSessionStorageFromMirror } from '../utils/sessionMirror'
 import { completeSessionLogout } from '../utils/completeSessionLogout'
 
 const PUBLIC_PATHS = new Set([
+  ROUTES.PUBLIC_HOME,
   ROUTES.LOGIN,
   '/login',
   ROUTES.DEPARTMENT_LOGIN,
@@ -28,7 +30,11 @@ const PUBLIC_PATHS = new Set([
 ])
 
 export function isPublicPath(pathname) {
-  if (PUBLIC_PATHS.has(pathname)) {
+  const path = pathname.replace(/\/+$/, '') || '/'
+  if (PUBLIC_PATHS.has(path) || PUBLIC_PATHS.has(pathname)) {
+    return true
+  }
+  if (isPublicWebsitePath(path)) {
     return true
   }
   return pathname.startsWith(`${ROUTES.LOGIN}?`)
@@ -36,7 +42,8 @@ export function isPublicPath(pathname) {
 
 function loginUrl() {
   const base = String(import.meta.env.BASE_URL || '/').replace(/\/+$/, '')
-  return base ? `${base}/` : '/'
+  const loginPath = ROUTES.LOGIN.startsWith('/') ? ROUTES.LOGIN : `/${ROUTES.LOGIN}`
+  return `${base}${loginPath}`
 }
 
 const sessionApi = {

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import KranMarkLogo from '@/shared/components/branding/KranMarkLogo'
-import DownloadSourceZipButton from './DownloadSourceZipButton'
 import { formatRemaining } from '@/domain/auth/session/sessionPolicy'
 import { subscribeSessionRemaining } from '@/domain/auth/session/sessionRuntime'
 
@@ -63,8 +62,6 @@ export default function AppFooter({ showTsmButton = false }) {
           <span className="hidden text-xs text-white/50 sm:inline select-none" aria-hidden="true">
             |
           </span>
-
-          <DownloadSourceZipButton />
 
           <a
             href="https://kran.co.in/"

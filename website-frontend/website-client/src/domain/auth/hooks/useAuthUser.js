@@ -5,6 +5,7 @@ import { selectAuthUser } from '../redux/selectors'
 import { useGetLoginUserQuery } from '../services/authApi'
 import { completeSessionLogout } from '../utils/completeSessionLogout'
 import { getSessionId } from '../utils/session'
+import { applyPrivilegeCodesFromPayload } from '@/shared/privileges/loadPrivilegeCodes'
 
 export function useAuthUser() {
   const dispatch = useDispatch()
@@ -23,6 +24,9 @@ export function useAuthUser() {
       return
     }
     dispatch(loginSuccess(data.user))
+    applyPrivilegeCodesFromPayload(dispatch, {
+      privilegeCodes: data.user?.privilegeCodes,
+    })
   }, [data, dispatch, storedUser?.seatSelected])
 
   useEffect(() => {

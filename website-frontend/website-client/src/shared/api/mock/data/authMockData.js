@@ -43,7 +43,6 @@ export function generateMockCaptcha() {
   return {
     captchaId,
     imageBase64,
-    code,
   }
 }
 

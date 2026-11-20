@@ -71,4 +71,48 @@ public class Career {
     public String getExperience() {
         return experience;
     }
+
+    public String getActiveStatus() {
+        return activeStatus;
+    }
+
+    public Instant getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setJobDescription(String jobDescription) {
+        this.jobDescription = jobDescription;
+    }
+
+    public void setActiveStatus(String activeStatus) {
+        this.activeStatus = activeStatus;
+    }
+
+    public void setPostedOn(Instant postedOn) {
+        this.postedOn = postedOn;
+    }
+
+    public void setLastDate(Instant lastDate) {
+        this.lastDate = lastDate;
+    }
+
+    public void setSkillSet(String skillSet) {
+        this.skillSet = skillSet;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setExperience(String experience) {
+        this.experience = experience;
+    }
+
+    public void setDeletedAt(Instant deletedAt) {
+        this.deletedAt = deletedAt;
+    }
 }

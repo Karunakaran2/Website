@@ -18,7 +18,8 @@ describe('document title', () => {
 
   it('gives each public route its own title', () => {
     const t = i18n.t.bind(i18n)
-    expect(resolveRouteDocumentTitle('/', t)).toBe('Login – KRAN Design System')
+    expect(resolveRouteDocumentTitle('/', t)).toBe('KRAN Consulting — Welcome – KRAN Design System')
+    expect(resolveRouteDocumentTitle('/auth/login', t)).toBe('Login – KRAN Design System')
     expect(resolveRouteDocumentTitle('/seats', t)).toBe('Seat selection – KRAN Design System')
     expect(resolveRouteDocumentTitle('/home', t)).toBe('Select an Account – KRAN Design System')
     expect(resolveRouteDocumentTitle('/profile', t)).toBe('My Profile – KRAN Design System')
@@ -41,7 +42,10 @@ describe('document title', () => {
   it('uses the Hindi screen and module names', async () => {
     await i18n.changeLanguage('hi')
     const t = i18n.t.bind(i18n)
-    expect(resolveRouteDocumentTitle('/', t)).toBe('लॉगिन – KRAN Design System')
+    expect(resolveRouteDocumentTitle('/', t)).toBe(
+      'KRAN Consulting — स्वागत – KRAN Design System',
+    )
+    expect(resolveRouteDocumentTitle('/auth/login', t)).toBe('लॉगिन – KRAN Design System')
     expect(resolveRouteDocumentTitle('/inbox/overview', t)).toBe(
       'Home – होम – KRAN Design System',
     )

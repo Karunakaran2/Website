@@ -6,11 +6,19 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface AuthService {
 
-    AuthResponse login(String username, String password, HttpServletRequest request);
+    AuthResponse login(
+            String username,
+            String password,
+            String captchaId,
+            String captcha,
+            HttpServletRequest request
+    );
 
     AuthResponse refresh(String refreshToken);
 
     void logout(HttpServletRequest request);
 
     CurrentUserResponse currentUser(HttpServletRequest request);
+
+    void changePassword(HttpServletRequest request, String currentPassword, String newPassword);
 }

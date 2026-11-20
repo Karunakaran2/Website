@@ -8,6 +8,7 @@ import {
   ASSET_MANAGEMENT_PRIMARY_NAV_ITEMS,
 } from '../constants/dashboard'
 import { useDashboardNav } from './useDashboardNav'
+import { isWebsiteCmsPrimary } from '@/domain/website-cms/constants/websiteCmsNav'
 
 function resolvePageSubtitle(t, primaryId, secondaryId) {
   const secondaryKey = secondaryId || 'overview'
@@ -32,8 +33,10 @@ export function resolveDashboardPageHeading(t, activePrimaryId, activeSecondaryI
       defaultValue: activeSecondaryId,
     })
 
-  const hasSecondaryRow =
-    activePrimaryId !== 'inbox' && secondaryItems.length > 0
+  const cmsCategory =
+    isWebsiteCmsPrimary(activePrimaryId) && activePrimaryId !== 'website-dashboard'
+
+  const hasSecondaryRow = activePrimaryId !== 'inbox' && secondaryItems.length > 0
 
   const pageSubtitle = resolvePageSubtitle(t, activePrimaryId, activeSecondaryId)
 
@@ -103,6 +106,12 @@ export function resolveDashboardPageHeading(t, activePrimaryId, activeSecondaryI
       secondaryTitle.toLowerCase() === 'overview'
     if (isGenericOverview) {
       return { title: primaryTitle, subtitle: pageSubtitle || undefined }
+    }
+    if (cmsCategory) {
+      return {
+        title: secondaryTitle,
+        subtitle: pageSubtitle || primaryTitle,
+      }
     }
     return { title: secondaryTitle, subtitle: pageSubtitle || primaryTitle }
   }

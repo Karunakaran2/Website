@@ -4,7 +4,8 @@ import { isPublicPath } from '@/domain/auth/components/SessionGuard'
 
 describe('auth routes', () => {
   it('exposes login and secondary auth paths', () => {
-    expect(ROUTES.LOGIN).toBe('/')
+    expect(ROUTES.PUBLIC_HOME).toBe('/')
+    expect(ROUTES.LOGIN).toBe('/auth/login')
     expect(ROUTES.FORGOT_PASSWORD).toBe('/auth/forgot-password')
     expect(ROUTES.ONE_TIME_REGISTRATION).toBe('/auth/one-time-registration')
     expect(ROUTES.APPLICATION_TRACKING).toBe('/auth/application-tracking')

@@ -115,7 +115,7 @@ export default function TrackApplicationModal({ isOpen, onClose, initialTracking
               : t('trackApplication.fetchStatus', 'Fetch Status')}
           </SubmitButton>
 
-          {String(import.meta.env.VITE_MOCK_API ?? 'true').toLowerCase() === 'true' ? (
+          {String(import.meta.env.VITE_MOCK_API ?? 'false').toLowerCase() === 'true' ? (
             <p className="m-0 text-[11px] text-slate-500" role="note">
               {t(
                 'trackApplication.mockHint',

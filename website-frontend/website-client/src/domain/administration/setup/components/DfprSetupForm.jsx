@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react'
 import { Plus, X } from 'lucide-react'
-import { FeaturedBasicSelect } from '@/shared/lib/tailwreck'
 import { GigwButton } from '@/shared/components/buttons/gigw'
 import {
+  BasicSelect,
   FieldError,
   FieldGrid,
   FormLabel,
@@ -225,7 +225,7 @@ export default function DfprSetupForm({
                 <div className="min-w-0 md:col-span-4">
                   <FormLabel label="Allotted User" required htmlFor={`dfpr-allot-${row.key}`} />
                   <div className={orgProbityControlSlotClass}>
-                    <FeaturedBasicSelect
+                    <BasicSelect
                       name={`allotId-${row.key}`}
                       options={options}
                       value={row.allotId}

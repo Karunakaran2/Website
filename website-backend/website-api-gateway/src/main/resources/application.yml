@@ -8,7 +8,7 @@ spring:
     redis:
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
-      password: ${REDIS_PASSWORD:}
+      password: ${REDIS_PASSWORD:pass}
   cloud:
     gateway:
       discovery:
@@ -35,31 +35,35 @@ spring:
         - id: auth-service
           uri: lb://auth-service
           predicates:
-            - Path=/api/v1/auth/**
+            - Path=/api/v1/auth/**,/api/v1/admin/users/**,/api/v1/admin/roles/**,/api/v1/admin/privileges/**
+        - id: auth-captcha
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/v1/captcha/**
         - id: content-service
           uri: lb://content-service
           predicates:
-            - Path=/api/v1/content/**,/api/v1/admin/news/**,/api/v1/admin/banners/**
+            - Path=/api/v1/content/**,/api/v1/admin/news/**,/api/v1/admin/banners/**,/api/v1/admin/data-sheets/**,/api/v1/admin/timeline/**
         - id: catalog-service
           uri: lb://catalog-service
           predicates:
-            - Path=/api/v1/catalog/**,/api/v1/services/**,/api/v1/solutions/**
+            - Path=/api/v1/catalog/**,/api/v1/services/**,/api/v1/solutions/**,/api/v1/admin/categories/**,/api/v1/admin/products/**,/api/v1/admin/solutions/**,/api/v1/admin/projects/**,/api/v1/admin/case-studies/**,/api/v1/admin/kran-seniors/**,/api/v1/admin/kran-faces/**
         - id: media-service
           uri: lb://media-service
           predicates:
-            - Path=/api/v1/media/**
+            - Path=/api/v1/media/**,/api/v1/admin/gallery-groups/**,/api/v1/admin/gallery-items/**
         - id: careers-service
           uri: lb://careers-service
           predicates:
-            - Path=/api/v1/careers/**,/api/v1/jobs/**
+            - Path=/api/v1/careers/**,/api/v1/jobs/**,/api/v1/admin/careers/**,/api/v1/admin/job-applications/**,/api/v1/admin/submitted-resumes/**
         - id: engagement-service
           uri: lb://engagement-service
           predicates:
-            - Path=/api/v1/engagement/**,/api/v1/contact/**
+            - Path=/api/v1/engagement/**,/api/v1/contact/**,/api/v1/admin/contacts/**
         - id: notification-service
           uri: lb://notification-service
           predicates:
-            - Path=/api/v1/notifications/**
+            - Path=/api/v1/notifications/**,/api/v1/admin/mail-setup/**
 
 app:
   jwt:

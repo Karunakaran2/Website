@@ -37,7 +37,7 @@ async function collectArchiveFiles() {
     const abs = path.join(REPO_ROOT, name)
     const stat = fs.statSync(abs)
     if (stat.isDirectory()) {
-      if (!['src', 'docs', 'public', 'scripts', 'tailwreck', '.cursor'].includes(name)) continue
+      if (!['src', 'docs', 'public', 'scripts', '.cursor'].includes(name)) continue
       await walkFiles(abs, REPO_ROOT, files)
       continue
     }

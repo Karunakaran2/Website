@@ -13,6 +13,12 @@ import {
   isModule2Primary,
   isLegacyModule2Primary,
 } from '@/domain/module-2/constants/module2Nav'
+import {
+  WEBSITE_CMS_PRIMARY_NAV_ITEMS,
+  getWebsiteCmsDefaultSecondary,
+  getWebsiteCmsSecondaryNav,
+  isWebsiteCmsPrimary,
+} from '@/domain/website-cms/constants/websiteCmsNav'
 
 /** @deprecated Prefer CURRENT_USER from @/constants */
 export const DASHBOARD_USER = CURRENT_USER
@@ -600,6 +606,9 @@ export function getPrimaryNavItems(primaryNavId) {
   if (isAdministrationPrimary(primaryNavId)) {
     return SETUP_PRIMARY_NAV_ITEMS
   }
+  if (isWebsiteCmsPrimary(primaryNavId)) {
+    return WEBSITE_CMS_PRIMARY_NAV_ITEMS
+  }
   if (PRIMARY_NAV_ITEMS.some((item) => item.id === primaryNavId)) {
     return PRIMARY_NAV_ITEMS
   }
@@ -648,6 +657,10 @@ export function getSecondaryNavItems(primaryNavId) {
   }
   if (isLegacyModule2Primary(primaryNavId)) {
     return SAMPLE_DEFAULT_SUB_TABS
+  }
+
+  if (isWebsiteCmsPrimary(primaryNavId)) {
+    return getWebsiteCmsSecondaryNav(primaryNavId)
   }
 
   if (SETUP_MODULE_PRIMARY_NAV_ITEMS.some((item) => item.id === primaryNavId)) {
@@ -853,6 +866,10 @@ export function getDefaultSecondaryTabId(primaryNavId) {
     return DEFAULT_SETUP_FINANCIAL_YEAR_TAB_ID
   }
 
+  if (isWebsiteCmsPrimary(primaryNavId)) {
+    return getWebsiteCmsDefaultSecondary(primaryNavId)
+  }
+
   return DEFAULT_SECONDARY_NAV_ID
 }
 
@@ -874,6 +891,7 @@ export function isPrimaryNavValid(primaryNavId) {
     isAssetManagementPrimary(primaryNavId) ||
     isSetupModulePrimary(primaryNavId) ||
     isSetupPrimary(primaryNavId) ||
+    isWebsiteCmsPrimary(primaryNavId) ||
     PRIMARY_NAV_ITEMS.some((item) => item.id === primaryNavId)
   )
 }

@@ -22,6 +22,15 @@ import LoginPageSkeleton from '@/shared/components/skeletons/LoginPageSkeleton'
 import SeatSelectionSkeleton from '@/shared/components/skeletons/SeatSelectionSkeleton'
 import AccessibilityStatementPage from '@/shared/pages/AccessibilityStatementPage'
 import ScreenReaderAccessPage from '@/shared/pages/ScreenReaderAccessPage'
+import { lazyPage } from '@/app/routes/lazyPage'
+
+const PublicSiteLayout = lazyPage(() => import('@/domain/website-public/layouts/PublicSiteLayout'))
+const PublicWelcomePage = lazyPage(() => import('@/domain/website-public/pages/PublicWelcomePage'))
+const PublicAboutPage = lazyPage(() => import('@/domain/website-public/pages/PublicAboutPage'))
+const PublicNewsPage = lazyPage(() => import('@/domain/website-public/pages/PublicNewsPage'))
+const PublicComingSoonPage = lazyPage(() =>
+  import('@/domain/website-public/pages/PublicComingSoonPage'),
+)
 import {
   ROUTES,
   getModuleRoute,
@@ -60,9 +69,89 @@ const moduleShell = (
   </RequireAuth>
 )
 
+const publicPageFallback = (
+  <div className="public-site">
+    <p className="public-coming-soon">Loading…</p>
+  </div>
+)
+
 export default function AppRoutes() {
   return (
     <Routes>
+      <Route
+        path="/"
+        element={
+          <Suspense fallback={publicPageFallback}>
+            <PublicSiteLayout />
+          </Suspense>
+        }
+      >
+        <Route
+          index
+          element={
+            <Suspense fallback={publicPageFallback}>
+              <PublicWelcomePage />
+            </Suspense>
+          }
+        />
+        <Route path="welcome" element={<Navigate to={ROUTES.PUBLIC_HOME} replace />} />
+        <Route
+          path="aboutus"
+          element={
+            <Suspense fallback={publicPageFallback}>
+              <PublicAboutPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="news"
+          element={
+            <Suspense fallback={publicPageFallback}>
+              <PublicNewsPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="contact"
+          element={
+            <Suspense fallback={publicPageFallback}>
+              <PublicComingSoonPage title="Contact us" />
+            </Suspense>
+          }
+        />
+        <Route
+          path="datasheets"
+          element={
+            <Suspense fallback={publicPageFallback}>
+              <PublicComingSoonPage title="Data sheets" />
+            </Suspense>
+          }
+        />
+        <Route
+          path="gallery"
+          element={
+            <Suspense fallback={publicPageFallback}>
+              <PublicComingSoonPage title="Gallery" />
+            </Suspense>
+          }
+        />
+        <Route
+          path="casestudy"
+          element={
+            <Suspense fallback={publicPageFallback}>
+              <PublicComingSoonPage title="Case studies" />
+            </Suspense>
+          }
+        />
+        <Route
+          path="career"
+          element={
+            <Suspense fallback={publicPageFallback}>
+              <PublicComingSoonPage title="Careers" />
+            </Suspense>
+          }
+        />
+      </Route>
       <Route
         path={ROUTES.LOGIN}
         element={
@@ -177,7 +266,7 @@ export default function AppRoutes() {
       <Route path={ROUTES.SCREEN_READER_ACCESS} element={<ScreenReaderAccessPage />} />
       <Route path="/:primaryTab/:secondaryTab" element={moduleShell} />
       <Route path="/:primaryTab" element={<ModuleRouteRedirect />} />
-      <Route path="*" element={<Navigate to={ROUTES.LOGIN} replace />} />
+      <Route path="*" element={<Navigate to={ROUTES.PUBLIC_HOME} replace />} />
     </Routes>
   )
 }

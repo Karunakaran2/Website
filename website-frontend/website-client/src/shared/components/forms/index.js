@@ -35,6 +35,7 @@ export {
   IndianAmountBareInput,
 } from './IndianAmountField'
 export { default as OrgSelectField } from './OrgSelectField'
+export { default as BasicSelect } from './BasicSelect'
 export { default as OrgProbityFieldLabel } from './OrgProbityFieldLabel'
 export { default as OrgTextField } from './OrgTextField'
 export {

@@ -5,10 +5,11 @@ import {
   isWorkforcePrimary,
 } from './dashboard'
 import { getModuleRoute } from '@/shared/constants'
+import { WEBSITE_AUTH_ENABLED } from '@/shared/config/websiteAuth'
 
 /**
- * Portal module definitions.
- * Landing page shows business demo modules only; developer areas use footer links.
+ * Portal module definitions (design-system demo mode only).
+ * Website CMS mode uses {@link WebsiteCmsLanding} on `/home` — no module cards.
  */
 
 export const PORTAL_MODULE_1 = {
@@ -45,8 +46,10 @@ export const PORTAL_MODULE_2 = {
   available: true,
 }
 
-/** Primary business modules on `/home` (post seat selection). */
-export const PORTAL_LANDING_MODULES = [PORTAL_MODULE_1, PORTAL_MODULE_2]
+/** Demo modules on `/home` when not in website CMS mode. */
+export const PORTAL_LANDING_MODULES = WEBSITE_AUTH_ENABLED
+  ? []
+  : [PORTAL_MODULE_1, PORTAL_MODULE_2]
 
 /** Developer / standards areas linked from the application footer. */
 export const PORTAL_FOOTER_MODULES = [

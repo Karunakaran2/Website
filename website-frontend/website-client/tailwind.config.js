@@ -5,7 +5,6 @@ export default {
   content: [
     './index.html',
     './src/**/*.{js,ts,jsx,tsx}',
-    './tailwreck/tailwreck.es.jsx',
   ],
   darkMode: ['class', "[data-theme='dark']", '[data-mode="dark"]'],
   theme: {
@@ -334,6 +333,5 @@ export default {
       },
     },
   },
-  // Component styles ship via prebuilt tailwreck.css; no local plugin folder.
   plugins: [],
 }

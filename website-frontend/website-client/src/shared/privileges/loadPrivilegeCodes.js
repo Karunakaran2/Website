@@ -1,4 +1,3 @@
-import { requestJson } from '@/shared/api/client'
 import {
   clearSessionPrivileges,
   saveSessionPrivileges,
@@ -9,10 +8,8 @@ import {
 } from '@/shared/redux/slices/privilages/privilagesSlice'
 
 /**
- * Unmapped screens stay open. Gating runs after a privilegeCodes array is returned,
- * including an empty list (that seat has no grants).
- * A missing field or a failed lookup leaves the current UI unchanged.
- * PAY_AUTH (Authorize Payment) has no matching control in this client.
+ * CMS website-backend does not expose seat-context privilege APIs.
+ * Unmapped screens stay open until a privilege list is applied client-side.
  */
 export function privilegeCodesFromPayload(payload) {
   if (Array.isArray(payload?.privilegeCodes)) return payload.privilegeCodes
@@ -34,10 +31,6 @@ export function applyPrivilegeCodesFromPayload(dispatch, payload) {
   return true
 }
 
-export async function refreshConnectedModulePrivileges(dispatch) {
-  const result = await requestJson('/api/v1/seat-context/getConnectedModuleLogin', {
-    expireSession: false,
-  })
-  if (result.error) return false
-  return applyPrivilegeCodesFromPayload(dispatch, result.data)
+export async function refreshConnectedModulePrivileges() {
+  return false
 }

@@ -15,6 +15,7 @@ import { getModuleRoute } from '@/shared/constants'
 import { resolveDashboardPage } from './loadDomainPages'
 import { buildModule1Pages } from '@/domain/module-1/routes/buildModule1Pages'
 import { buildModule2Pages } from '@/domain/module-2/routes/buildModule2Pages'
+import { buildKranAdminPages } from '@/domain/website-cms/routes/buildKranAdminPages'
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 
@@ -89,6 +90,7 @@ describe('registry import contract', () => {
     }
     for (const key of Object.keys(buildModule1Pages())) declared.add(key)
     for (const key of Object.keys(buildModule2Pages())) declared.add(key)
+    for (const key of Object.keys(buildKranAdminPages())) declared.add(key)
     const undeclared = Object.keys(DASHBOARD_PAGE_REGISTRY).filter((key) => !declared.has(key))
     expect(undeclared, undeclared.join('\n')).toEqual([])
   })

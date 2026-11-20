@@ -3,10 +3,10 @@ import PartySetupDetailsModal from '../components/PartySetupDetailsModal'
 import { Controller, useFieldArray } from 'react-hook-form'
 import { mergeProbityFieldRules } from '@/shared/utils/fieldValidationRules'
 import { useProbityForm } from '@/shared/utils/useProbityForm'
-import { FeaturedBasicSelect } from '@/shared/lib/tailwreck'
 import { SetupFormRowActions } from '../components/setupGigwButtons'
 import SetupDataTable from '../components/SetupDataTable'
 import {
+  BasicSelect,
   FieldError,
   FieldGrid,
   FormLabel,
@@ -283,7 +283,7 @@ export default function PartySetupCustomPartyLedgerScreen({ master }) {
                       render={({ field }) => (
                         <>
                           <div className={orgProbityControlSlotClass}>
-                            <FeaturedBasicSelect
+                            <BasicSelect
                               name={field.name}
                               options={groupOptions}
                               value={field.value}

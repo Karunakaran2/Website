@@ -9,6 +9,8 @@ import MainLayout from '@/shared/layouts/MainLayout/MainLayout'
 import ModulePageShell from '@/shared/layouts/ModulePageShell'
 import { MODULE_MAIN_CLASS } from '@/shared/constants/moduleContentStyles'
 import ProfileAccountsSection from '@/domain/auth/components/ProfileAccountsSection'
+import ChangePasswordForm from '@/domain/auth/components/ChangePasswordForm'
+import { WEBSITE_AUTH_ENABLED } from '@/shared/config/websiteAuth'
 import { useMyProfile } from '../hooks/useMyProfile'
 import { useProfileBackNavigation } from '../hooks/useProfileBackNavigation'
 import {
@@ -159,7 +161,11 @@ export default function MyProfilePage() {
             ) : null}
 
             <FormProfileSection icon={Shield} title={t('profile.sections.security')}>
-              <p className="m-0 text-sm text-slate-600">{t('profile.securityAvailability')}</p>
+              {WEBSITE_AUTH_ENABLED ? (
+                <ChangePasswordForm />
+              ) : (
+                <p className="m-0 text-sm text-slate-600">{t('profile.securityAvailability')}</p>
+              )}
             </FormProfileSection>
           </div>
         </ModulePageShell>

@@ -1,6 +1,7 @@
 package com.website.authservice.web.controller;
 
 import com.website.authservice.application.service.AuthService;
+import com.website.authservice.web.request.ChangePasswordRequest;
 import com.website.authservice.web.request.LoginRequest;
 import com.website.authservice.web.request.RefreshRequest;
 import com.website.authservice.web.response.AuthResponse;
@@ -37,6 +38,8 @@ public class AuthController {
         return ResponseEntity.ok(authService.login(
                 loginRequest.username(),
                 loginRequest.password(),
+                loginRequest.captchaId(),
+                loginRequest.captcha(),
                 httpServletRequest
         ));
     }
@@ -60,5 +63,16 @@ public class AuthController {
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<CurrentUserResponse> me(HttpServletRequest httpServletRequest) {
         return ResponseEntity.ok(authService.currentUser(httpServletRequest));
+    }
+
+    @PostMapping("/change-password")
+    @Operation(summary = "Change password for the authenticated CMS user")
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<Void> changePassword(
+            HttpServletRequest httpServletRequest,
+            @Valid @RequestBody ChangePasswordRequest body
+    ) {
+        authService.changePassword(httpServletRequest, body.currentPassword(), body.newPassword());
+        return ResponseEntity.ok().build();
     }
 }

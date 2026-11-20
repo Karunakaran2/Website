@@ -1,5 +1,6 @@
 import { kranMarkSrc } from '@/shared/components/branding/KranMarkLogo'
 import faviconIco from '@/assets/favicon.ico'
+import { WEBSITE_AUTH_ENABLED } from '@/shared/config/websiteAuth'
 
 /** @typedef {'kran' | 'default'} HostPortalId */
 /** @typedef {'wordmarkModule' | 'hostLogoBanner' | 'hostTitleStack'} HostPortalLayout */
@@ -10,7 +11,7 @@ import faviconIco from '@/assets/favicon.ico'
 export const HOST_PORTAL_BRAND = {
   kran: {
     layout: /** @type {HostPortalLayout} */ ('wordmarkModule'),
-    wordmark: 'KRAN Design System',
+    wordmark: WEBSITE_AUTH_ENABLED ? 'KRAN ADMIN' : 'KRAN Design System',
     logoSrc: kranMarkSrc,
     faviconSrc: faviconIco,
     logoAltKey: 'hostPortal.kranLogoAlt',

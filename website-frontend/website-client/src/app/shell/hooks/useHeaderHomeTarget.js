@@ -1,9 +1,8 @@
 import { ROUTES } from '@/shared/constants'
+import { WEBSITE_AUTH_ENABLED } from '@/shared/config/websiteAuth'
+import { getWebsiteCmsHomePath } from '@/domain/website-cms/utils/cmsHome'
 
-/**
- * Header Home / logo target:
- * Always returns ROUTES.HOME (/home) as the central module landing.
- */
+/** Home icon target — CMS dashboard in module shell when website mode is on. */
 export function useHeaderHomeTarget() {
-  return ROUTES.HOME
+  return WEBSITE_AUTH_ENABLED ? getWebsiteCmsHomePath() : ROUTES.HOME
 }

@@ -1,5 +1,5 @@
 import { useTranslatedOptions } from '@/app/i18n/useTranslatedOptions'
-import { FeaturedBasicSelect } from '@/shared/lib/tailwreck'
+import BasicSelect from './BasicSelect'
 import {
   FieldError,
   FieldHint,
@@ -69,7 +69,7 @@ export default function OrgSelectField({
               <div
                 className={`${orgProbityControlSlotClass} ${invalid ? orgProbitySelectInvalidShellClass : ''}`.trim()}
               >
-                <FeaturedBasicSelect
+                <BasicSelect
                   id={fieldId}
                   name={field.name}
                   options={selectOptions}

@@ -21,7 +21,6 @@ This prints the **15 largest files** under `dist/assets/` and total size. Record
 | `mui-*.js` | ~81 kB | ~29 kB |
 | `redux-*.js` | ~76 kB | ~26 kB |
 | `charts-*.js` | ~177 kB | ~62 kB |
-| `tailwreck-*.js` | ~411 kB | ~102 kB |
 | `exceljs-*.js` | ~940 kB | ~271 kB (on-demand export) |
 | `jspdf-*.js` | ~423 kB | ~139 kB (on-demand export) |
 | `mockFetchInterceptor-*.js` | ~62 kB | ~16 kB (dev / `VITE_MOCK_API=true` only) |

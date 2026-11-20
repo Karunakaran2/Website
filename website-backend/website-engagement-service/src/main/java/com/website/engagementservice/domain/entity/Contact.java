@@ -42,6 +42,38 @@ public class Contact {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public String getOrganization() {
+        return organization;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public String getRequestType() {
+        return requestType;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public Instant getSubmittedOn() {
+        return submittedOn;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

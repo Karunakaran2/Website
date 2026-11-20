@@ -77,7 +77,7 @@ export default function ApplicationTrackingPage() {
                 ? t('trackApplication.fetching', 'Fetching…')
                 : t('trackApplication.fetchStatus', 'Fetch Status')}
             </SubmitButton>
-            {String(import.meta.env.VITE_MOCK_API ?? 'true').toLowerCase() === 'true' ? (
+            {String(import.meta.env.VITE_MOCK_API ?? 'false').toLowerCase() === 'true' ? (
               <p className="m-0 text-xs text-slate-500" role="note">
                 {t(
                   'trackApplication.mockHint',

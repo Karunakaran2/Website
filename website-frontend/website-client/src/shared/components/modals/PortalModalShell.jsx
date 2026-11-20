@@ -1,6 +1,5 @@
 import { isValidElement, useId } from 'react'
 import { X } from 'lucide-react'
-import { ModalBody, ModalFooter, ModalHeader } from '@/shared/lib/tailwreck'
 import PortalModal from './PortalModal'
 import { ModalTitle } from '@/shared/components/typography'
 import {
@@ -66,7 +65,7 @@ export default function PortalModalShell({
       overlayZIndex={stack === 'nested' ? PORTAL_MODAL_NESTED_Z_INDEX : PORTAL_MODAL_Z_INDEX}
       ariaLabelledBy={title ? titleId : undefined}
     >
-      <ModalHeader className={headerClass}>
+      <header className={headerClass}>
         <div className="flex min-w-0 flex-1 items-center gap-2">
           {isValidElement(icon)
             ? icon
@@ -98,18 +97,18 @@ export default function PortalModalShell({
             <X size={18} aria-hidden />
           </button>
         ) : null}
-      </ModalHeader>
+      </header>
 
-      <ModalBody className={`${PORTAL_MODAL_BODY_CLASS} ${bodyClassName}`.trim()}>
+      <div className={`${PORTAL_MODAL_BODY_CLASS} ${bodyClassName}`.trim()}>
         {children}
-      </ModalBody>
+      </div>
 
       {footer ? (
-        <ModalFooter
+        <footer
           className={`${PORTAL_MODAL_FOOTER_CLASS} ${footerJustify} ${footerClassName}`.trim()}
         >
           {footer}
-        </ModalFooter>
+        </footer>
       ) : null}
     </PortalModal>
   )

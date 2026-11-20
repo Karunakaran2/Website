@@ -33,6 +33,7 @@ public class JwtAccessTokenServiceImpl implements JwtAccessTokenService {
     private final RefreshTokenService refreshTokenService;
     private final JwtRevocationService jwtRevocationService;
     private final AdminUserRepository adminUserRepository;
+    private final AdminSessionFactory adminSessionFactory;
 
     public JwtAccessTokenServiceImpl(
             JwtEncoder jwtEncoder,
@@ -40,7 +41,8 @@ public class JwtAccessTokenServiceImpl implements JwtAccessTokenService {
             AppProperties appProperties,
             RefreshTokenService refreshTokenService,
             JwtRevocationService jwtRevocationService,
-            AdminUserRepository adminUserRepository
+            AdminUserRepository adminUserRepository,
+            AdminSessionFactory adminSessionFactory
     ) {
         this.jwtEncoder = jwtEncoder;
         this.jwtDecoder = jwtDecoder;
@@ -48,6 +50,7 @@ public class JwtAccessTokenServiceImpl implements JwtAccessTokenService {
         this.refreshTokenService = refreshTokenService;
         this.jwtRevocationService = jwtRevocationService;
         this.adminUserRepository = adminUserRepository;
+        this.adminSessionFactory = adminSessionFactory;
     }
 
     @Override
@@ -68,7 +71,7 @@ public class JwtAccessTokenServiceImpl implements JwtAccessTokenService {
         RefreshTokenEntity stored = refreshTokenService.findValid(refreshToken)
                 .orElseThrow(() -> new BadCredentialsException(AuthMessages.INVALID_SESSION));
         AdminSession session = adminUserRepository.findById(stored.getAdminUserId())
-                .map(user -> new AdminSession(user.getId(), user.getUsername(), user.getDisplayName()))
+                .map(adminSessionFactory::fromUser)
                 .orElseThrow(() -> new BadCredentialsException(AuthMessages.INVALID_SESSION));
         String jti = UUID.randomUUID().toString();
         String accessToken = encode(session, jti);
@@ -103,9 +106,13 @@ public class JwtAccessTokenServiceImpl implements JwtAccessTokenService {
                 .issuedAt(issuedAt)
                 .expiresAt(expiresAt)
                 .id(jti)
-                .claim(JwtClaimNames.AUTHORITIES, List.of(JwtClaimNames.ROLE_ADMIN))
+                .claim(JwtClaimNames.AUTHORITIES, PrivilegeService.mergeAuthorities(session.privileges()))
                 .claim(JwtClaimNames.USERNAME, session.username())
                 .claim(JwtClaimNames.DISPLAY_NAME, session.displayName())
+                .claim(JwtClaimNames.ROLE, session.roleCode())
+                .claim(JwtClaimNames.ROLE_NAME, session.roleName())
+                .claim(JwtClaimNames.PRIVILEGES, session.privileges())
+                .claim(JwtClaimNames.SYSTEM_ADMIN, session.systemAdmin())
                 .build();
         JwsHeader header = JwsHeader.with(SignatureAlgorithm.RS256)
                 .keyId(JwtClaimNames.KEY_ID)
@@ -129,7 +136,19 @@ public class JwtAccessTokenServiceImpl implements JwtAccessTokenService {
             UUID userId = UUID.fromString(jwt.getSubject());
             String username = jwt.getClaimAsString(JwtClaimNames.USERNAME);
             String displayName = jwt.getClaimAsString(JwtClaimNames.DISPLAY_NAME);
-            return Optional.of(new AdminSession(userId, username, displayName));
+            String roleCode = jwt.getClaimAsString(JwtClaimNames.ROLE);
+            String roleName = jwt.getClaimAsString(JwtClaimNames.ROLE_NAME);
+            Boolean systemAdmin = jwt.getClaimAsBoolean(JwtClaimNames.SYSTEM_ADMIN);
+            List<String> privileges = jwt.getClaimAsStringList(JwtClaimNames.PRIVILEGES);
+            return Optional.of(new AdminSession(
+                    userId,
+                    username,
+                    displayName,
+                    roleCode,
+                    roleName,
+                    privileges == null ? List.of() : privileges,
+                    Boolean.TRUE.equals(systemAdmin)
+            ));
         } catch (IllegalArgumentException exception) {
             return Optional.empty();
         }

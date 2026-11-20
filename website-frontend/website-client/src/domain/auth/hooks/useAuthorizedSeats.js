@@ -1,27 +1,11 @@
-import { apiErrorMessage } from '@/shared/api/apiError'
-import { useGetHierarchySetupByUserIdQuery } from '../services/authApi'
-import { getSessionId } from '../utils/session'
-
-function toListError(error, fallback) {
-  return apiErrorMessage(error, error ? fallback : '')
-}
-
-export function useAuthorizedSeats({ skip = false } = {}) {
-  const hasSession = Boolean(getSessionId())
-  const {
-    data: seats = [],
-    isLoading,
-    isFetching,
-    error,
-    refetch,
-  } = useGetHierarchySetupByUserIdQuery(undefined, {
-    skip: skip || !hasSession,
-  })
-
+/** Website CMS has no seat hierarchy API. */
+export function useAuthorizedSeats() {
   return {
-    seats,
-    isLoading: hasSession && !skip && (isLoading || isFetching),
-    listError: toListError(error, 'Unable to load authorized accounts'),
-    refetch,
+    seats: [],
+    isLoading: false,
+    isFetching: false,
+    error: null,
+    listError: null,
+    refetch: () => {},
   }
 }

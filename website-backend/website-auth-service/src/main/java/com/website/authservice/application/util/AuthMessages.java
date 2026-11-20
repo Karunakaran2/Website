@@ -8,6 +8,7 @@ public final class AuthMessages {
     public static final String VALIDATION_FAILED = "Validation failed";
     public static final String GENERIC_ERROR = "Something went wrong";
     public static final String INVALID_REQUEST = "Invalid request";
+    public static final String INVALID_CAPTCHA = "Invalid or expired CAPTCHA";
 
     private AuthMessages() {
     }

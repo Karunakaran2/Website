@@ -7,15 +7,21 @@ import { setupReducer } from '@/domain/administration/setup/redux/slice'
 import { assetReducer } from '@/domain/administration/asset/redux/slice'
 import { baseApi } from '@/shared/api/baseApi'
 import languageReducer from '@/shared/redux/slices/language/languageSlice'
+import { privilagesReducer } from '@/shared/redux/slices/privilages/privilagesSlice'
 
-// Ensure core application API endpoints are injected before the store is created.
+// Website-backend RTK endpoints (one import per microservice domain).
 import '@/domain/auth/services/authApi'
+import '@/domain/auth/services/captchaApi'
+import '@/domain/website-content/services/contentApi'
+import '@/domain/website-catalog/services/catalogApi'
+import '@/domain/website-careers/services/careersApi'
+import '@/domain/website-engagement/services/engagementApi'
+import '@/domain/website-media/services/mediaApi'
+import '@/domain/website-notification/services/notificationApi'
+import '@/domain/website-access/services/accessApi'
+import '@/domain/website-cms/services/kranAdminApi'
 import '@/app/user-management/services/accountsApi'
-import '@/app/shell/services/dashboardApi'
-import '@/domain/dashboard/services/dashboardApi'
 import '@/app/settings/services/settingsApi'
-import '@/domain/administration/setup/services/setupApi'
-import '@/domain/administration/asset/services/assetApi'
 
 export const rootReducer = combineReducers({
   language: languageReducer,
@@ -25,6 +31,7 @@ export const rootReducer = combineReducers({
   settings: settingsReducer,
   setup: setupReducer,
   asset: assetReducer,
+  privilages: privilagesReducer,
   [baseApi.reducerPath]: baseApi.reducer,
 })
 

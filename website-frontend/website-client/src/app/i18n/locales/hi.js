@@ -1,5 +1,6 @@
 export default {
   documentTitle: {
+    publicHome: 'KRAN Consulting — स्वागत',
     login: 'लॉगिन',
     forgotPassword: 'पासवर्ड भूल गए',
     oneTimeRegistration: 'एक बार पंजीकरण',
@@ -101,6 +102,7 @@ export default {
     moduleHeaderWorkbench: 'कंपोनेंट वर्कबench',
     moduleHeaderDesignGuidelines: 'डिज़ाइन दिशानिर्देश',
     moduleHeaderAdministration: 'प्रशासन',
+    moduleHeaderWebsiteAdmin: 'वेबसाइट प्रशासन',
   },
   authCommon: {
     backToLogin: 'लॉगिन पर वापस जाएँ',
@@ -277,10 +279,32 @@ export default {
       'opening-balance-setup': 'प्रारंभिक शेष',
       'financial-year-setup': 'वित्तीय वर्ष',
       'tally-port-setup': 'टैली पोर्ट',
+      'website-dashboard': 'होम',
+      'website-engagement': 'पूछताछ',
+      'website-content': 'सामग्री',
+      'website-catalog': 'कैटलॉग',
+      'website-media': 'मीडिया',
+      'website-careers': 'करियर',
+      'website-notification': 'मेल सेटअप',
     },
     setupArea: 'सेटअप',
     secondary: {
       overview: 'अवलोकन',
+      manage: 'प्रबंधन',
+      request: 'अनुरोध',
+      'solution-request': 'समाधान अनुरोध',
+      'data-sheets': 'डेटा शीट',
+      'case-study': 'केस स्टडी',
+      gallery: 'गैलरी',
+      banner: 'बैनर',
+      timeline: 'समयरेखा',
+      'category-setup': 'श्रेणी सेटअप',
+      'kran-seniors': 'क्रान सीनियर्स',
+      'kran-faces': 'क्रान फेसेस',
+      'mail-setup': 'मेल सेटअप',
+      projects: 'परियोजनाएं',
+      'no-vacancy': 'रिक्तियां',
+      'job-applications': 'नौकरी आवेदन',
       'my-requests': 'मेरे अनुरोध',
       'pending-actions': 'लंबित कार्रवाई',
       history: 'इतिहास',
@@ -356,6 +380,38 @@ export default {
     'workforce-cases': {
       overview: 'परिचालन मामला कतार (डेमो)।',
     },
+    'website-dashboard': {
+      overview: 'KRAN Admin होम — सामग्री, कैटलॉग, करियर और पूछताछ का सारांश।',
+    },
+    'website-engagement': {
+      request: 'सार्वजनिक वेबसाइट से संपर्क और पूछताछ अनुरोध।',
+      'solution-request': 'समाधान और उत्पाद-विशिष्ट अनुरोध।',
+    },
+    'website-content': {
+      news: 'समाचार और कार्यक्रम लेख बनाएं, संपादित करें और प्रकाशित करें।',
+      'data-sheets': 'उत्पाद और तकनीकी डेटा शीट।',
+      banner: 'होमपेज और प्रचार बैनर।',
+      timeline: 'कंपनी समयरेखा और मील के पत्थर।',
+    },
+    'website-catalog': {
+      'case-study': 'ग्राहक केस स्टडी।',
+      solutions: 'सार्वजनिक वेबसाइट पर दिए गए समाधान।',
+      projects: 'परियोजना प्रदर्शनी।',
+      products: 'वेबसाइट पर उत्पाद और परियोजना कैटलॉग।',
+      'kran-seniors': 'क्रान सीनियर्स प्रोफाइल।',
+      'kran-faces': 'क्रान फेसेस प्रोफाइल।',
+      'category-setup': 'सामग्री और कैटलॉग श्रेणी सेटअप।',
+    },
+    'website-media': {
+      gallery: 'छवि और मीडिया गैलरी।',
+    },
+    'website-careers': {
+      'no-vacancy': 'वेबसाइट पर प्रकाशित खुली भूमिकाएं और रिक्तियां।',
+      'job-applications': 'उम्मीदवार नौकरी आवेदन और जमा किए गए रिज्यूमे।',
+    },
+    'website-notification': {
+      'mail-setup': 'आउटबाउंड मेल और अधिसूचना सेटअप।',
+    },
     'sample-dashboard': {
       overview: 'विभागीय स्वीकृतियों, व्यय और टेलीमेट्री का कार्यकारी अवलोकन',
     },
@@ -391,6 +447,7 @@ export default {
       'loading-states': 'कंकाल लोडर, झिलमिलाहट बार और प्रगति संकेतक',
       'empty-states': 'शून्य-डेटा प्लेसहोल्डर, प्रारंभिक अवस्थाएं और त्रुटि फॉलबैक',
       tooltips: 'आइकन-केवल टेबल और टूलबार नियंत्रणों के लिए ActionIconTooltip पैटर्न',
+      'modals-gallery': 'डिज़ाइन संदर्भ के लिए मोडल और संवाद गैलरी।',
     },
     navigation: {
       overview: 'नेविगेशन नियंत्रण, ब्रेडक्रंब, टैब और मेनू',
@@ -400,6 +457,8 @@ export default {
       tabs: 'इन-पेज क्षैतिज टैब स्ट्रिप्स और द्वितीयक दृश्य स्विचर',
       'dropdown-menus': 'एक्शन ड्रॉपडाउन, पॉपओवर मेनू और ओवरफ़्लो नियंत्रण',
       'grid-layout': 'पृष्ठ अनुभाग, उत्तरदायी ग्रिड और कंटेनर स्पेसिंग',
+      'page-layout': 'पूर्ण-पृष्ठ लेआउट पैटर्न और कंटेंट गटर।',
+      'app-chrome': 'मॉड्यूल सामग्री के चारों ओर एप्लिकेशन शेल क्रोम।',
     },
     actions: {
       overview: 'सिमेंटिक बटन, आइकन बटन और बटन समूह',
@@ -407,6 +466,8 @@ export default {
       'icon-buttons': 'टोन टूलटिप्स के साथ सुलभ 36px वर्ग आइकन बटन',
       'button-groups': 'खंडित बटन समूह और उत्तरदायी पंक्ति क्रिया ओवरफ़्लो',
       'action-states': 'अक्षम, लोडिंग और सिमेंटिक बटन स्थिति विनिर्देश',
+      'table-row-actions': 'डेटा टेबल में पंक्ति-स्तर क्रिया मेनू और आइकन नियंत्रण।',
+      'legacy-buttons': 'केवल संदर्भ के लिए रखी गई लेगेसी बटन शैलियां।',
     },
     patterns: {
       overview: 'सूची, अपलोड और वर्कफ़्लो UI पैटर्न — साझा अनुभाग शीर्षकों के साथ।',
@@ -431,11 +492,14 @@ export default {
       'radio-buttons': 'एकल-चयन रेडियो बटन समूह और विकल्प सूचियां',
       switches: 'WAI-ARIA सुलभ टॉगल स्विच और सेटिंग नियंत्रण',
       'form-validation': 'लाइव सत्यापन प्रतिक्रिया के साथ रिएक्ट हुक फॉर्म एकीकरण',
+      'date-time': 'सत्यापन के साथ दिनांक और समय पिकर।',
+      'form-layout': 'बहु-फ़ील्ड फ़ॉर्म लेआउट और अनुभाग रिक्ति।',
     },
     overview: {
       overview: 'डिज़ाइन सिस्टम घटक कैटलॉग और इंटरैक्टिव विनिर्देश',
       'module-overview': 'डिज़ाइन सिस्टम घटक कैटलॉग और इंटरैक्टिव विनिर्देश',
       'getting-started': 'आर्किटेक्चर दिशानिर्देश, डिज़ाइन टोकन और दत्तक ग्रहण गाइड',
+      'component-catalog': 'पंजीकृत डिज़ाइन-सिस्टम घटक ब्राउज़ करें।',
     },
     budget: {
       initiation: 'वित्तीय वर्ष के लिए बजट चक्र बनाएं और प्रबंधित करें।',
@@ -688,12 +752,15 @@ export default {
       'checkbox-radio': 'native accent के साथ checkbox और radio।',
       switch: 'बूलियन सेटिंग के लिए toggle switches।',
       validation: 'React Hook Form rules और पहले error पर फ़ोकस।',
+      'date-input': 'कैलेंडर affordances के साथ दिनांक इनपुट।',
+      'form-layout': 'लाइब्रेरी फ़ॉर्म लेआउट रिक्ति और फ़ील्ड समूहीकरण।',
     },
     'lib-feedback': {
       alerts: 'इनलाइन अलर्ट और contextual banners।',
       toasts: 'पुष्टि action tint के साथ bottom-center toasts।',
       'dialogs-modals': 'पोर्टल modals, nested stacks, confirm dialogs।',
       tooltips: 'क्लिक पर बंद होने वाले आइकन tooltips।',
+      'modals-gallery': 'कंपोनेंट लाइब्रेरी में मोडल पैटर्न।',
       'loading-states': 'async डेटा के लिए skeleton loaders।',
       'empty-states': 'तालिकाओं के लिए zero-data placeholders।',
     },

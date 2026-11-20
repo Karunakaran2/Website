@@ -23,8 +23,6 @@ describe('AppFooter layout', () => {
     expect(workbench).toHaveAttribute('href', '/component-workbench/overview/module-overview')
     expect(guidelines).toHaveAttribute('href', '/design-guidelines/guide-principles/overview')
 
-    expect(screen.getByRole('button', { name: 'Download Source ZIP' })).toBeInTheDocument()
-
     const logo = screen.getByRole('link', { name: 'KRAN' })
     expect(logo).toHaveAttribute('href', 'https://kran.co.in/')
 

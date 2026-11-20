@@ -1,0 +1,1 @@
+export { buildCatalogServicePages } from './buildCatalogPages'

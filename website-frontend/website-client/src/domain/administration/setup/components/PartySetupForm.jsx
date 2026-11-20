@@ -4,9 +4,9 @@ import { useSetupFormSaveRequest } from '../hooks/useSetupFormSaveRequest'
 import { Controller, useFieldArray } from 'react-hook-form'
 import { useProbityForm } from '@/shared/utils/useProbityForm'
 import { Landmark, MapPin, Package, Users } from 'lucide-react'
-import { FeaturedBasicSelect } from '@/shared/lib/tailwreck'
 import { SetupFormRowActions } from './setupGigwButtons'
 import {
+  BasicSelect,
   FieldError,
   FieldGrid,
   InputField,
@@ -493,7 +493,7 @@ export default function PartySetupForm({
                             render={({ field }) => (
                               <>
                                 <div className={orgProbityControlSlotClass}>
-                                  <FeaturedBasicSelect
+                                  <BasicSelect
                                     name={field.name}
                                     options={groupOptions}
                                     value={field.value}
@@ -652,7 +652,7 @@ export default function PartySetupForm({
                       render={({ field }) => (
                         <>
                           <div className={orgProbityControlSlotClass}>
-                            <FeaturedBasicSelect
+                            <BasicSelect
                               name={field.name}
                               options={serviceOptionsForRow(index)}
                               value={field.value}

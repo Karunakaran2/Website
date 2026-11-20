@@ -1,6 +1,5 @@
 import { notifySessionExpired } from '@/domain/auth/utils/completeSessionLogout'
 import { getRefreshToken, getSessionId, setRefreshToken, setSessionId } from '@/domain/auth/utils/session'
-import { WEBSITE_AUTH_ENABLED } from '@/shared/config/websiteAuth'
 import { apiPayloadMessage } from './apiError'
 
 function readConfiguredApiBase() {
@@ -98,15 +97,9 @@ function shouldRefresh(path, allowRefresh, hadAuthorization) {
   if (!allowRefresh || !hadAuthorization) {
     return false
   }
-  if (WEBSITE_AUTH_ENABLED) {
-    return !path.includes('/api/v1/auth/refresh')
-      && !path.includes('/api/v1/auth/logout')
-      && !path.includes('/api/v1/auth/login')
-  }
-  return !path.includes('/refreshAccessToken')
-    && !path.includes('/logoutUser')
-    && !path.includes('/loginUser')
-    && !path.includes('/exchangeSpfoAccessToken')
+  return !path.includes('/api/v1/auth/refresh')
+    && !path.includes('/api/v1/auth/logout')
+    && !path.includes('/api/v1/auth/login')
 }
 
 export async function refreshAccessToken() {
@@ -121,10 +114,7 @@ export async function refreshAccessToken() {
       })
       return Boolean(getSessionId())
     }
-    const refreshPath = WEBSITE_AUTH_ENABLED
-      ? '/api/v1/auth/refresh'
-      : '/api/v1/login/refreshAccessToken'
-    refreshInFlight = fetch(apiUrl(refreshPath), {
+    refreshInFlight = fetch(apiUrl('/api/v1/auth/refresh'), {
       method: 'POST',
       headers: {
         Accept: 'application/json',

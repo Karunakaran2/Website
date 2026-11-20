@@ -1,7 +1,7 @@
 export function formsPreviewForTab(tab) {
   const labels = {
     'text-input': 'OrgTextField / InputField — single-line text with label and FieldError.',
-    'password-input': 'PasswordInput (tailwreck) or masked OrgTextField with visibility toggle.',
+    'password-input': 'Masked InputField with type="password".',
     textarea: 'TextAreaField for narration and multi-line remarks.',
     select: 'OrgSelectField combobox — preferred over raw native select in domain modals.',
     'checkbox-radio': 'formCheckboxControlClass (native tick) and OrgRadioGroup.',

@@ -6,7 +6,6 @@ import insightfulIcon from '@/assets/Insightful.png'
 import kranLogo from '@/assets/KRAN.png'
 import reliableIcon from '@/assets/Reliable.png'
 import secureIcon from '@/assets/Secure.png'
-import { Card, CardBody } from '@/shared/lib/tailwreck'
 
 const FEATURES = [
   {
@@ -117,19 +116,15 @@ export default function BrandPanel({ footerSlot = null }) {
 
         <div className="mt-auto mb-8 w-full min-w-0 shrink-0 pt-4 max-sm:mb-8 sm:mb-10 lg:mb-[110px] lg:pt-0">
           {footerSlot}
-          <Card
-            theme="no-preset"
-            shadow="none"
-            className="!flex !flex-col w-full overflow-hidden !rounded-[5px] border border-white/90 bg-white/95 shadow-[0_8px_28px_rgba(15,40,80,0.09)] backdrop-blur-[1px] lg:!h-[169px] lg:!min-h-[169px] max-lg:!h-[84px] max-lg:!min-h-[84px] max-lg:sm:!h-[90px] max-lg:sm:!min-h-[90px]"
-          >
-            <CardBody className="flex min-h-0 flex-1 p-0 !opacity-100 !leading-normal">
+          <div className="flex w-full flex-col overflow-hidden rounded-[5px] border border-white/90 bg-white/95 shadow-[0_8px_28px_rgba(15,40,80,0.09)] backdrop-blur-[1px] lg:h-[169px] lg:min-h-[169px] max-lg:h-[84px] max-lg:min-h-[84px] max-lg:sm:h-[90px] max-lg:sm:min-h-[90px]">
+            <div className="flex min-h-0 flex-1 p-0 leading-normal">
               <div className="flex h-full w-full min-w-0 divide-x divide-slate-200/90 overflow-hidden">
                 {FEATURES.map((feature) => (
                   <FeatureItem key={feature.title} {...feature} />
                 ))}
               </div>
-            </CardBody>
-          </Card>
+            </div>
+          </div>
 
           <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-lg border border-slate-200 bg-[#F4F7FB] px-3 py-2 text-[10px] font-medium text-slate-800 sm:mt-5 sm:text-[11px]">
             <span className="inline-flex items-center gap-1">

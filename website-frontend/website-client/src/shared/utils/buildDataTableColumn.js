@@ -27,8 +27,18 @@ export function dataTableColumn(def) {
   return column
 }
 
-/** Standard centered action column for list tables. */
-export function dataTableActionColumn({ cell, id = 'action', header = 'Action' } = {}) {
+/**
+ * Standard centered action column for list tables.
+ * @param {{ cell?: (row: unknown) => import('react').ReactNode, id?: string, header?: string } | ((row: unknown) => import('react').ReactNode)} arg
+ */
+export function dataTableActionColumn(arg) {
+  const options =
+    typeof arg === 'function'
+      ? { cell: arg }
+      : arg && typeof arg === 'object'
+        ? arg
+        : {}
+  const { cell, id = 'action', header = 'Action' } = options
   return dataTableColumn({
     id,
     header,

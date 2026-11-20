@@ -4,7 +4,7 @@ import { useProbityForm } from '@/shared/utils/useProbityForm'
 const DEMO_OTP_LENGTH = 6
 
 function isDemoMode() {
-  return String(import.meta.env.VITE_MOCK_API ?? 'true').toLowerCase() === 'true'
+  return String(import.meta.env.VITE_MOCK_API ?? 'false').toLowerCase() === 'true'
 }
 
 /**

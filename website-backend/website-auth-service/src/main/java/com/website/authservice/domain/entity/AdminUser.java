@@ -30,6 +30,15 @@ public class AdminUser {
     @Column(name = "last_login_at")
     private Instant lastLoginAt;
 
+    @Column(name = "role_id")
+    private UUID roleId;
+
+    @Column(name = "system_admin", nullable = false)
+    private boolean systemAdmin;
+
+    @Column(name = "use_custom_privileges", nullable = false)
+    private boolean useCustomPrivileges;
+
     public UUID getId() {
         return id;
     }
@@ -76,5 +85,29 @@ public class AdminUser {
 
     public void setLastLoginAt(Instant lastLoginAt) {
         this.lastLoginAt = lastLoginAt;
+    }
+
+    public UUID getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(UUID roleId) {
+        this.roleId = roleId;
+    }
+
+    public boolean isSystemAdmin() {
+        return systemAdmin;
+    }
+
+    public void setSystemAdmin(boolean systemAdmin) {
+        this.systemAdmin = systemAdmin;
+    }
+
+    public boolean isUseCustomPrivileges() {
+        return useCustomPrivileges;
+    }
+
+    public void setUseCustomPrivileges(boolean useCustomPrivileges) {
+        this.useCustomPrivileges = useCustomPrivileges;
     }
 }

@@ -6,7 +6,6 @@ import react from '@vitejs/plugin-react'
 import { viteSourceZipPlugin } from './scripts/viteSourceZipPlugin.mjs'
 
 const projectRoot = path.dirname(fileURLToPath(import.meta.url))
-const tailwreckRoot = path.resolve(projectRoot, 'tailwreck')
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, projectRoot, '')
@@ -36,13 +35,12 @@ export default defineConfig(({ mode }) => {
     base: publicBase.endsWith('/') ? publicBase : `${publicBase}/`,
     plugins: [
       react({
-        // Local vendored bundle (~800KB); Babel deoptimises above 500KB — use esbuild for this path.
-        exclude: [/\/node_modules\//, /[\\/]tailwreck[\\/]/],
+        exclude: [/\/node_modules\//],
       }),
       viteSourceZipPlugin(),
     ],
     optimizeDeps: {
-      include: ['tailwreck', 'lucide-react', 'react-toastify'],
+      include: ['lucide-react', 'react-toastify'],
     },
     resolve: {
       alias: {
@@ -51,8 +49,6 @@ export default defineConfig(({ mode }) => {
         '@domain': path.resolve(projectRoot, 'src/domain'),
         '@shared': path.resolve(projectRoot, 'src/shared'),
         '@/components': path.resolve(projectRoot, 'src/shared/components'),
-        'tailwreck/style.css': path.join(tailwreckRoot, 'tailwreck.css'),
-        tailwreck: path.join(tailwreckRoot, 'tailwreck.es.jsx'),
       },
     },
     server: {
@@ -94,9 +90,6 @@ export default defineConfig(({ mode }) => {
               id.includes('node_modules/redux')
             ) {
               return 'redux'
-            }
-            if (id.includes('tailwreck')) {
-              return 'tailwreck'
             }
           },
         },

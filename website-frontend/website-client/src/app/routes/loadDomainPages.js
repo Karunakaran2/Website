@@ -4,6 +4,9 @@ import { componentWorkbenchPages } from '@/domain/component-workbench/routes'
 import { designGuidelinesPages } from '@/domain/design-guidelines/routes'
 import { workforceManagementPages } from '@/domain/module-2/routes'
 import { sampleModulePages } from '@/domain/module-1/routes'
+import { buildWebsiteServicePages } from '@/domain/website/routes/buildWebsiteServicePages'
+
+const websiteServicePages = buildWebsiteServicePages()
 import { administrationPages } from '@/domain/administration/routes'
 
 /**
@@ -12,6 +15,7 @@ import { administrationPages } from '@/domain/administration/routes'
  */
 export const DASHBOARD_PAGE_REGISTRY = {
   ...sampleModulePages,
+  ...websiteServicePages,
   ...administrationPages,
   ...componentWorkbenchPages,
   ...designGuidelinesPages,

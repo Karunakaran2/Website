@@ -1,6 +1,5 @@
 import { createPortal } from 'react-dom'
 import { useEffect, useRef } from 'react'
-import { Modal } from '@/shared/lib/tailwreck'
 import { useFocusTrap } from '@/shared/hooks/useFocusTrap'
 import { PORTAL_MODAL_Z_INDEX } from './modalChrome'
 import { registerPortalModal, unregisterPortalModal } from './portalModalStack'
@@ -18,11 +17,7 @@ export default function PortalModal({
   overlayZIndex,
   staticBackdrop = false,
   closeOnEscape = true,
-  theme = 'no-preset',
-  position = 'center',
-  rounded = 'lg',
-  shadow = 'lg',
-  ...props
+  className = '',
 }) {
   const containerRef = useRef(null)
   const stackIdRef = useRef(null)
@@ -49,25 +44,18 @@ export default function PortalModal({
   return createPortal(
     <div
       ref={containerRef}
-      className="probity-portal-modal fixed inset-0"
+      className="probity-portal-modal fixed inset-0 flex items-center justify-center bg-slate-900/50 p-3 sm:p-4"
       style={{ zIndex: overlayZIndex ?? PORTAL_MODAL_Z_INDEX }}
       role="dialog"
       aria-modal="true"
       aria-labelledby={ariaLabelledBy}
       aria-describedby={ariaDescribedBy}
+      onMouseDown={(event) => {
+        if (staticBackdrop || event.target !== event.currentTarget) return
+        onClose?.()
+      }}
     >
-      <Modal
-        isOpen={isOpen}
-        onClose={undefined}
-        disableBackdropClick={staticBackdrop}
-        theme={theme}
-        position={position}
-        rounded={rounded}
-        shadow={shadow}
-        {...props}
-      >
-        {children}
-      </Modal>
+      <div className={`relative z-[1] ${className}`.trim()}>{children}</div>
     </div>,
     document.body,
   )

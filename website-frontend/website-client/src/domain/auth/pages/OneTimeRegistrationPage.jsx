@@ -2,11 +2,10 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ArrowRight } from 'lucide-react'
-import { Input, PasswordInput } from '@/shared/lib/tailwreck'
+import { InputField } from '@/shared/components/forms'
 import { SubmitButton } from '@/shared/components/buttons'
 import BackButton from '@/shared/components/buttons/BackButton'
 import { GigwButton } from '@/shared/components/buttons/gigw'
-import { PasswordKeyOutlinedIcon, UserIcon } from '@/shared/components/icons/AppIcons'
 import AuthPageShell from '@/shared/layouts/AuthPageShell'
 import AuthPageCard from '@/domain/auth/components/AuthPageCard'
 import AuthOtpField from '@/domain/auth/components/AuthOtpField'
@@ -20,7 +19,7 @@ import {
 import {
   authDemoBannerClass,
   authPrimarySubmitClass,
-  authTailwreckFieldClass,
+  authFieldClass,
 } from '@/domain/auth/constants/authFormStyles'
 import { useOneTimeRegistrationForm } from '@/domain/auth/hooks/useOneTimeRegistrationForm'
 import { ROUTES } from '@/shared/constants'
@@ -180,119 +179,83 @@ function OneTimeRegistrationSteps({ form }) {
       }}
       noValidate
     >
-      <div className={`grid gap-0 sm:grid-cols-2 ${authTailwreckFieldClass}`}>
+      <div className={`grid gap-0 sm:grid-cols-2 ${authFieldClass}`}>
         <div className="sm:col-span-2">
-          <Input
+          <InputField
             type="text"
-            name="fullName"
             label={t('oneTimeRegistration.fullName')}
             placeholder={t('oneTimeRegistration.fullNamePlaceholder')}
-            register={register}
-            validation={{ required: t('oneTimeRegistration.fullNameRequired') }}
-            error={errors.fullName}
-            size="lg"
-            theme="primary"
+            error={errors.fullName?.message}
             required
             autoComplete="name"
+            {...register('fullName', { required: t('oneTimeRegistration.fullNameRequired') })}
           />
         </div>
-        <Input
+        <InputField
           type="email"
-          name="email"
           label={t('oneTimeRegistration.email')}
           placeholder={t('oneTimeRegistration.emailPlaceholder')}
-          register={register}
-          validation={mergeProbityFieldRules('email', {
-            required: t('oneTimeRegistration.emailRequired'),
-          })}
-          error={errors.email}
-          size="lg"
-          theme="primary"
+          error={errors.email?.message}
           required
           autoComplete="email"
+          {...register(
+            'email',
+            mergeProbityFieldRules('email', {
+              required: t('oneTimeRegistration.emailRequired'),
+            }),
+          )}
         />
-        <Input
+        <InputField
           type="tel"
-          name="mobile"
           label={t('oneTimeRegistration.mobile')}
           placeholder={t('oneTimeRegistration.mobilePlaceholder')}
-          register={register}
-          validation={mergeProbityFieldRules('mobile', {
-            required: t('oneTimeRegistration.mobileRequired'),
-          })}
-          error={errors.mobile}
-          size="lg"
-          theme="primary"
+          error={errors.mobile?.message}
           required
           autoComplete="tel"
+          {...register(
+            'mobile',
+            mergeProbityFieldRules('mobile', {
+              required: t('oneTimeRegistration.mobileRequired'),
+            }),
+          )}
         />
         <div className="sm:col-span-2">
-          <Input
+          <InputField
             type="text"
-            name="username"
             label={t('login.username')}
             placeholder={t('login.usernamePlaceholder')}
-            register={register}
-            validation={{
-              required: t('login.usernameRequired'),
-              validate: (value) => value.trim().length > 0 || t('login.usernameRequired'),
-            }}
-            error={errors.username}
-            icon={UserIcon}
-            iconProps={{ className: '!left-5 !text-[22px] !text-slate-400' }}
-            size="lg"
-            theme="primary"
+            error={errors.username?.message}
             required
             autoComplete="username"
+            {...register('username', {
+              required: t('login.usernameRequired'),
+              validate: (value) => value.trim().length > 0 || t('login.usernameRequired'),
+            })}
           />
         </div>
-        <div>
-          <label className="mb-2 block font-noto text-base font-bold text-probity-ink-strong">
-            {t('oneTimeRegistration.password')}
-          </label>
-          <div className="relative">
-            <span
-              className="pointer-events-none absolute left-5 top-1/2 z-10 -translate-y-1/2 text-slate-400"
-              aria-hidden
-            >
-              <PasswordKeyOutlinedIcon className="text-[22px] text-slate-400" />
-            </span>
-            <PasswordInput
-              name="password"
-              label=""
-              placeholder={t('oneTimeRegistration.passwordPlaceholder')}
-              register={register}
-              validation={{
-                required: t('oneTimeRegistration.passwordRequired'),
-                minLength: { value: 8, message: t('oneTimeRegistration.passwordMinLength') },
-              }}
-              error={errors.password}
-              showIcon
-              size="lg"
-              theme="primary"
-              required
-              autoComplete="new-password"
-            />
-          </div>
-        </div>
-        <div>
-          <label className="mb-2 block font-noto text-base font-bold text-probity-ink-strong">
-            {t('oneTimeRegistration.confirmPassword')}
-          </label>
-          <PasswordInput
-            name="confirmPassword"
-            label=""
-            placeholder={t('oneTimeRegistration.confirmPasswordPlaceholder')}
-            register={register}
-            validation={{ required: t('oneTimeRegistration.confirmPasswordRequired') }}
-            error={errors.confirmPassword}
-            showIcon
-            size="lg"
-            theme="primary"
-            required
-            autoComplete="new-password"
-          />
-        </div>
+        <InputField
+          type="password"
+          label={t('oneTimeRegistration.password')}
+          placeholder={t('oneTimeRegistration.passwordPlaceholder')}
+          error={errors.password?.message}
+          required
+          autoComplete="new-password"
+          {...register('password', {
+            required: t('oneTimeRegistration.passwordRequired'),
+            minLength: { value: 8, message: t('oneTimeRegistration.passwordMinLength') },
+          })}
+        />
+        <InputField
+          type="password"
+          label={t('oneTimeRegistration.confirmPassword')}
+          placeholder={t('oneTimeRegistration.confirmPasswordPlaceholder')}
+          error={errors.confirmPassword?.message}
+          required
+          autoComplete="new-password"
+          {...register('confirmPassword', {
+            required: t('oneTimeRegistration.confirmPasswordRequired'),
+          })}
+        />
       </div>
       {submitError && activeStep === 1 ? (
         <p className="mb-4 text-sm font-medium text-red-600" role="alert">

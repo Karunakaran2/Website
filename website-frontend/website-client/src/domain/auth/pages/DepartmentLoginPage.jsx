@@ -44,8 +44,8 @@ export default function DepartmentLoginPage() {
 
   return (
     <AuthPageShell variant="login">
-      <AuthLoginLayout onApplyMockCredential={login.applyMockCredential}>
-        <LoginForm login={login} defaultPortal="department" onOpenForgotPassword={openForgot} />
+      <AuthLoginLayout>
+        <LoginForm login={login} onOpenForgotPassword={openForgot} />
       </AuthLoginLayout>
       <ForgotPasswordModal open={forgotOpen} onClose={closeForgot} />
     </AuthPageShell>

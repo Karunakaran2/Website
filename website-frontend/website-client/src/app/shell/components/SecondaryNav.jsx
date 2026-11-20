@@ -5,7 +5,6 @@ import { getSecondaryNavItems } from '@/app/shell/constants/dashboard'
 import { useDashboardNav } from '@/app/shell/hooks/useDashboardNav'
 import { useDashboardRouteIds } from '@/app/shell/hooks/useDashboardRouteIds'
 import { getSecondaryNavTo } from '@/app/shell/utils/dashboardNavPaths'
-
 /** SPFO sub-nav row is 45px; use px height so fluid html font-size does not shrink the bar */
 export default function SecondaryNav() {
   const { t } = useTranslation()
@@ -15,7 +14,11 @@ export default function SecondaryNav() {
   const resolvedSecondaryId = routeIds?.secondaryId ?? activeSecondaryId
   const secondaryNavItems = getSecondaryNavItems(resolvedPrimaryId)
 
-  if (resolvedPrimaryId === 'inbox' || secondaryNavItems.length === 0) {
+  if (
+    resolvedPrimaryId === 'inbox' ||
+    resolvedPrimaryId === 'website-dashboard' ||
+    secondaryNavItems.length === 0
+  ) {
     return null
   }
 
@@ -33,7 +36,7 @@ export default function SecondaryNav() {
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              {t(tab.label)}
+              {t(`nav.secondary.${tab.id}`, { defaultValue: tab.label })}
               {resolvedSecondaryId === tab.id ? (
                 <span
                   aria-hidden

@@ -76,5 +76,17 @@ export default {
       'Roles and permissions are assigned by your administrator and cannot be changed here.',
     securityAvailability:
       'Last login, password change, and MFA status are not exposed by the current login API in this portal. Use your organization’s identity tools where applicable.',
+    changePassword: {
+      lead: 'Update your CMS sign-in password. You must enter your current password.',
+      current: 'Current password',
+      new: 'New password',
+      confirm: 'Confirm new password',
+      submit: 'Update password',
+      saving: 'Updating…',
+      success: 'Password updated.',
+      failed: 'Could not update password.',
+      minLength: 'New password must be at least 8 characters.',
+      mismatch: 'New password and confirmation do not match.',
+    },
   },
 }

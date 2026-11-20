@@ -6,7 +6,7 @@ import {
   DATATABLE_TOOLBAR_SEARCH_INPUT_CLASS,
 } from '@/shared/components/DataTable/dataTableToolbarStyles'
 import { TABLE_CHROME_TEXT_CLASS } from '@/shared/components/listing/listingTableStyles'
-import { FeaturedBasicSelect, Input } from '@/shared/lib/tailwreck'
+import { BasicSelect } from '@/shared/components/forms'
 import { resolveSelectValue, useDebouncedValue } from '@/shared/utils'
 
 const PAGE_SIZE_OPTIONS = [
@@ -77,7 +77,7 @@ export default function DataTableToolbar({
       >
         {showPrefix ? <span className="shrink-0">{t('common.show', { defaultValue: 'Show' })}</span> : null}
         <div className={DATATABLE_TOOLBAR_PAGE_SIZE_WRAPPER_CLASS}>
-          <FeaturedBasicSelect
+          <BasicSelect
             name="pageSize"
             options={normalizedOptions}
             value={selectValueInOptions}
@@ -107,16 +107,14 @@ export default function DataTableToolbar({
               <label htmlFor="datatable-search" className="shrink-0 font-medium">
                 {t('common.search', { defaultValue: 'Search' })}
               </label>
-              <div className="w-full min-w-[180px] max-w-[240px] sm:w-[220px] [&_label]:hidden">
-                <Input
+              <div className="w-full min-w-[180px] max-w-[240px] sm:w-[220px]">
+                <input
                   id="datatable-search"
                   name="search"
-                  type="text"
+                  type="search"
                   maxLength={100}
                   value={draftSearch}
                   onChange={(event) => setDraftSearch(event.target.value)}
-                  size="sm"
-                  theme="primary"
                   className={DATATABLE_TOOLBAR_SEARCH_INPUT_CLASS}
                 />
               </div>

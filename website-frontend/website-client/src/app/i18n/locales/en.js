@@ -1,5 +1,6 @@
 export default {
   documentTitle: {
+    publicHome: 'KRAN Consulting — Welcome',
     applicationTracking: 'Application Tracking',
     login: 'Login',
     forgotPassword: 'Forgot Password',
@@ -102,6 +103,8 @@ export default {
     moduleHeaderWorkbench: 'Component Workbench',
     moduleHeaderDesignGuidelines: 'Design Guidelines',
     moduleHeaderAdministration: 'Administration',
+    moduleHeaderWebsiteAdmin: 'Administration',
+    backToList: 'Back to list',
   },
   authCommon: {
     backToLogin: 'Back to Login',
@@ -308,6 +311,7 @@ export default {
   },
   accounts: {
     title: 'Select an Account',
+    websiteHomeTitle: 'Website administration',
     subtitle: 'Please select the account you want to access and continue.',
     role: 'Accounts Director',
   },
@@ -356,10 +360,42 @@ export default {
       'opening-balance-setup': 'Opening Balance',
       'financial-year-setup': 'Financial Year',
       'tally-port-setup': 'Tally Port',
+      'website-dashboard': 'Home',
+      'website-engagement': 'Enquiries',
+      'website-content': 'Content',
+      'website-catalog': 'Catalog',
+      'website-media': 'Media',
+      'website-careers': 'Career',
+      'website-notification': 'Mail Setup',
+      'website-administration': 'Administration',
     },
     setupArea: 'Setup',
     secondary: {
       overview: 'Overview',
+      news: 'News',
+      banners: 'Banners',
+      products: 'Products',
+      services: 'Services',
+      solutions: 'Solutions',
+      jobs: 'Jobs',
+      contacts: 'Contacts',
+      manage: 'Manage',
+      request: 'Request',
+      'solution-request': 'Solution Request',
+      'data-sheets': 'Data Sheets',
+      'case-study': 'Case Study',
+      gallery: 'Gallery',
+      banner: 'Banner',
+      timeline: 'Timeline',
+      'category-setup': 'Category Setup',
+      'kran-seniors': 'Kran Seniors',
+      'kran-faces': 'Kran Faces',
+      'mail-setup': 'Mail Setup',
+      'user-setup': 'User setup',
+      roles: 'Roles & privileges',
+      projects: 'Projects',
+      'no-vacancy': 'No Vacancy',
+      'job-applications': 'Job Applications',
       'my-requests': 'My Requests',
       'pending-actions': 'Pending Actions',
       history: 'History',
@@ -435,6 +471,42 @@ export default {
     'workforce-cases': {
       overview: 'Operational case queue for grievances, support, and assignment workflows.',
     },
+    'website-dashboard': {
+      overview: 'KRAN Admin home — content, catalog, careers, and enquiries at a glance.',
+    },
+    'website-engagement': {
+      request: 'General contact and enquiry requests from the public website.',
+      'solution-request': 'Solution and product-specific requests from the public website.',
+    },
+    'website-content': {
+      news: 'Create, edit, and publish news articles and events.',
+      'data-sheets': 'Product and technical data sheets.',
+      banner: 'Homepage and promotional banners.',
+      timeline: 'Company timeline and milestones.',
+    },
+    'website-catalog': {
+      'case-study': 'Customer case studies.',
+      solutions: 'Solutions offered on the public website.',
+      projects: 'Projects showcase.',
+      products: 'Products and project catalog on the website.',
+      'kran-seniors': 'Kran Seniors profiles.',
+      'kran-faces': 'Kran Faces profiles.',
+      'category-setup': 'Content and catalog category setup.',
+    },
+    'website-media': {
+      gallery: 'Image and media gallery.',
+    },
+    'website-careers': {
+      'no-vacancy': 'Open roles and vacancies published on the website.',
+      'job-applications': 'Candidate job applications and submitted resumes.',
+    },
+    'website-notification': {
+      'mail-setup': 'Outbound mail and notification setup.',
+    },
+    'website-administration': {
+      'user-setup': 'Create CMS users, passwords, and custom privilege sets.',
+      roles: 'Define roles such as Content creator or HR with view, edit, delete, and download rights.',
+    },
     'sample-dashboard': {
       overview: 'Executive overview of departmental sanctions, expenditures, and telemetry',
     },
@@ -470,6 +542,7 @@ export default {
       'loading-states': 'Skeleton loaders, shimmer bars, and progress indicators',
       'empty-states': 'Zero-data placeholders, initial states, and error fallbacks',
       tooltips: 'ActionIconTooltip patterns for icon-only table and toolbar controls',
+      'modals-gallery': 'Modal and dialog gallery for design reference.',
     },
     navigation: {
       overview: 'Navigation controls, breadcrumbs, tabs, and menus',
@@ -479,6 +552,8 @@ export default {
       tabs: 'In-page horizontal tab strips and secondary view switchers',
       'dropdown-menus': 'Action dropdowns, popover menus, and overflow controls',
       'grid-layout': 'Page sections, responsive grids, and container spacing',
+      'page-layout': 'Full-page layout patterns and content gutters.',
+      'app-chrome': 'Application shell chrome around module content.',
     },
     actions: {
       overview: 'Semantic buttons, icon buttons, and button groups',
@@ -486,6 +561,8 @@ export default {
       'icon-buttons': 'Accessible 36px square icon buttons with tone tooltips',
       'button-groups': 'Segmented button groups and responsive row action overflow',
       'action-states': 'Disabled, loading, and semantic button state specifications',
+      'table-row-actions': 'Row-level action menus and icon controls in data tables.',
+      'legacy-buttons': 'Legacy button styles retained for reference only.',
     },
     patterns: {
       overview: 'End-to-end list, upload, and workflow UI patterns with shared section headings.',
@@ -510,11 +587,14 @@ export default {
       'radio-buttons': 'Single-selection radio button groups and option lists',
       switches: 'WAI-ARIA accessible toggle switches and setting controls',
       'form-validation': 'React Hook Form integration with live validation feedback',
+      'date-time': 'Date and time pickers with validation.',
+      'form-layout': 'Multi-field form layouts and section spacing.',
     },
     overview: {
       overview: 'Design System component catalog and interactive specifications',
       'module-overview': 'Design System component catalog and interactive specifications',
       'getting-started': 'Architecture guidelines, design tokens, and adoption guide',
+      'component-catalog': 'Browse registered design-system components.',
     },
     budget: {
       initiation: 'Create and manage budget cycles for the financial year.',
@@ -772,6 +852,8 @@ export default {
       'checkbox-radio': 'Checkbox and radio groups with native accent styling.',
       switch: 'Toggle switches for boolean settings and form options.',
       validation: 'React Hook Form rules, rose borders, and focus on first error.',
+      'date-input': 'Date inputs with calendar affordances.',
+      'form-layout': 'Library form layout spacing and field grouping.',
     },
     'lib-feedback': {
       alerts: 'Inline alerts and contextual banners for form and list screens.',
@@ -780,6 +862,7 @@ export default {
       tooltips: 'Icon tooltips that close on click and reopen on new hover.',
       'loading-states': 'Skeleton loaders and progress indicators for async data.',
       'empty-states': 'Zero-data placeholders for tables and search results.',
+      'modals-gallery': 'Modal patterns in the component library.',
     },
     'lib-data-display': {
       cards: 'KPI and summary cards with consistent borders and typography.',

@@ -160,7 +160,12 @@ export default function LoginPasswordForm({
 
       <button
         type="submit"
-        disabled={disabled || isSubmitting || captchaLoading || !captchaImage}
+        disabled={
+          disabled ||
+          isSubmitting ||
+          captchaLoading ||
+          !captchaImage
+        }
         className={loginPrimaryBtnClass}
         aria-busy={isSubmitting}
       >

@@ -19,7 +19,7 @@ npm run build:source-zip
 
 ## Inclusion policy
 
-See `scripts/sourceArchivePolicy.js` — allowlisted roots (`src/`, `docs/`, `public/`, `scripts/`, `tailwreck/`, safe root files such as `package.json`, `package-lock.json`, `.env.example`).
+See `scripts/sourceArchivePolicy.js` — allowlisted roots (`src/`, `docs/`, `public/`, `scripts/`, safe root files such as `package.json`, `package-lock.json`, `.env.example`).
 
 **Excluded:** `node_modules/`, `dist/`, `.git/`, `.env` and other secret env files, `*.zip`, `*.log`, private keys, `public/releases/` (artifact output), editor caches.
 

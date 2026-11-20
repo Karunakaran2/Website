@@ -4,11 +4,13 @@ import {
   PORTAL_LANDING_MODULES,
   PORTAL_MODULES,
 } from './portalModules'
+import { WEBSITE_AUTH_ENABLED } from '@/shared/config/websiteAuth'
 
 describe('portalModules', () => {
-  it('shows only Module 1 and Module 2 on the landing grid', () => {
-    expect(PORTAL_LANDING_MODULES).toHaveLength(2)
-    expect(PORTAL_LANDING_MODULES.map((m) => m.id)).toEqual(['module-1', 'module-2'])
+  it('omits demo module cards on the landing grid when website CMS mode is on', () => {
+    const expectedIds = WEBSITE_AUTH_ENABLED ? [] : ['module-1', 'module-2']
+    expect(PORTAL_LANDING_MODULES.map((m) => m.id)).toEqual(expectedIds)
+    expect(PORTAL_LANDING_MODULES).toHaveLength(expectedIds.length)
   })
 
   it('exposes workbench and guidelines via footer modules', () => {

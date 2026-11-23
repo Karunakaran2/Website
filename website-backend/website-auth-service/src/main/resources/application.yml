@@ -26,6 +26,10 @@ spring:
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+website:
+  audit:
+    ingest-secret: ${WEBSITE_AUDIT_INGEST_SECRET:local-dev-audit-ingest}
+
 app:
   jwt:
     issuer: ${JWT_ISSUER:https://website.local/auth-service}

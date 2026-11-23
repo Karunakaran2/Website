@@ -1,9 +1,5 @@
-import { DEFAULT_PRIMARY_NAV_ID, getDefaultSecondaryTabId } from '@/app/shell/constants/dashboard'
-import { getModuleRoute } from '@/shared/constants'
+import { getWebsiteCmsHomePath } from '@/domain/website-cms/utils/cmsHome'
 
 export function getInboxOverviewPath() {
-  return getModuleRoute(
-    DEFAULT_PRIMARY_NAV_ID,
-    getDefaultSecondaryTabId(DEFAULT_PRIMARY_NAV_ID),
-  )
+  return getWebsiteCmsHomePath()
 }

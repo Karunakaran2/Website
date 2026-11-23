@@ -18,6 +18,7 @@ import { CMS_ADMIN_HOOKS_BY_PRIMARY } from '../services/kranAdminApi'
 import CmsGenericAdminForm from '../components/CmsGenericAdminForm'
 import { useCmsFormPageHeaderBack } from '../hooks/useCmsFormPageHeaderBack.jsx'
 import { useWebsiteAccess } from '@/domain/website-access/hooks/useWebsiteAccess'
+import { useWebsiteListQueryOptions } from '@/domain/website-access/hooks/useWebsiteListQueryOptions'
 import { cmsPrivilegesForResource } from '@/domain/website-access/constants/websitePrivileges'
 
 function normalizeBody(values, fields) {
@@ -47,8 +48,9 @@ function CmsStandardAdminPageInner({ resourceKey }) {
   const canView = can(resourcePrivileges.view)
   const canCreate = can(resourcePrivileges.create)
   const canEdit = can(resourcePrivileges.edit)
+  const listQueryOptions = useWebsiteListQueryOptions(canView)
 
-  const { data: rowData, isLoading, isError, refetch } = hooks.useList()
+  const { data: rowData, isLoading, isError, refetch } = hooks.useList(undefined, listQueryOptions)
   const rows = Array.isArray(rowData) ? rowData : []
   const [createRow] = hooks.useCreate()
   const [updateRow] = hooks.useUpdate()

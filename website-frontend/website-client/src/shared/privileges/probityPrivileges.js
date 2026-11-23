@@ -1,10 +1,18 @@
 import {
   getDefaultSecondaryTabId,
   getSecondaryNavItems,
-  isSetupPrimary,
-  PRIMARY_NAV_ITEMS,
-  SETUP_PRIMARY_NAV_ITEMS,
+  isDesignGuidelinesPrimary,
+  isWorkbenchPrimary,
 } from '@/app/shell/constants/dashboard'
+import { isWebsiteCmsPrimary } from '@/domain/website-cms/constants/websiteCmsNav'
+
+function isShellPrimary(primaryId) {
+  return (
+    isWebsiteCmsPrimary(primaryId) ||
+    isWorkbenchPrimary(primaryId) ||
+    isDesignGuidelinesPrimary(primaryId)
+  )
+}
 
 /**
  * Privilege codes already enforced in Probity 2.0 (sec:authorize hasAuthority).
@@ -189,40 +197,33 @@ function pickSecondary(primaryId, preferredId, grants) {
   return allowed[0].id
 }
 
-function landingPool(primaryId) {
-  const setupFirst = isSetupPrimary(primaryId)
-  const first = setupFirst ? SETUP_PRIMARY_NAV_ITEMS : PRIMARY_NAV_ITEMS
-  const second = setupFirst ? PRIMARY_NAV_ITEMS : SETUP_PRIMARY_NAV_ITEMS
-  return [...first, ...second]
-}
-
 /**
- * When a grant list is loaded, move a disallowed dashboard URL to the first allowed tab.
- * With no grant list, the requested ids are returned unchanged.
+ * Normalize dashboard URL to an allowed KRAN Website CMS tab (privilege-aware secondary tabs).
  */
 export function resolvePrivilegedDashboardNav(primaryId, secondaryId, grants) {
+  const safePrimary = isShellPrimary(primaryId) ? primaryId : 'website-dashboard'
   if (!grantsAreEnforced(grants)) {
-    return { primaryId, secondaryId }
+    const nextSecondary =
+      secondaryId && getSecondaryNavItems(safePrimary).some((tab) => tab.id === secondaryId)
+        ? secondaryId
+        : getDefaultSecondaryTabId(safePrimary)
+    return { primaryId: safePrimary, secondaryId: nextSecondary }
   }
 
-  const ordered = []
-  if (primaryIsAllowed(primaryId, grants) && primaryId !== 'setup-home') ordered.push(primaryId)
-  landingPool(primaryId).forEach((item) => {
-    if (item.id !== primaryId && item.id !== 'setup-home' && primaryIsAllowed(item.id, grants)) {
-      ordered.push(item.id)
-    }
-  })
-
-  for (const candidate of ordered) {
-    const nextSecondary = pickSecondary(
-      candidate,
-      candidate === primaryId ? secondaryId : null,
-      grants,
-    )
-    if (nextSecondary !== undefined) {
-      return { primaryId: candidate, secondaryId: nextSecondary }
+  if (!primaryIsAllowed(safePrimary, grants)) {
+    return {
+      primaryId: 'website-dashboard',
+      secondaryId: firstAllowedSecondaryId('website-dashboard', grants),
     }
   }
 
-  return { primaryId, secondaryId: secondaryId || getDefaultSecondaryTabId(primaryId) }
+  const nextSecondary = pickSecondary(
+    safePrimary,
+    secondaryId,
+    grants,
+  )
+  return {
+    primaryId: safePrimary,
+    secondaryId: nextSecondary ?? getDefaultSecondaryTabId(safePrimary),
+  }
 }

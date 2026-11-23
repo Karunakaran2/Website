@@ -31,13 +31,13 @@ const PublicNewsPage = lazyPage(() => import('@/domain/website-public/pages/Publ
 const PublicComingSoonPage = lazyPage(() =>
   import('@/domain/website-public/pages/PublicComingSoonPage'),
 )
-import {
-  ROUTES,
-  getModuleRoute,
-  legacyDashboardPathToModuleRoute,
-  MODULE_ROUTE_PREFIX,
-} from '@/shared/constants'
+import { ROUTES, legacyDashboardPathToModuleRoute, MODULE_ROUTE_PREFIX } from '@/shared/constants'
 import { canonicalizeModulePathname } from '@/shared/constants/moduleRoutes'
+import { getWebsiteCmsHomePath } from '@/domain/website-cms/utils/cmsHome'
+
+function WebsiteCmsHomeRedirect() {
+  return <Navigate to={getWebsiteCmsHomePath()} replace />
+}
 
 function HomePageFallback() {
   return (
@@ -252,19 +252,31 @@ export default function AppRoutes() {
       <Route path="/workforce" element={<LegacyPathRedirect />} />
       <Route path="/workforce-management/*" element={<LegacyPathRedirect />} />
       <Route path="/workforce-management" element={<LegacyPathRedirect />} />
-      <Route
-        path={ROUTES.SETUP_ROOT}
-        element={<Navigate to={getModuleRoute('company-setup', 'overview')} replace />}
-      />
+      <Route path={ROUTES.SETUP_ROOT} element={<WebsiteCmsHomeRedirect />} />
       <Route path={`${MODULE_ROUTE_PREFIX.WORKBENCH}/*`} element={moduleShell} />
-      <Route path={`${MODULE_ROUTE_PREFIX.SAMPLE}/*`} element={moduleShell} />
+      <Route path={`${MODULE_ROUTE_PREFIX.SAMPLE}/*`} element={<WebsiteCmsHomeRedirect />} />
       <Route path={`${MODULE_ROUTE_PREFIX.GUIDELINES}/*`} element={moduleShell} />
-      <Route path={`${MODULE_ROUTE_PREFIX.WORKFORCE}/*`} element={moduleShell} />
-      <Route path={`${MODULE_ROUTE_PREFIX.ADMINISTRATION_SETUP}/*`} element={moduleShell} />
-      <Route path={`${MODULE_ROUTE_PREFIX.ADMINISTRATION_ASSET}/*`} element={moduleShell} />
+      <Route path={`${MODULE_ROUTE_PREFIX.WORKFORCE}/*`} element={<WebsiteCmsHomeRedirect />} />
+      <Route
+        path={`${MODULE_ROUTE_PREFIX.ADMINISTRATION_SETUP}/*`}
+        element={<WebsiteCmsHomeRedirect />}
+      />
+      <Route
+        path={`${MODULE_ROUTE_PREFIX.ADMINISTRATION_ASSET}/*`}
+        element={<WebsiteCmsHomeRedirect />}
+      />
       <Route path={ROUTES.ACCESSIBILITY_STATEMENT} element={<AccessibilityStatementPage />} />
       <Route path={ROUTES.SCREEN_READER_ACCESS} element={<ScreenReaderAccessPage />} />
-      <Route path="/:primaryTab/:secondaryTab" element={moduleShell} />
+      <Route
+        path="/:primaryTab/:secondaryTab"
+        element={
+          <RequireAuth requireSeat>
+            <Suspense fallback={<DashboardPageSkeleton />}>
+              <DashboardPage />
+            </Suspense>
+          </RequireAuth>
+        }
+      />
       <Route path="/:primaryTab" element={<ModuleRouteRedirect />} />
       <Route path="*" element={<Navigate to={ROUTES.PUBLIC_HOME} replace />} />
     </Routes>

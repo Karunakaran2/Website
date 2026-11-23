@@ -83,6 +83,7 @@ Dev server proxies `/api` to gateway (`vite.config.js`). Same pattern as `probit
 | `WEBSITE_DEV_ADMIN_USERNAME` | *(required for seed)* | First CMS admin username (auth-service, dev only) |
 | `WEBSITE_DEV_ADMIN_PASSWORD` | *(required for seed)* | First CMS admin password (auth-service, dev only; never commit) |
 | `WEBSITE_DEV_ADMIN_DISPLAY_NAME` | `KRAN Admin` | Optional display name for seeded admin |
+| `WEBSITE_AUDIT_INGEST_SECRET` | `local-dev-audit-ingest` | Shared secret for gateway → auth-service CMS audit ingest (set the same on **auth-service** and **api-gateway**) |
 
 ## CMS login (real backend, no mock)
 

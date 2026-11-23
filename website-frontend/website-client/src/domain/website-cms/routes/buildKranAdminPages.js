@@ -30,6 +30,8 @@ const LIVE_PAGE_IMPORTS = {
   'website-administration:user-setup': () =>
     import('@/domain/website-access/pages/AdminUserSetupPage'),
   'website-administration:roles': () => import('@/domain/website-access/pages/AdminRoleSetupPage'),
+  'website-administration:audit-trail': () =>
+    import('@/domain/website-access/pages/AdminAuditTrailPage'),
 }
 
 /** Dashboard page registry — category primary + submenu secondary. */

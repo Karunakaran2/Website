@@ -1,27 +1,14 @@
-import { lazyPage as page } from '@/app/routes/lazyPage'
-import { dashboardPages } from '@/domain/dashboard/routes'
+import { buildWebsiteServicePages } from '@/domain/website/routes/buildWebsiteServicePages'
 import { componentWorkbenchPages } from '@/domain/component-workbench/routes'
 import { designGuidelinesPages } from '@/domain/design-guidelines/routes'
-import { workforceManagementPages } from '@/domain/module-2/routes'
-import { sampleModulePages } from '@/domain/module-1/routes'
-import { buildWebsiteServicePages } from '@/domain/website/routes/buildWebsiteServicePages'
 
 const websiteServicePages = buildWebsiteServicePages()
-import { administrationPages } from '@/domain/administration/routes'
 
-/**
- * Host composition of domain page remotes.
- * Standard KRAN Design System Portal registry of active design and reference modules.
- */
+/** CMS admin pages plus developer footer destinations (workbench, guidelines). */
 export const DASHBOARD_PAGE_REGISTRY = {
-  ...sampleModulePages,
   ...websiteServicePages,
-  ...administrationPages,
   ...componentWorkbenchPages,
   ...designGuidelinesPages,
-  ...workforceManagementPages,
-  ...dashboardPages,
-  'inbox:overview': page(() => import('@/app/shell/pages/inbox/InboxOverviewPage')),
 }
 
 export function resolveDashboardPage(primaryId, secondaryId) {

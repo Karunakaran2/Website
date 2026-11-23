@@ -2,7 +2,6 @@ package com.website.mediaservice.application.service;
 
 import com.website.mediaservice.config.MediaStorageProperties;
 import com.website.mediaservice.web.response.MediaUploadResponse;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,6 +15,8 @@ import java.util.UUID;
 
 @Service
 public class MediaUploadService {
+
+    private static final String IMAGE_MIME_PREFIX = "image/";
 
     private static final Set<String> IMAGE_EXTENSIONS = Set.of("png", "jpg", "jpeg", "gif", "webp", "svg", "bmp");
     private static final Set<String> DOCUMENT_EXTENSIONS = Set.of(
@@ -84,7 +85,8 @@ public class MediaUploadService {
         String folder = normalizeKind(kind);
         if ("images".equals(folder)) {
             boolean imageExt = IMAGE_EXTENSIONS.contains(extension.toLowerCase(Locale.ROOT));
-            boolean imageMime = contentType != null && contentType.toLowerCase(Locale.ROOT).startsWith(MediaType.IMAGE_VALUE);
+            boolean imageMime = contentType != null
+                    && contentType.toLowerCase(Locale.ROOT).startsWith(IMAGE_MIME_PREFIX);
             if (!imageExt && !imageMime) {
                 throw new IllegalArgumentException("Only image files are allowed for image upload");
             }
@@ -92,9 +94,9 @@ public class MediaUploadService {
         }
         if ("documents".equals(folder)) {
             if (!DOCUMENT_EXTENSIONS.contains(extension.toLowerCase(Locale.ROOT))
-                    && !(contentType != null && !contentType.toLowerCase(Locale.ROOT).startsWith(MediaType.IMAGE_VALUE))) {
+                    && !(contentType != null && !contentType.toLowerCase(Locale.ROOT).startsWith(IMAGE_MIME_PREFIX))) {
                 // allow common office docs by mime even if extension odd
-                if (contentType == null || contentType.startsWith("image/")) {
+                if (contentType == null || contentType.toLowerCase(Locale.ROOT).startsWith(IMAGE_MIME_PREFIX)) {
                     throw new IllegalArgumentException("Upload a document file (PDF, Office, ZIP, etc.)");
                 }
             }

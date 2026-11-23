@@ -52,7 +52,7 @@ public class AdminUserController {
             @Valid @RequestBody AdminUserUpsertRequest body
     ) {
         var session = requestAdminSessionService.requireSession(request);
-        return ApiResponse.ok(adminUserManagementService.create(session, body));
+        return ApiResponse.ok(adminUserManagementService.create(session, body, request));
     }
 
     @PutMapping("/{id}")
@@ -62,7 +62,7 @@ public class AdminUserController {
             @Valid @RequestBody AdminUserUpsertRequest body
     ) {
         var session = requestAdminSessionService.requireSession(request);
-        return ApiResponse.ok(adminUserManagementService.update(session, id, body));
+        return ApiResponse.ok(adminUserManagementService.update(session, id, body, request));
     }
 
     @DeleteMapping("/{id}")

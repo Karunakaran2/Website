@@ -15,6 +15,7 @@ import {
   useUpdateAdminUserMutation,
 } from '../services/accessApi'
 import { useWebsiteAccess } from '../hooks/useWebsiteAccess'
+import { useWebsiteListQueryOptions } from '../hooks/useWebsiteListQueryOptions'
 import { CMS_ADMIN } from '../constants/websitePrivileges'
 import { useCmsFormPageHeaderBack } from '@/domain/website-cms/hooks/useCmsFormPageHeaderBack.jsx'
 
@@ -185,12 +186,11 @@ function AdminUserForm({ initial, roles, privileges, isEdit, saving, onCancel, o
 function AdminUserSetupPageInner() {
   const { can } = useWebsiteAccess()
   const canManage = can(CMS_ADMIN.USERS_MANAGE)
+  const listQueryOptions = useWebsiteListQueryOptions(canManage)
   const requestConfirm = useActionConfirm()
-  const { data: users = [], isLoading, refetch, isError } = useListAdminUsersQuery(undefined, {
-    skip: !canManage,
-  })
-  const { data: roles = [] } = useListAdminRolesQuery()
-  const { data: privileges = [] } = useListPrivilegeCatalogQuery()
+  const { data: users = [], isLoading, refetch, isError } = useListAdminUsersQuery(undefined, listQueryOptions)
+  const { data: roles = [] } = useListAdminRolesQuery(undefined, listQueryOptions)
+  const { data: privileges = [] } = useListPrivilegeCatalogQuery(undefined, listQueryOptions)
   const [createUser] = useCreateAdminUserMutation()
   const [updateUser] = useUpdateAdminUserMutation()
 

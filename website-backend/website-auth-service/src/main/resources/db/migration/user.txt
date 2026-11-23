@@ -1,0 +1,26 @@
+SET search_path TO auth;
+
+INSERT INTO admin_user (
+    id,
+    username,
+    password_hash,
+    display_name,
+    is_active,
+    system_admin,
+    use_custom_privileges,
+    role_id
+)
+SELECT
+    gen_random_uuid(),
+    'admin',
+    crypt('Admin@123', gen_salt('bf', 10)),
+    'KRAN Admin',
+    true,
+    true,
+    false,
+    r.id
+FROM admin_role r
+WHERE r.code = 'SYSTEM_ADMIN'
+  AND NOT EXISTS (
+      SELECT 1 FROM admin_user WHERE lower(username) = 'admin'
+  );

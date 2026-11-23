@@ -54,7 +54,7 @@ public class AdminRoleController {
             @Valid @RequestBody AdminRoleUpsertRequest body
     ) {
         var session = requestAdminSessionService.requireSession(request);
-        return ApiResponse.ok(adminRoleManagementService.create(session, body));
+        return ApiResponse.ok(adminRoleManagementService.create(session, body, request));
     }
 
     @PutMapping("/roles/{id}")
@@ -64,7 +64,7 @@ public class AdminRoleController {
             @Valid @RequestBody AdminRoleUpsertRequest body
     ) {
         var session = requestAdminSessionService.requireSession(request);
-        return ApiResponse.ok(adminRoleManagementService.update(session, id, body));
+        return ApiResponse.ok(adminRoleManagementService.update(session, id, body, request));
     }
 
     @GetMapping("/privileges")

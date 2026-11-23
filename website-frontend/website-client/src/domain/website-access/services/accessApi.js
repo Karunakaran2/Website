@@ -57,6 +57,22 @@ export const accessApi = baseApi.injectEndpoints({
       },
       invalidatesTags: [{ type: 'Access', id: 'roles' }],
     }),
+    listAuditEvents: builder.query({
+      async queryFn({ page = 0, size = 25, module = '', username = '' } = {}) {
+        const params = new URLSearchParams()
+        params.set('page', String(page))
+        params.set('size', String(size))
+        if (module?.trim()) {
+          params.set('module', module.trim())
+        }
+        if (username?.trim()) {
+          params.set('username', username.trim())
+        }
+        const path = `${ACCESS_ENDPOINTS.auditEvents}?${params.toString()}`
+        return websiteGet(path)
+      },
+      providesTags: [{ type: 'Access', id: 'audit' }],
+    }),
   }),
 })
 
@@ -69,4 +85,5 @@ export const {
   useDeleteAdminUserMutation,
   useCreateAdminRoleMutation,
   useUpdateAdminRoleMutation,
+  useListAuditEventsQuery,
 } = accessApi

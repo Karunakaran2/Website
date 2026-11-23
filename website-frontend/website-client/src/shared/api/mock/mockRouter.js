@@ -33,6 +33,7 @@ function apiOk(data) {
 const MOCK_ALL_PRIVILEGES = [
   'CMS_ADMIN_USERS_MANAGE',
   'CMS_ADMIN_ROLES_MANAGE',
+  'CMS_ADMIN_AUDIT_VIEW',
   'CMS_CONTENT_NEWS_VIEW',
   'CMS_CONTENT_NEWS_CREATE',
   'CMS_CONTENT_NEWS_EDIT',
@@ -140,6 +141,45 @@ export async function handleMockRequest(url, options = {}) {
     if (method === 'DELETE') {
       return { status: 204, data: null }
     }
+  }
+
+  if (pathname.includes('/api/v1/admin/audit-events') && method === 'GET') {
+    const now = Date.now()
+    return apiOk({
+      content: [
+        {
+          id: 1,
+          occurredAt: new Date(now - 3600000).toISOString(),
+          actorUsername: activeSession.username,
+          action: 'LOGIN',
+          moduleKey: 'auth',
+          summary: 'Successful login',
+          ipAddress: '127.0.0.1',
+        },
+        {
+          id: 2,
+          occurredAt: new Date(now - 1200000).toISOString(),
+          actorUsername: activeSession.username,
+          action: 'UPDATE',
+          moduleKey: 'admin_users',
+          summary: 'Updated user karunakaran',
+          ipAddress: '127.0.0.1',
+        },
+        {
+          id: 3,
+          occurredAt: new Date(now - 600000).toISOString(),
+          actorUsername: activeSession.username,
+          action: 'UPDATE',
+          moduleKey: 'content_news',
+          summary: 'PATCH /api/v1/admin/news/mock-item-1',
+          ipAddress: '127.0.0.1',
+        },
+      ],
+      totalElements: 2,
+      totalPages: 1,
+      number: 0,
+      size: 25,
+    })
   }
 
   if (pathname.includes('/api/v1/admin/roles')) {

@@ -11,6 +11,7 @@ import com.website.authservice.domain.repository.AdminUserPrivilegeRepository;
 import com.website.authservice.domain.repository.AdminUserRepository;
 import com.website.authservice.web.request.AdminUserUpsertRequest;
 import com.website.authservice.web.response.AdminUserResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,7 @@ public class AdminUserManagementService {
     private final PrivilegeService privilegeService;
     private final AdminPrivilegeRepository adminPrivilegeRepository;
     private final AdminAccessGuard adminAccessGuard;
+    private final AdminAuditService adminAuditService;
 
     public AdminUserManagementService(
             AdminUserRepository adminUserRepository,
@@ -37,7 +39,8 @@ public class AdminUserManagementService {
             PasswordEncoder passwordEncoder,
             PrivilegeService privilegeService,
             AdminPrivilegeRepository adminPrivilegeRepository,
-            AdminAccessGuard adminAccessGuard
+            AdminAccessGuard adminAccessGuard,
+            AdminAuditService adminAuditService
     ) {
         this.adminUserRepository = adminUserRepository;
         this.adminRoleRepository = adminRoleRepository;
@@ -46,6 +49,7 @@ public class AdminUserManagementService {
         this.privilegeService = privilegeService;
         this.adminPrivilegeRepository = adminPrivilegeRepository;
         this.adminAccessGuard = adminAccessGuard;
+        this.adminAuditService = adminAuditService;
     }
 
     @Transactional(readOnly = true)
@@ -58,7 +62,7 @@ public class AdminUserManagementService {
     }
 
     @Transactional
-    public AdminUserResponse create(AdminSession actor, AdminUserUpsertRequest request) {
+    public AdminUserResponse create(AdminSession actor, AdminUserUpsertRequest request, HttpServletRequest httpRequest) {
         adminAccessGuard.requireUserManagement(actor);
         adminUserRepository.findByUsernameIgnoreCase(request.username().trim())
                 .ifPresent(existing -> {
@@ -69,17 +73,60 @@ public class AdminUserManagementService {
         apply(user, request, true);
         adminUserRepository.save(user);
         syncUserPrivileges(user, request);
+        adminAuditService.record(
+                actor,
+                "CREATE",
+                "admin_users",
+                "admin_user",
+                user.getId().toString(),
+                "Created user " + user.getUsername(),
+                httpRequest
+        );
         return toResponse(user);
     }
 
     @Transactional
-    public AdminUserResponse update(AdminSession actor, UUID id, AdminUserUpsertRequest request) {
+    public AdminUserResponse update(AdminSession actor, UUID id, AdminUserUpsertRequest request, HttpServletRequest httpRequest) {
         adminAccessGuard.requireUserManagement(actor);
         AdminUser user = adminUserRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        boolean wasActive = user.isActive();
+        boolean passwordChange = StringUtils.hasText(request.password());
         apply(user, request, false);
         adminUserRepository.save(user);
         syncUserPrivileges(user, request);
+        if (wasActive != user.isActive()) {
+            adminAuditService.record(
+                    actor,
+                    user.isActive() ? "ACTIVATE" : "DEACTIVATE",
+                    "admin_users",
+                    "admin_user",
+                    user.getId().toString(),
+                    (user.isActive() ? "Activated" : "Deactivated") + " user " + user.getUsername(),
+                    httpRequest
+            );
+        } else {
+            adminAuditService.record(
+                    actor,
+                    "UPDATE",
+                    "admin_users",
+                    "admin_user",
+                    user.getId().toString(),
+                    "Updated user " + user.getUsername(),
+                    httpRequest
+            );
+        }
+        if (passwordChange) {
+            adminAuditService.record(
+                    actor,
+                    "PASSWORD_RESET",
+                    "admin_users",
+                    "admin_user",
+                    user.getId().toString(),
+                    "Password reset for " + user.getUsername(),
+                    httpRequest
+            );
+        }
         return toResponse(user);
     }
 

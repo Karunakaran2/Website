@@ -4,7 +4,6 @@ import {
   isSetupPrimary,
   isSetupModulePrimary,
 } from '@/app/shell/constants/dashboard'
-
 const STORAGE_KEY = 'kran.setupReturnRoute'
 
 export function normalizeAppPathname(pathname) {
@@ -18,27 +17,11 @@ export function isModuleListHomePath(pathname) {
   return normalizeAppPathname(pathname) === ROUTES.HOME
 }
 
-const NON_MODULE_SHELL_PATHS = new Set([
-  ROUTES.LOGIN,
-  ROUTES.DEPARTMENT_LOGIN,
-  ROUTES.MODULE_LOGIN,
-  ROUTES.SEATS,
-  ROUTES.HOME,
-  ROUTES.MY_PROFILE,
-])
-
 /**
  * Setup gear in the app header is shown only inside an active module shell (not module list home).
  */
-export function isHeaderSetupNavAvailable(pathname) {
-  const cleanPath = normalizeAppPathname(pathname)
-  if (NON_MODULE_SHELL_PATHS.has(cleanPath)) {
-    return false
-  }
-  if (isSetupAreaPathname(cleanPath)) {
-    return true
-  }
-  return isValidModuleReturnRoute(cleanPath)
+export function isHeaderSetupNavAvailable() {
+  return false
 }
 
 /**

@@ -13,6 +13,7 @@ import {
   useUpdateAdminRoleMutation,
 } from '../services/accessApi'
 import { useWebsiteAccess } from '../hooks/useWebsiteAccess'
+import { useWebsiteListQueryOptions } from '../hooks/useWebsiteListQueryOptions'
 import { CMS_ADMIN } from '../constants/websitePrivileges'
 import { useCmsFormPageHeaderBack } from '@/domain/website-cms/hooks/useCmsFormPageHeaderBack.jsx'
 
@@ -113,9 +114,10 @@ function AdminRoleForm({ initial, privileges, isBuiltIn, saving, onCancel, onSub
 function AdminRoleSetupPageInner() {
   const { can } = useWebsiteAccess()
   const canManage = can(CMS_ADMIN.ROLES_MANAGE)
+  const listQueryOptions = useWebsiteListQueryOptions(canManage)
   const requestConfirm = useActionConfirm()
-  const { data: roles = [], isLoading, refetch } = useListAdminRolesQuery(undefined, { skip: !canManage })
-  const { data: privileges = [] } = useListPrivilegeCatalogQuery()
+  const { data: roles = [], isLoading, refetch } = useListAdminRolesQuery(undefined, listQueryOptions)
+  const { data: privileges = [] } = useListPrivilegeCatalogQuery(undefined, listQueryOptions)
   const [createRole] = useCreateAdminRoleMutation()
   const [updateRole] = useUpdateAdminRoleMutation()
 

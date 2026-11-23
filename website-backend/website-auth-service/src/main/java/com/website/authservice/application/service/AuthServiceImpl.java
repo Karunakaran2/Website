@@ -26,19 +26,22 @@ public class AuthServiceImpl implements AuthService {
     private final JwtAccessTokenService jwtAccessTokenService;
     private final CaptchaService captchaService;
     private final AdminSessionFactory adminSessionFactory;
+    private final AdminAuditService adminAuditService;
 
     public AuthServiceImpl(
             AdminUserRepository adminUserRepository,
             PasswordEncoder passwordEncoder,
             JwtAccessTokenService jwtAccessTokenService,
             CaptchaService captchaService,
-            AdminSessionFactory adminSessionFactory
+            AdminSessionFactory adminSessionFactory,
+            AdminAuditService adminAuditService
     ) {
         this.adminUserRepository = adminUserRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtAccessTokenService = jwtAccessTokenService;
         this.captchaService = captchaService;
         this.adminSessionFactory = adminSessionFactory;
+        this.adminAuditService = adminAuditService;
     }
 
     @Override
@@ -51,17 +54,60 @@ public class AuthServiceImpl implements AuthService {
             HttpServletRequest request
     ) {
         captchaService.validateAndConsume(captchaId, captcha);
-        AdminUser user = adminUserRepository.findByUsernameIgnoreCase(username.trim())
-                .orElseThrow(() -> new BadCredentialsException(AuthMessages.INVALID_USERNAME_OR_PASSWORD));
+        String normalizedUsername = username.trim();
+        var userOpt = adminUserRepository.findByUsernameIgnoreCase(normalizedUsername);
+        if (userOpt.isEmpty()) {
+            adminAuditService.record(
+                    null,
+                    normalizedUsername,
+                    "LOGIN_FAILED",
+                    "auth",
+                    "admin_user",
+                    null,
+                    "Login failed — unknown username",
+                    request
+            );
+            throw new BadCredentialsException(AuthMessages.INVALID_USERNAME_OR_PASSWORD);
+        }
+        AdminUser user = userOpt.get();
         if (!user.isActive()) {
+            adminAuditService.record(
+                    user.getId(),
+                    user.getUsername(),
+                    "LOGIN_FAILED",
+                    "auth",
+                    "admin_user",
+                    user.getId().toString(),
+                    "Login blocked — account deactivated",
+                    request
+            );
             throw new DisabledException(AuthMessages.ACCOUNT_DISABLED);
         }
         if (!passwordEncoder.matches(password, user.getPasswordHash())) {
+            adminAuditService.record(
+                    user.getId(),
+                    user.getUsername(),
+                    "LOGIN_FAILED",
+                    "auth",
+                    "admin_user",
+                    user.getId().toString(),
+                    "Login failed — invalid password",
+                    request
+            );
             throw new BadCredentialsException(AuthMessages.INVALID_USERNAME_OR_PASSWORD);
         }
         user.setLastLoginAt(Instant.now());
         adminUserRepository.save(user);
         AdminSession session = adminSessionFactory.fromUser(user);
+        adminAuditService.record(
+                session,
+                "LOGIN",
+                "auth",
+                "admin_user",
+                user.getId().toString(),
+                "Successful login",
+                request
+        );
         return toAuthResponse(jwtAccessTokenService.issue(session), session);
     }
 
@@ -75,7 +121,18 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void logout(HttpServletRequest request) {
-        extractBearer(request).ifPresent(jwtAccessTokenService::revoke);
+        extractBearer(request).ifPresent(token -> {
+            jwtAccessTokenService.read(token).ifPresent(session -> adminAuditService.record(
+                    session,
+                    "LOGOUT",
+                    "auth",
+                    "admin_user",
+                    session.userId().toString(),
+                    "User signed out",
+                    request
+            ));
+            jwtAccessTokenService.revoke(token);
+        });
     }
 
     @Override
@@ -113,6 +170,15 @@ public class AuthServiceImpl implements AuthService {
         }
         user.setPasswordHash(passwordEncoder.encode(next));
         adminUserRepository.save(user);
+        adminAuditService.record(
+                session,
+                "PASSWORD_CHANGE",
+                "auth",
+                "admin_user",
+                user.getId().toString(),
+                "Password changed",
+                request
+        );
     }
 
     private AuthResponse toAuthResponse(IssuedTokens tokens, AdminSession session) {

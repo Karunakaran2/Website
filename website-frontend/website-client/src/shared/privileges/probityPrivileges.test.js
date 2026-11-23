@@ -81,28 +81,28 @@ describe('nav privilege filter', () => {
     ).toEqual(['budget', 'bank-reconciliation', 'recurring-voucher'])
   })
 
-  it('moves a disallowed deep link to the first allowed tab', () => {
+  it('redirects legacy finance deep links to the CMS dashboard', () => {
     expect(
       resolvePrivilegedDashboardNav('asset', 'fa-group', [PROBITY_PRIVILEGES.BUDGET]),
     ).toEqual({
-      primaryId: 'budget',
-      secondaryId: 'initiation',
+      primaryId: 'website-dashboard',
+      secondaryId: 'overview',
     })
 
     expect(
-      resolvePrivilegedDashboardNav('budget', 'initiation', [
-        PROBITY_PRIVILEGES.BUDGET,
-      ]),
+      resolvePrivilegedDashboardNav('budget', 'initiation', [PROBITY_PRIVILEGES.BUDGET]),
     ).toEqual({
-      primaryId: 'budget',
-      secondaryId: 'initiation',
+      primaryId: 'website-dashboard',
+      secondaryId: 'overview',
     })
   })
 
-  it('leaves the requested tab in place when grants are not loaded', () => {
-    expect(resolvePrivilegedDashboardNav('asset', 'fa-group', null)).toEqual({
-      primaryId: 'asset',
-      secondaryId: 'fa-group',
+  it('keeps the requested CMS tab when grants are not loaded', () => {
+    expect(
+      resolvePrivilegedDashboardNav('website-content', 'news', null),
+    ).toEqual({
+      primaryId: 'website-content',
+      secondaryId: 'news',
     })
   })
 })

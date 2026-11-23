@@ -32,4 +32,8 @@ public class AdminAccessGuard {
     public void requireRoleManagement(AdminSession session) {
         requireAny(session, PrivilegeCodes.ADMIN_ROLES_MANAGE);
     }
+
+    public void requireAuditView(AdminSession session) {
+        requireAny(session, PrivilegeCodes.ADMIN_AUDIT_VIEW);
+    }
 }

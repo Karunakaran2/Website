@@ -1,6 +1,7 @@
 export const CMS_ADMIN = {
   USERS_MANAGE: 'CMS_ADMIN_USERS_MANAGE',
   ROLES_MANAGE: 'CMS_ADMIN_ROLES_MANAGE',
+  AUDIT_VIEW: 'CMS_ADMIN_AUDIT_VIEW',
 }
 
 /** Resource registry key → privilege codes per action */

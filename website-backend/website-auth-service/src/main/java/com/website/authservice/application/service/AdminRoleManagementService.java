@@ -8,6 +8,7 @@ import com.website.authservice.domain.repository.AdminRolePrivilegeRepository;
 import com.website.authservice.domain.repository.AdminRoleRepository;
 import com.website.authservice.web.request.AdminRoleUpsertRequest;
 import com.website.authservice.web.response.AdminRoleResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -22,17 +23,20 @@ public class AdminRoleManagementService {
     private final AdminRolePrivilegeRepository adminRolePrivilegeRepository;
     private final PrivilegeService privilegeService;
     private final AdminAccessGuard adminAccessGuard;
+    private final AdminAuditService adminAuditService;
 
     public AdminRoleManagementService(
             AdminRoleRepository adminRoleRepository,
             AdminRolePrivilegeRepository adminRolePrivilegeRepository,
             PrivilegeService privilegeService,
-            AdminAccessGuard adminAccessGuard
+            AdminAccessGuard adminAccessGuard,
+            AdminAuditService adminAuditService
     ) {
         this.adminRoleRepository = adminRoleRepository;
         this.adminRolePrivilegeRepository = adminRolePrivilegeRepository;
         this.privilegeService = privilegeService;
         this.adminAccessGuard = adminAccessGuard;
+        this.adminAuditService = adminAuditService;
     }
 
     @Transactional(readOnly = true)
@@ -45,7 +49,7 @@ public class AdminRoleManagementService {
     }
 
     @Transactional
-    public AdminRoleResponse create(AdminSession actor, AdminRoleUpsertRequest request) {
+    public AdminRoleResponse create(AdminSession actor, AdminRoleUpsertRequest request, HttpServletRequest httpRequest) {
         adminAccessGuard.requireRoleManagement(actor);
         AdminRole role = new AdminRole();
         role.setId(UUID.randomUUID());
@@ -55,11 +59,20 @@ public class AdminRoleManagementService {
         role.setBuiltIn(false);
         adminRoleRepository.save(role);
         syncPrivileges(role.getId(), request.privilegeCodes());
+        adminAuditService.record(
+                actor,
+                "CREATE",
+                "admin_roles",
+                "admin_role",
+                role.getId().toString(),
+                "Created role " + role.getCode(),
+                httpRequest
+        );
         return toResponse(role);
     }
 
     @Transactional
-    public AdminRoleResponse update(AdminSession actor, UUID id, AdminRoleUpsertRequest request) {
+    public AdminRoleResponse update(AdminSession actor, UUID id, AdminRoleUpsertRequest request, HttpServletRequest httpRequest) {
         adminAccessGuard.requireRoleManagement(actor);
         AdminRole role = adminRoleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found"));
@@ -70,6 +83,15 @@ public class AdminRoleManagementService {
         }
         adminRoleRepository.save(role);
         syncPrivileges(role.getId(), request.privilegeCodes());
+        adminAuditService.record(
+                actor,
+                "UPDATE",
+                "admin_roles",
+                "admin_role",
+                role.getId().toString(),
+                "Updated role " + role.getCode(),
+                httpRequest
+        );
         return toResponse(role);
     }
 

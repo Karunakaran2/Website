@@ -50,6 +50,7 @@ export const KRAN_ADMIN_SECONDARY_BY_PRIMARY = {
   'website-administration': [
     { id: 'user-setup', label: 'User setup' },
     { id: 'roles', label: 'Roles & privileges' },
+    { id: 'audit-trail', label: 'Audit trail' },
   ],
 }
 

@@ -5,4 +5,5 @@ export const ACCESS_ENDPOINTS = {
   adminRoles: '/api/v1/admin/roles',
   adminRoleById: (id) => `/api/v1/admin/roles/${encodeURIComponent(id)}`,
   privilegeCatalog: '/api/v1/admin/privileges',
+  auditEvents: '/api/v1/admin/audit-events',
 }

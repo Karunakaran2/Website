@@ -3,8 +3,6 @@ import { authReducer } from '@/domain/auth/redux/slice'
 import { dashboardReducer } from '@/app/shell/redux/slice'
 import { settingsReducer } from '@/app/settings/redux/slice'
 import { userManagementReducer } from '@/app/user-management/redux/slice'
-import { setupReducer } from '@/domain/administration/setup/redux/slice'
-import { assetReducer } from '@/domain/administration/asset/redux/slice'
 import { baseApi } from '@/shared/api/baseApi'
 import languageReducer from '@/shared/redux/slices/language/languageSlice'
 import { privilagesReducer } from '@/shared/redux/slices/privilages/privilagesSlice'
@@ -29,8 +27,6 @@ export const rootReducer = combineReducers({
   dashboard: dashboardReducer,
   userManagement: userManagementReducer,
   settings: settingsReducer,
-  setup: setupReducer,
-  asset: assetReducer,
   privilages: privilagesReducer,
   [baseApi.reducerPath]: baseApi.reducer,
 })
